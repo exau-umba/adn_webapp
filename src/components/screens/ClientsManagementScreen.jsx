@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppButton, AppInput, AppSelect, ConfirmationModal } from "../ui";
 import { clientsData as clients } from "../../modules/clients/data/clientsData.ts";
+import { ROUTES } from "../../core/routes.ts";
+import { getStatusTone } from "../../core/constants/statusStyles.ts";
 
 export function ClientsManagementScreen() {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ export function ClientsManagementScreen() {
             Suivez les informations clients et les missions associees.
           </p>
         </div>
-        <AppButton variant="secondary" size="lg" onClick={() => navigate("/client-management/registration")}>
+        <AppButton variant="secondary" size="lg" onClick={() => navigate(ROUTES.clientRegistration)}>
           Nouveau Client
         </AppButton>
       </div>
@@ -52,25 +54,17 @@ export function ClientsManagementScreen() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-            {clients.map((client) => (
+            {clients.map((client) => {
+              const statusTone = getStatusTone(client.status);
+              return (
               <tr key={client.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
                 <td className="p-4 font-semibold text-[#01003b] dark:text-slate-100">{client.name}</td>
                 <td className="p-4 text-slate-600 dark:text-slate-300">{client.contact}</td>
                 <td className="p-4 text-slate-600 dark:text-slate-300">{client.city}</td>
                 <td className="p-4 text-slate-600 dark:text-slate-300">{client.activeMissions}</td>
                 <td className="p-4">
-                  <span
-                    className={`inline-flex items-center gap-2 ${
-                      client.status === "Actif"
-                        ? "text-emerald-600"
-                        : "text-red-600"
-                    }`}
-                  >
-                    <span
-                      className={`h-2 w-2 rounded-full ${
-                        client.status === "Actif" ? "bg-emerald-500" : "bg-red-500"
-                      }`}
-                    />
+                  <span className={`inline-flex items-center gap-2 ${statusTone.text}`}>
+                    <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
                     {client.status}
                   </span>
                 </td>
@@ -80,7 +74,7 @@ export function ClientsManagementScreen() {
                       variant="ghost"
                       size="sm"
                       className="rounded-lg"
-                      onClick={() => navigate(`/client-management/detail/${client.id}`)}
+                      onClick={() => navigate(ROUTES.clientDetail(client.id))}
                     >
                       Voir
                     </AppButton>
@@ -88,7 +82,7 @@ export function ClientsManagementScreen() {
                       variant="secondary"
                       size="sm"
                       className="rounded-lg"
-                      onClick={() => navigate(`/client-management/detail/${client.id}/edit`)}
+                      onClick={() => navigate(ROUTES.clientEdit(client.id))}
                     >
                       Modifier
                     </AppButton>
@@ -110,7 +104,8 @@ export function ClientsManagementScreen() {
                   </div>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppButton, ConfirmationModal } from "../ui";
 import { clientsData } from "../../modules/clients/data/clientsData.ts";
+import { getStatusTone } from "../../core/constants/statusStyles.ts";
 
 export function ClientDetailsScreen() {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ export function ClientDetailsScreen() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const client = useMemo(() => clientsData.find((item) => item.id === clientId), [clientId]);
+  const statusTone = getStatusTone(client?.status ?? "Suspendu");
 
   if (!client) {
     return (
@@ -40,11 +42,9 @@ export function ClientDetailsScreen() {
           <div>
             <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Statut</p>
             <span
-              className={`inline-flex items-center gap-2 font-myriad font-semibold ${
-                client.status === "Actif" ? "text-emerald-600" : "text-red-600"
-              }`}
+              className={`inline-flex items-center gap-2 font-myriad font-semibold ${statusTone.text}`}
             >
-              <span className={`h-2 w-2 rounded-full ${client.status === "Actif" ? "bg-emerald-500" : "bg-red-500"}`} />
+              <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
               {client.status}
             </span>
           </div>

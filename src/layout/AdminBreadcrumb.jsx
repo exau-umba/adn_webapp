@@ -1,22 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaChevronRight } from "react-icons/fa6";
-
-const segmentLabels = {
-  "agent-management": "Gestion agents",
-  "client-management": "Gestion clients",
-  client: "Client",
-  detail: "Detail agent",
-  edit: "Modification",
-  notifications: "Notifications",
-  settings: "Parametres",
-  dashboard: "Tableau de bord",
-  management: "Gestion",
-  registration: "Ajout",
-  evaluation: "Evaluation",
-};
+import { BREADCRUMB_LABELS } from "../core/constants/breadcrumbLabels.ts";
 
 function toLabel(segment) {
-  if (segmentLabels[segment]) return segmentLabels[segment];
+  if (BREADCRUMB_LABELS[segment]) return BREADCRUMB_LABELS[segment];
   return segment
     .split("-")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

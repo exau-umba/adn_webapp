@@ -1,7 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppButton, ConfirmationModal } from "../ui";
 import { agentsData } from "../../modules/agents/data/agentsData.ts";
+import { generateAgentQrDataUrl } from "../../core/utils/media.ts";
+import { getStatusTone } from "../../core/constants/statusStyles.ts";
+import { exportAgentProfilePdf } from "../../core/utils/pdf.ts";
 
 function renderStars(scoreLabel) {
   const numericScore = Number.parseFloat(scoreLabel);
@@ -26,8 +29,45 @@ export function AgentDetailsScreen() {
   const { agentId } = useParams();
   const [isSuspended, setIsSuspended] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [qrDataUrl, setQrDataUrl] = useState("");
 
   const agent = useMemo(() => agentsData.find((item) => item.id === agentId), [agentId]);
+  const statusTone = getStatusTone((isSuspended ? "Suspendu" : agent?.status) ?? "Suspendu");
+
+  useEffect(() => {
+    if (!agent) return;
+
+    const qrPayload = JSON.stringify({
+      agentId: agent.id,
+      name: agent.name,
+      phone: agent.phone,
+      city: agent.city,
+      company: "ADN PRO SERVICE",
+    });
+
+    generateAgentQrDataUrl(qrPayload)
+      .then((url) => setQrDataUrl(url))
+      .catch(() => setQrDataUrl(""));
+  }, [agent]);
+
+  const exportAgentPdf = async () => {
+    if (!agent) return;
+    await exportAgentProfilePdf({
+      agent: {
+        id: agent.id,
+        name: agent.name,
+        role: agent.role,
+        status: isSuspended ? "Suspendu" : agent.status,
+        score: agent.score,
+        service: agent.service,
+        phone: agent.phone,
+        city: agent.city,
+        experience: agent.experience,
+        photo: agent.photo,
+      },
+      qrDataUrl,
+    });
+  };
 
   if (!agent) {
     return (
@@ -62,7 +102,10 @@ export function AgentDetailsScreen() {
           <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div>
               <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Statut</p>
-              <p className="font-myriad font-semibold text-[#01003b] dark:text-slate-100">{agent.status}</p>
+              <span className={`inline-flex items-center gap-2 font-myriad font-semibold ${statusTone.text}`}>
+                <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
+                {isSuspended ? "Suspendu" : agent.status}
+              </span>
             </div>
             <div>
               <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Score</p>
@@ -89,10 +132,21 @@ export function AgentDetailsScreen() {
               <p className="font-myriad font-semibold text-[#01003b] dark:text-slate-100">{agent.experience}</p>
             </div>
           </div>
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/70">
+            {qrDataUrl ? (
+              <img src={qrDataUrl} alt={`QR code de ${agent.name}`} className="h-28 w-28 rounded-lg" />
+            ) : (
+              <div className="flex h-28 w-28 items-center justify-center font-myriad text-xs text-slate-400">QR...</div>
+            )}
+            <p className="mt-2 text-center font-myriad text-[11px] text-slate-500 dark:text-slate-400">QR unique agent</p>
+          </div>
         </div>
       </article>
 
       <div className="flex flex-wrap gap-3">
+        <AppButton variant="ghost" onClick={exportAgentPdf}>
+          Exporter en PDF
+        </AppButton>
         <AppButton variant="primary" onClick={() => navigate("/agent-management/evaluation")}>
           Lancer l'evaluation
         </AppButton>

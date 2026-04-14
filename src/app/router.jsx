@@ -4,6 +4,7 @@ import { agentsRoutes } from "../modules/agents/routes";
 import { clientsRoutes } from "../modules/clients/routes";
 import { notificationsRoutes } from "../modules/notifications/routes";
 import { settingsRoutes } from "../modules/settings/routes";
+import { ROUTES } from "../core/routes.ts";
 
 export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onToggleDarkMode }) {
   return useRoutes([
@@ -18,13 +19,13 @@ export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onTog
         />
       ),
       children: [
-        { index: true, element: <Navigate to="/dashboard" replace /> },
+        { index: true, element: <Navigate to={ROUTES.dashboard} replace /> },
         ...agentsRoutes,
         ...clientsRoutes,
         ...notificationsRoutes,
         ...settingsRoutes,
       ],
     },
-    { path: "*", element: <Navigate to="/dashboard" replace /> },
+    { path: "*", element: <Navigate to={ROUTES.dashboard} replace /> },
   ]);
 }

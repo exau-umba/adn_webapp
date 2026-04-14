@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppButton, AppSelect, ConfirmationModal } from "../ui";
 import { agentsData as agents } from "../../modules/agents/data/agentsData.ts";
+import { getStatusTone } from "../../core/constants/statusStyles.ts";
 
 function renderStars(scoreLabel) {
   const numericScore = Number.parseFloat(scoreLabel);
@@ -95,7 +96,9 @@ export function AgentsManagementScreen() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-            {agents.map((agent) => (
+            {agents.map((agent) => {
+              const statusTone = getStatusTone(agent.status);
+              return (
               <tr key={agent.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
                 <td className="p-4">
                   <div className="flex items-center gap-3">
@@ -115,16 +118,8 @@ export function AgentsManagementScreen() {
                 <td className="p-4 dark:text-slate-300">{agent.service}</td>
                 <td className="p-4 font-bold text-[#01003b] dark:text-slate-100">{renderStars(agent.score)}</td>
                 <td className="p-4">
-                  <span
-                    className={`inline-flex items-center gap-2 ${
-                      agent.status === "Suspendu" ? "text-red-600" : "text-emerald-600"
-                    }`}
-                  >
-                    <span
-                      className={`h-2 w-2 rounded-full ${
-                        agent.status === "Suspendu" ? "bg-red-500" : "bg-emerald-500"
-                      }`}
-                    />
+                  <span className={`inline-flex items-center gap-2 ${statusTone.text}`}>
+                    <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
                     {agent.status}
                   </span>
                 </td>
@@ -164,7 +159,8 @@ export function AgentsManagementScreen() {
                   </div>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
         <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-6 py-3 dark:border-slate-700 dark:bg-slate-800/70">

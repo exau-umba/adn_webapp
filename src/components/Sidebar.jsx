@@ -9,17 +9,30 @@ import {
   FaUserGroup,
 } from "react-icons/fa6";
 import { AppButton } from "./ui";
+import { ROUTES } from "../core/routes.ts";
 
 const sidebarItems = [
-  { label: "Tableau de bord", to: "/dashboard", icon: FaHouse, route: true, matchPrefixes: ["/dashboard"] },
+  {
+    label: "Tableau de bord",
+    to: ROUTES.dashboard,
+    icon: FaHouse,
+    route: true,
+    matchPrefixes: [ROUTES.dashboard],
+  },
   {
     label: "Agent",
-    to: "/agent-management",
+    to: ROUTES.agentManagement,
     icon: FaIdBadge,
     route: true,
-    matchPrefixes: ["/agent-management"],
+    matchPrefixes: [ROUTES.agentManagement],
   },
-  { label: "Clients", to: "/client-management", icon: FaPeopleGroup, route: true, matchPrefixes: ["/client-management"] },
+  {
+    label: "Clients",
+    to: ROUTES.clientManagement,
+    icon: FaPeopleGroup,
+    route: true,
+    matchPrefixes: [ROUTES.clientManagement],
+  },
   { label: "Mission", icon: FaUserGroup, route: false, matchPrefixes: ["/missions"] },
   { label: "Contrat", icon: FaFileContract, route: false, matchPrefixes: ["/contracts"] },
   { label: "Incident", icon: FaTriangleExclamation, route: false, matchPrefixes: ["/incidents"] },
