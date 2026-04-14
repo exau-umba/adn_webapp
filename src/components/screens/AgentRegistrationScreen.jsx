@@ -1,6 +1,11 @@
+import { useState } from "react";
 import { AppButton, AppInput } from "../ui";
 
 export function AgentRegistrationScreen() {
+  const [selectedSex, setSelectedSex] = useState("");
+  const [hasPhoto, setHasPhoto] = useState("non");
+  const [hasExperience, setHasExperience] = useState("non");
+
   return (
     <section className="space-y-3">
       <div>
@@ -32,10 +37,24 @@ export function AgentRegistrationScreen() {
               Sexe
               <div className="mt-2 flex gap-4 rounded-xl bg-slate-100 px-3 py-2.5 text-[13px] font-semibold normal-case dark:bg-slate-800">
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" /> Homme
+                    <input
+                      type="radio"
+                      name="sex"
+                      value="homme"
+                      checked={selectedSex === "homme"}
+                      onChange={(event) => setSelectedSex(event.target.value)}
+                    />
+                    Homme
                 </label>
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" /> Femme
+                    <input
+                      type="radio"
+                      name="sex"
+                      value="femme"
+                      checked={selectedSex === "femme"}
+                      onChange={(event) => setSelectedSex(event.target.value)}
+                    />
+                    Femme
                 </label>
               </div>
             </div>
@@ -60,13 +79,35 @@ export function AgentRegistrationScreen() {
                 Photo
                 <div className="mt-2 flex gap-4 rounded-xl bg-slate-100 px-3 py-2.5 text-[13px] font-semibold normal-case dark:bg-slate-800">
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Oui
+                    <input
+                      type="radio"
+                      name="photo"
+                      value="oui"
+                      checked={hasPhoto === "oui"}
+                      onChange={(event) => setHasPhoto(event.target.value)}
+                    />
+                    Oui
                   </label>
                   <label className="flex items-center gap-2">
-                    <input type="checkbox" /> Non
+                    <input
+                      type="radio"
+                      name="photo"
+                      value="non"
+                      checked={hasPhoto === "non"}
+                      onChange={(event) => setHasPhoto(event.target.value)}
+                    />
+                    Non
                   </label>
                 </div>
               </div>
+              {hasPhoto === "oui" ? (
+                <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 text-center font-myriad text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+                  <label className="cursor-pointer">
+                    <span className="font-semibold">Uploader la photo</span>
+                    <input type="file" accept="image/*" className="mt-3 block w-full text-xs" />
+                  </label>
+                </div>
+              ) : null}
             </div>
           </section>
 
@@ -93,24 +134,40 @@ export function AgentRegistrationScreen() {
             Avez-vous deja travaille ?
             <div className="mt-2 flex gap-4 rounded-xl bg-slate-100 px-3 py-2.5 text-[13px] font-semibold normal-case dark:bg-slate-800">
               <label className="flex items-center gap-2">
-                <input type="checkbox" /> Oui
+                <input
+                  type="radio"
+                  name="experience"
+                  value="oui"
+                  checked={hasExperience === "oui"}
+                  onChange={(event) => setHasExperience(event.target.value)}
+                />
+                Oui
               </label>
               <label className="flex items-center gap-2">
-                <input type="checkbox" /> Non
+                <input
+                  type="radio"
+                  name="experience"
+                  value="non"
+                  checked={hasExperience === "non"}
+                  onChange={(event) => setHasExperience(event.target.value)}
+                />
+                Non
               </label>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-            {["Poste occupe", "Duree", "Ancien employeur", "Contact reference"].map((f) => (
-              <AppInput key={f} placeholder={f} />
-            ))}
-          </div>
+          {hasExperience === "oui" ? (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+              {["Poste occupe", "Duree", "Ancien employeur", "Contact reference"].map((f) => (
+                <AppInput key={f} placeholder={f} />
+              ))}
+            </div>
+          ) : null}
         </section>
 
         <section className="rounded-[2rem] bg-white p-8 shadow-sm dark:bg-slate-900/80">
           <h3 className="mb-6 font-brand text-2xl text-[#01003b] dark:text-slate-100">5. Disponibilite</h3>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {["Temps plein", "Temps partiel", "Loge", "Non loge"].map((item) => (
+            {["Temps plein", "Temps partiel", "Logé", "Non logé"].map((item) => (
               <label
                 key={item}
                 className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 font-myriad text-sm dark:border-slate-700 dark:bg-slate-800"

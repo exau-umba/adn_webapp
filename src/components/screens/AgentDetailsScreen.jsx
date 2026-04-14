@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppButton } from "../ui";
+import { AppButton, ConfirmationModal } from "../ui";
 import { agentsData } from "../../modules/agents/data/agentsData.ts";
 
 function renderStars(scoreLabel) {
@@ -24,6 +24,8 @@ function renderStars(scoreLabel) {
 export function AgentDetailsScreen() {
   const navigate = useNavigate();
   const { agentId } = useParams();
+  const [isSuspended, setIsSuspended] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const agent = useMemo(() => agentsData.find((item) => item.id === agentId), [agentId]);
 
@@ -94,8 +96,36 @@ export function AgentDetailsScreen() {
         <AppButton variant="primary" onClick={() => navigate("/agent-management/evaluation")}>
           Lancer l'evaluation
         </AppButton>
-        <AppButton variant="secondary">Modifier le dossier</AppButton>
+        <AppButton variant="secondary" onClick={() => navigate(`/agent-management/detail/${agent.id}/edit`)}>
+          Modifier le dossier
+        </AppButton>
+        <AppButton
+          variant="ghost"
+          className="border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-700 dark:text-amber-300 dark:hover:bg-amber-950/30"
+          onClick={() => setIsSuspended((prev) => !prev)}
+        >
+          {isSuspended ? "Reactiver l'agent" : "Suspendre l'agent"}
+        </AppButton>
+        <AppButton
+          variant="ghost"
+          className="border-red-200 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-950/30"
+          onClick={() => setIsDeleteModalOpen(true)}
+        >
+          Supprimer l'agent
+        </AppButton>
       </div>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        title="Supprimer cet agent ?"
+        message="Cette action est irreversible. Voulez-vous vraiment supprimer ce dossier agent ?"
+        confirmLabel="Supprimer"
+        cancelLabel="Annuler"
+        onCancel={() => setIsDeleteModalOpen(false)}
+        onConfirm={() => {
+          setIsDeleteModalOpen(false);
+          navigate("/agent-management");
+        }}
+      />
     </section>
   );
 }

@@ -4,6 +4,7 @@ import { FaChevronRight } from "react-icons/fa6";
 const segmentLabels = {
   "agent-management": "Gestion agents",
   detail: "Detail agent",
+  edit: "Modification",
   dashboard: "Tableau de bord",
   management: "Gestion",
   registration: "Ajout agent",

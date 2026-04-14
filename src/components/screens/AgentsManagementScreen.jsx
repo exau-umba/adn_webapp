@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppButton, AppSelect, IconButton } from "../ui";
+import { AppButton, AppSelect, ConfirmationModal } from "../ui";
 import { agentsData as agents } from "../../modules/agents/data/agentsData.ts";
 
 function renderStars(scoreLabel) {
@@ -22,6 +23,7 @@ function renderStars(scoreLabel) {
 
 export function AgentsManagementScreen() {
   const navigate = useNavigate();
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   return (
     <section className="space-y-6">
@@ -136,9 +138,29 @@ export function AgentsManagementScreen() {
                     >
                       Voir
                     </AppButton>
-                    <IconButton onClick={() => navigate("/agent-management/evaluation")} className="text-slate-400">
-                      <span className="text-xs">Eval</span>
-                    </IconButton>
+                    <AppButton
+                      variant="secondary"
+                      size="sm"
+                      className="rounded-lg"
+                      onClick={() => navigate(`/agent-management/detail/${agent.id}/edit`)}
+                    >
+                      Modifier
+                    </AppButton>
+                    <AppButton
+                      variant="ghost"
+                      size="sm"
+                      className="rounded-lg border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-700 dark:text-amber-300 dark:hover:bg-amber-950/30"
+                    >
+                      {agent.status === "Suspendu" ? "Reactiver" : "Suspendre"}
+                    </AppButton>
+                    <AppButton
+                      variant="ghost"
+                      size="sm"
+                      className="rounded-lg border-red-200 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-950/30"
+                      onClick={() => setDeleteTarget(agent)}
+                    >
+                      Supprimer
+                    </AppButton>
                   </div>
                 </td>
               </tr>
@@ -160,6 +182,19 @@ export function AgentsManagementScreen() {
           </div>
         </div>
       </div>
+      <ConfirmationModal
+        isOpen={Boolean(deleteTarget)}
+        title="Supprimer cet agent ?"
+        message={
+          deleteTarget
+            ? `Voulez-vous vraiment supprimer le dossier de ${deleteTarget.name} ?`
+            : "Voulez-vous vraiment supprimer ce dossier ?"
+        }
+        confirmLabel="Supprimer"
+        cancelLabel="Annuler"
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={() => setDeleteTarget(null)}
+      />
     </section>
   );
 }
