@@ -1,3 +1,5 @@
+import { AppButton } from "./ui";
+
 export function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
@@ -15,9 +17,9 @@ export function Header() {
             </p>
           </div>
         </div>
-        <button className="rounded-xl border border-slate-200 px-4 py-2 font-myriad text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+        <AppButton variant="ghost" size="md" className="rounded-xl">
           Deconnexion
-        </button>
+        </AppButton>
       </div>
     </header>
   );
