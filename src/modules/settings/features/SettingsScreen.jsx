@@ -5,12 +5,12 @@ export function SettingsScreen() {
     <section className="space-y-6">
       <div>
         <p className="font-myriad text-xs font-bold uppercase tracking-[0.2em] text-[#7a7ee5]">Configuration</p>
-        <h2 className="mt-2 font-brand text-4xl text-[#01003b] dark:text-slate-100">Settings</h2>
+        <h2 className="mt-1 font-brand text-2xl text-[#01003b] dark:text-slate-100 md:text-3xl">Settings</h2>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
-          <h3 className="font-brand text-2xl text-[#01003b] dark:text-slate-100">Profil administrateur</h3>
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+          <h3 className="font-brand text-xl text-[#01003b] dark:text-slate-100">Profil administrateur</h3>
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Nom
@@ -23,8 +23,8 @@ export function SettingsScreen() {
           </div>
         </article>
 
-        <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
-          <h3 className="font-brand text-2xl text-[#01003b] dark:text-slate-100">Preferences</h3>
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+          <h3 className="font-brand text-xl text-[#01003b] dark:text-slate-100">Preferences</h3>
           <div className="mt-4 grid grid-cols-1 gap-4">
             <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Langue

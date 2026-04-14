@@ -7,7 +7,7 @@ export function NotificationsScreen() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="font-myriad text-xs font-bold uppercase tracking-[0.2em] text-[#7a7ee5]">Centre de notifications</p>
-          <h2 className="mt-2 font-brand text-4xl text-[#01003b] dark:text-slate-100">Notifications</h2>
+          <h2 className="mt-1 font-brand text-2xl text-[#01003b] dark:text-slate-100 md:text-3xl">Notifications</h2>
         </div>
         <AppButton variant="ghost">Tout marquer comme lu</AppButton>
       </div>
@@ -16,7 +16,7 @@ export function NotificationsScreen() {
         {notifications.map((item) => (
           <article
             key={item.id}
-            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900/80"
+            className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm dark:border-slate-700 dark:bg-slate-900/80"
           >
             <div className="flex items-start justify-between gap-3">
               <div>

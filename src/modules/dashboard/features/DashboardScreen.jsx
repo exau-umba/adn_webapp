@@ -92,41 +92,41 @@ export function DashboardScreen() {
   ];
 
   return (
-    <section className="space-y-8">
+    <section className="space-y-6">
       <div>
-        <h2 className="font-brand text-4xl text-[#01003b] dark:text-slate-100">Tableau de bord</h2>
-        <p className="mt-1 font-myriad text-slate-500 dark:text-slate-400">
+        <h2 className="font-brand text-2xl text-[#01003b] dark:text-slate-100 md:text-3xl">Tableau de bord</h2>
+        <p className="mt-0.5 font-myriad text-sm text-slate-500 dark:text-slate-400">
           Bienvenue, voici l'aperçu de vos services domestiques aujourd'hui.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map((stat) => (
           <article
             key={stat.title}
-            className={`rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 ${stat.accent} border-l-4`}
+            className={`rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 ${stat.accent} border-l-[3px]`}
           >
             {(() => {
               const Icon = stat.icon;
               return (
-                <div className="mb-4 flex items-start justify-between">
+                <div className="mb-3 flex items-start justify-between">
                   <div
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm ${stat.iconBg}`}
+                    className={`flex h-8 w-8 items-center justify-center rounded-md text-sm ${stat.iconBg}`}
                     aria-hidden="true"
                   >
-                    <Icon className="text-[14px] text-[#08047a] dark:text-indigo-300" />
+                    <Icon className="text-[12px] text-[#08047a] dark:text-indigo-300" />
                   </div>
                   <span
-                    className={`rounded-full px-2 py-1 font-myriad text-[10px] font-bold uppercase tracking-wide ${stat.trendClass}`}
+                    className={`rounded-full px-1.5 py-0.5 font-myriad text-[9px] font-bold uppercase tracking-wide ${stat.trendClass}`}
                   >
                     {stat.trend}
                   </span>
                 </div>
               );
             })()}
-            <p className="font-myriad text-[15px] text-slate-500 dark:text-slate-400">{stat.title}</p>
+            <p className="font-myriad text-xs text-slate-500 dark:text-slate-400">{stat.title}</p>
             <p
-              className={`mt-1 font-myriad text-[34px] leading-none font-bold md:text-[42px] ${
+              className={`mt-0.5 font-myriad text-[26px] leading-none font-bold md:text-[30px] ${
                 stat.title === "Alertes critiques"
                   ? "text-red-600 dark:text-red-400"
                   : "text-[#01003b] dark:text-slate-100"
@@ -138,14 +138,14 @@ export function DashboardScreen() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <article className="rounded-2xl border border-slate-200 bg-white p-7 dark:border-slate-700 dark:bg-slate-800/80 lg:col-span-2">
-          <div className="mb-7 flex items-center justify-between">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-800/80 lg:col-span-2">
+          <div className="mb-5 flex items-center justify-between gap-3">
             <div>
-              <h3 className="font-myriad text-[28px] font-bold leading-none text-[#01003b] dark:text-slate-100">
+              <h3 className="font-myriad text-lg font-bold leading-tight text-[#01003b] dark:text-slate-100 md:text-xl">
                 Performance des Agents
               </h3>
-              <p className="font-myriad text-sm text-slate-500 dark:text-slate-400">
+              <p className="font-myriad text-xs text-slate-500 dark:text-slate-400 md:text-sm">
                 Analyse du taux de completion des missions par mois
               </p>
             </div>
@@ -157,14 +157,14 @@ export function DashboardScreen() {
               Derniers 6 mois
             </AppButton>
           </div>
-          <div className="rounded-xl bg-slate-100/70 px-4 pt-10 pb-5 dark:bg-slate-900/60">
-            <div className="flex h-56 items-end gap-3">
+          <div className="rounded-lg bg-slate-100/70 px-3 pt-7 pb-4 dark:bg-slate-900/60">
+            <div className="flex h-44 items-end gap-2 md:h-48 md:gap-3">
               {[65, 80, 45, 90, 75, 85].map((h, i) => (
-                <div key={h} className="flex flex-1 flex-col items-center gap-2">
-                  <div className="relative h-40 w-full rounded-t-lg bg-slate-100 dark:bg-slate-800">
+                <div key={h} className="flex flex-1 flex-col items-center gap-1.5">
+                  <div className="relative h-32 w-full rounded-t-md bg-slate-100 dark:bg-slate-800 md:h-36">
                     <div
                       style={{ height: `${h}%` }}
-                      className={`absolute bottom-0 w-full rounded-t-lg ${
+                      className={`absolute bottom-0 w-full rounded-t-md ${
                         i === 2 ? "bg-[#ffc81d]" : i === 5 ? "bg-[#0084df]" : "bg-[#08047a]"
                       }`}
                     />
@@ -178,9 +178,9 @@ export function DashboardScreen() {
           </div>
         </article>
 
-        <article className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800/80">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="font-myriad text-[26px] font-bold leading-none text-[#01003b] dark:text-slate-100">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-800/80">
+          <div className="mb-3 flex items-center justify-between gap-2">
+            <h3 className="font-myriad text-lg font-bold leading-tight text-[#01003b] dark:text-slate-100 md:text-xl">
               Activites Recentes
             </h3>
             <AppButton
@@ -191,40 +191,40 @@ export function DashboardScreen() {
               Tout voir
             </AppButton>
           </div>
-          <ul className="space-y-4">
+          <ul className="space-y-3">
             {activityItems.map((item) => {
               const Icon = item.icon;
               return (
-                <li key={item.title} className="flex items-start gap-3">
-                  <div className={`mt-0.5 flex h-9 w-9 items-center justify-center rounded-full ${item.tone}`}>
-                    <Icon className="text-sm" />
+                <li key={item.title} className="flex items-start gap-2.5">
+                  <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${item.tone}`}>
+                    <Icon className="text-xs" />
                   </div>
                   <div className="min-w-0">
-                    <p className="font-myriad text-[15px] font-semibold text-slate-800 dark:text-slate-100">
+                    <p className="font-myriad text-sm font-semibold text-slate-800 dark:text-slate-100">
                       {item.title}
                     </p>
-                    <p className="font-myriad text-sm text-slate-500 dark:text-slate-400">{item.description}</p>
+                    <p className="font-myriad text-xs text-slate-500 dark:text-slate-400">{item.description}</p>
                     <p className="font-myriad text-xs text-slate-400 dark:text-slate-500">{item.time}</p>
                   </div>
                 </li>
               );
             })}
           </ul>
-          <div className="mt-6 border-t border-slate-100 pt-5 dark:border-slate-700">
+          <div className="mt-4 border-t border-slate-100 pt-4 dark:border-slate-700">
             <AppButton
               variant="ghost"
-              className="flex w-full items-center gap-3 rounded-xl border-none bg-slate-100 !px-4 !py-3 text-left shadow-none dark:bg-slate-900/80 dark:hover:bg-slate-900"
+              className="flex w-full items-center gap-2.5 rounded-lg border-none bg-slate-100 !px-3 !py-2.5 text-left shadow-none dark:bg-slate-900/80 dark:hover:bg-slate-900"
             >
               <div className="flex -space-x-2">
                 <img
                   src="/logos/and_pro_service_multiservice_cercle.png"
                   alt="Agent 1"
-                  className="h-7 w-7 rounded-full border-2 border-white dark:border-slate-800"
+                  className="h-6 w-6 rounded-full border-2 border-white dark:border-slate-800"
                 />
                 <img
                   src="/logos/and_pro_service_multiservice_cercle.png"
                   alt="Agent 2"
-                  className="h-7 w-7 rounded-full border-2 border-white dark:border-slate-800"
+                  className="h-6 w-6 rounded-full border-2 border-white dark:border-slate-800"
                 />
               </div>
               <div className="flex-1">

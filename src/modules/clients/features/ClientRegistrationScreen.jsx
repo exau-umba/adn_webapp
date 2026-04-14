@@ -10,16 +10,16 @@ export function ClientRegistrationScreen() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="font-myriad text-xs font-bold uppercase tracking-[0.2em] text-[#7a7ee5]">Nouveau client</p>
-          <h2 className="mt-2 font-brand text-4xl text-[#01003b] dark:text-slate-100">Ajout d'un client</h2>
+          <h2 className="mt-1 font-brand text-2xl text-[#01003b] dark:text-slate-100 md:text-3xl">Ajout d'un client</h2>
         </div>
         <AppButton variant="ghost" onClick={() => navigate(ROUTES.clientManagement)}>
           Retour
         </AppButton>
       </div>
 
-      <form className="space-y-6">
-        <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
-          <h3 className="font-brand text-2xl text-[#01003b] dark:text-slate-100">Informations client</h3>
+      <form className="space-y-5">
+        <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+          <h3 className="font-brand text-xl text-[#01003b] dark:text-slate-100">Informations client</h3>
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Nom client

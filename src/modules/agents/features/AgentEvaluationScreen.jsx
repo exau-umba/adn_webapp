@@ -2,19 +2,19 @@ import { AppButton, AppTextarea } from "../../../shared/ui";
 
 export function AgentEvaluationScreen() {
   return (
-    <section className="space-y-8">
-      <div className="flex flex-col items-start justify-between gap-5 border-b border-slate-200 pb-8 md:flex-row md:items-end dark:border-slate-700">
+    <section className="space-y-6">
+      <div className="flex flex-col items-start justify-between gap-4 border-b border-slate-200 pb-6 md:flex-row md:items-end dark:border-slate-700">
         <div>
           <p className="font-myriad text-xs font-bold uppercase tracking-[0.2em] text-[#7a7ee5]">
             Processus de Qualification
           </p>
-          <h2 className="mt-2 font-brand text-4xl text-[#01003b] dark:text-slate-100">Evaluation de Profil</h2>
+          <h2 className="mt-1 font-brand text-2xl text-[#01003b] dark:text-slate-100 md:text-3xl">Evaluation de Profil</h2>
         </div>
-        <div className="flex min-w-[320px] items-center gap-4 rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900/80">
+        <div className="flex min-w-[280px] items-center gap-3 rounded-xl bg-white p-3 shadow-sm dark:bg-slate-900/80">
           <img
             src="/logos/and_pro_service_multiservice_cercle.png"
             alt="Candidate"
-            className="h-14 w-14 rounded-lg object-cover"
+            className="h-12 w-12 rounded-md object-cover"
           />
           <div>
             <p className="font-myriad font-bold dark:text-slate-100">Martine Dubois</p>
@@ -23,18 +23,18 @@ export function AgentEvaluationScreen() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-        <div className="space-y-6 lg:col-span-8">
-          <article className="rounded-2xl border border-slate-200 bg-white p-7 dark:border-slate-700 dark:bg-slate-900/80">
-            <h3 className="mb-6 font-brand text-3xl text-[#01003b] dark:text-slate-100">Soft Skills &amp; Savoir-etre</h3>
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
+        <div className="space-y-5 lg:col-span-8">
+          <article className="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-900/80">
+            <h3 className="mb-4 font-brand text-xl text-[#01003b] dark:text-slate-100 md:text-2xl">Soft Skills &amp; Savoir-etre</h3>
             {[
               ["Politesse et Courtoisie", 8],
               ["Respect des Consignes", 9],
               ["Communication Verbale", 7],
             ].map(([label, score]) => (
-              <div key={label} className="mb-6 last:mb-0">
+              <div key={label} className="mb-5 last:mb-0">
                 <div className="mb-2 flex items-center justify-between">
-                  <p className="font-myriad text-lg text-[#01003b] dark:text-slate-100">{label}</p>
+                  <p className="font-myriad text-base text-[#01003b] dark:text-slate-100">{label}</p>
                   <span className="rounded-lg bg-[#e1e0ff] px-3 py-1 font-myriad text-sm font-bold text-[#01003b]">
                     {score} / 10
                   </span>
@@ -44,11 +44,11 @@ export function AgentEvaluationScreen() {
             ))}
           </article>
 
-          <article className="rounded-2xl border border-slate-200 bg-[#f3f4f5] p-7 dark:border-slate-700 dark:bg-slate-900/70">
-            <h3 className="mb-6 font-brand text-3xl text-[#01003b] dark:text-slate-100">Aptitudes &amp; Tests Pratiques</h3>
+          <article className="rounded-xl border border-slate-200 bg-[#f3f4f5] p-5 dark:border-slate-700 dark:bg-slate-900/70">
+            <h3 className="mb-4 font-brand text-xl text-[#01003b] dark:text-slate-100 md:text-2xl">Aptitudes &amp; Tests Pratiques</h3>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {["Menage", "Cuisine", "Enfants"].map((item, i) => (
-                <div key={item} className="rounded-xl border border-slate-200 bg-white p-5 text-center dark:border-slate-700 dark:bg-slate-800/80">
+                <div key={item} className="rounded-lg border border-slate-200 bg-white p-4 text-center dark:border-slate-700 dark:bg-slate-800/80">
                   <p className="font-myriad font-bold dark:text-slate-100">{item}</p>
                   <p className="mt-2 font-myriad text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     {i === 1 ? "Non teste" : "Verifie / Conforme"}
@@ -59,7 +59,7 @@ export function AgentEvaluationScreen() {
           </article>
 
           <div>
-            <label className="mb-2 block font-brand text-2xl text-[#01003b] dark:text-slate-100">
+            <label className="mb-2 block font-brand text-lg text-[#01003b] dark:text-slate-100 md:text-xl">
               Observations Detaillees
             </label>
             <AppTextarea
@@ -70,20 +70,20 @@ export function AgentEvaluationScreen() {
           </div>
         </div>
 
-        <div className="space-y-6 lg:col-span-4">
-          <article className="rounded-3xl bg-[#01003b] p-7 text-white">
+        <div className="space-y-5 lg:col-span-4">
+          <article className="rounded-xl bg-[#01003b] p-5 text-white md:p-6">
             <p className="font-myriad text-xs font-bold uppercase tracking-[0.2em] text-[#f5bf0c]">
               Classification Automatique
             </p>
-            <p className="mt-4 font-brand text-5xl md:text-6xl">VIP</p>
-            <p className="font-myriad text-lg text-white/80">Profil Elite</p>
-            <div className="mt-6 space-y-2 border-t border-white/20 pt-4 font-myriad text-sm">
+            <p className="mt-3 font-brand text-4xl md:text-5xl">VIP</p>
+            <p className="font-myriad text-base text-white/80">Profil Elite</p>
+            <div className="mt-4 space-y-2 border-t border-white/20 pt-3 font-myriad text-sm">
               <p className="flex justify-between"><span>Score Moyen</span><strong>24 / 30</strong></p>
               <p className="flex justify-between"><span>Recommandation</span><strong>Haute Priorite</strong></p>
             </div>
           </article>
 
-          <article className="space-y-3 rounded-2xl bg-[#edeeef] p-5 dark:bg-slate-900/70">
+          <article className="space-y-2.5 rounded-xl bg-[#edeeef] p-4 dark:bg-slate-900/70">
             <h4 className="font-myriad text-xs font-bold uppercase tracking-widest">Decision Finale</h4>
             <AppButton variant="primary" className="w-full rounded-xl">
               Accepte

@@ -23,7 +23,7 @@ export function AdminBreadcrumb() {
   });
 
   return (
-    <nav aria-label="Fil d'ariane" className="mb-4 flex items-center gap-2 font-myriad text-xs text-slate-500">
+    <nav aria-label="Fil d'ariane" className="mb-3 flex items-center gap-2 font-myriad text-xs text-slate-500">
       {crumbs.map((crumb) => (
         <div key={crumb.to} className="flex items-center gap-2">
           {crumb.isLast ? (

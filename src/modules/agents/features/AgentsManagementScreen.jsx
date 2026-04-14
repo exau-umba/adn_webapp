@@ -33,7 +33,7 @@ export function AgentsManagementScreen() {
           <span className="rounded-full bg-[#e1e0ff] px-3 py-1 font-myriad text-[10px] font-bold uppercase tracking-widest text-[#08047a]">
             Equipes de Terrain
           </span>
-          <h2 className="mt-2 font-brand text-4xl text-[#01003b] dark:text-slate-100">Gestion des Agents</h2>
+          <h2 className="mt-1 font-brand text-2xl text-[#01003b] dark:text-slate-100 md:text-3xl">Gestion des Agents</h2>
           <p className="mt-1 max-w-2xl font-myriad text-sm text-slate-500 dark:text-slate-400">
             Supervisez vos prestataires et suivez les performances en temps reel.
           </p>
@@ -49,7 +49,7 @@ export function AgentsManagementScreen() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-        <div className="rounded-xl bg-white p-5 shadow-sm md:col-span-2 dark:bg-slate-900/80">
+        <div className="rounded-xl bg-white p-4 shadow-sm md:col-span-2 dark:bg-slate-900/80">
           <p className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
             Filtrer par Categorie
           </p>
@@ -68,7 +68,7 @@ export function AgentsManagementScreen() {
             ))}
           </div>
         </div>
-        <div className="rounded-xl bg-white p-5 shadow-sm dark:bg-slate-900/80">
+        <div className="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900/80">
           <p className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
             Statut
           </p>
@@ -76,7 +76,7 @@ export function AgentsManagementScreen() {
             <option>Tous les statuts</option>
           </AppSelect>
         </div>
-        <div className="rounded-xl bg-white p-5 shadow-sm dark:bg-slate-900/80">
+        <div className="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900/80">
           <p className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
             Tri par Performance
           </p>
@@ -88,11 +88,11 @@ export function AgentsManagementScreen() {
         <table className="min-w-[760px] w-full border-collapse font-myriad text-sm">
           <thead className="bg-slate-50 text-left dark:bg-slate-800/80">
             <tr>
-              <th className="p-4 text-[11px] uppercase tracking-widest text-slate-500">Agent</th>
-              <th className="p-4 text-[11px] uppercase tracking-widest text-slate-500">Categorie</th>
-              <th className="p-4 text-[11px] uppercase tracking-widest text-slate-500">Score</th>
-              <th className="p-4 text-[11px] uppercase tracking-widest text-slate-500">Statut</th>
-              <th className="p-4 text-right text-[11px] uppercase tracking-widest text-slate-500">Actions</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Agent</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Categorie</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Score</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Statut</th>
+              <th className="p-3 text-right text-[11px] uppercase tracking-widest text-slate-500">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
@@ -100,7 +100,7 @@ export function AgentsManagementScreen() {
               const statusTone = getStatusTone(agent.status);
               return (
                 <tr key={agent.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
-                  <td className="p-4">
+                  <td className="p-3">
                     <div className="flex items-center gap-3">
                       <img
                         src={agent.photo}
@@ -115,15 +115,15 @@ export function AgentsManagementScreen() {
                       </div>
                     </div>
                   </td>
-                  <td className="p-4 dark:text-slate-300">{agent.service}</td>
-                  <td className="p-4 font-bold text-[#01003b] dark:text-slate-100">{renderStars(agent.score)}</td>
-                  <td className="p-4">
+                  <td className="p-3 dark:text-slate-300">{agent.service}</td>
+                  <td className="p-3 font-bold text-[#01003b] dark:text-slate-100">{renderStars(agent.score)}</td>
+                  <td className="p-3">
                     <span className={`inline-flex items-center gap-2 ${statusTone.text}`}>
                       <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
                       {agent.status}
                     </span>
                   </td>
-                  <td className="p-4 text-right">
+                  <td className="p-3 text-right">
                     <div className="flex justify-end gap-2">
                       <AppButton
                         variant="ghost"
@@ -163,7 +163,7 @@ export function AgentsManagementScreen() {
             })}
           </tbody>
         </table>
-        <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-6 py-3 dark:border-slate-700 dark:bg-slate-800/70">
+        <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-4 py-2.5 dark:border-slate-700 dark:bg-slate-800/70">
           <p className="font-myriad text-xs text-slate-500 dark:text-slate-400">Affichage de 4 sur 124 agents</p>
           <div className="flex gap-2">
             <AppButton variant="ghost" size="sm" className="rounded-lg">

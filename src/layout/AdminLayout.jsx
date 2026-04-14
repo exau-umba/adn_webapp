@@ -19,7 +19,7 @@ export function AdminLayout({ sidebarCollapsed, onToggleSidebar, isDarkMode, onT
           sidebarCollapsed ? "md:pl-[7.25rem]" : "md:pl-[15.75rem]"
         }`}
       >
-        <div className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm md:p-5 dark:border-slate-800 dark:bg-slate-900">
           <AdminBreadcrumb />
           <Outlet />
         </div>

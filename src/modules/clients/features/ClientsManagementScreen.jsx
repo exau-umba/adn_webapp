@@ -14,7 +14,7 @@ export function ClientsManagementScreen() {
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
         <div>
           <p className="font-myriad text-xs font-bold uppercase tracking-[0.2em] text-[#7a7ee5]">Portefeuille Client</p>
-          <h2 className="mt-2 font-brand text-4xl text-[#01003b] dark:text-slate-100">Gestion des Clients</h2>
+          <h2 className="mt-1 font-brand text-2xl text-[#01003b] dark:text-slate-100 md:text-3xl">Gestion des Clients</h2>
           <p className="mt-1 font-myriad text-sm text-slate-500 dark:text-slate-400">
             Suivez les informations clients et les missions associees.
           </p>
@@ -25,13 +25,13 @@ export function ClientsManagementScreen() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="rounded-xl bg-white p-5 shadow-sm dark:bg-slate-900/80 md:col-span-2">
+        <div className="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900/80 md:col-span-2">
           <p className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
             Recherche client
           </p>
           <AppInput className="mt-3" placeholder="Nom client, contact, ville..." />
         </div>
-        <div className="rounded-xl bg-white p-5 shadow-sm dark:bg-slate-900/80">
+        <div className="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900/80">
           <p className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Statut</p>
           <AppSelect className="mt-3">
             <option>Tous</option>
@@ -45,12 +45,12 @@ export function ClientsManagementScreen() {
         <table className="min-w-[760px] w-full border-collapse font-myriad text-sm">
           <thead className="bg-slate-50 text-left dark:bg-slate-800/80">
             <tr>
-              <th className="p-4 text-[11px] uppercase tracking-widest text-slate-500">Client</th>
-              <th className="p-4 text-[11px] uppercase tracking-widest text-slate-500">Contact</th>
-              <th className="p-4 text-[11px] uppercase tracking-widest text-slate-500">Ville</th>
-              <th className="p-4 text-[11px] uppercase tracking-widest text-slate-500">Missions</th>
-              <th className="p-4 text-[11px] uppercase tracking-widest text-slate-500">Statut</th>
-              <th className="p-4 text-right text-[11px] uppercase tracking-widest text-slate-500">Actions</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Client</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Contact</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Ville</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Missions</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Statut</th>
+              <th className="p-3 text-right text-[11px] uppercase tracking-widest text-slate-500">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
@@ -58,17 +58,17 @@ export function ClientsManagementScreen() {
               const statusTone = getStatusTone(client.status);
               return (
                 <tr key={client.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
-                  <td className="p-4 font-semibold text-[#01003b] dark:text-slate-100">{client.name}</td>
-                  <td className="p-4 text-slate-600 dark:text-slate-300">{client.contact}</td>
-                  <td className="p-4 text-slate-600 dark:text-slate-300">{client.city}</td>
-                  <td className="p-4 text-slate-600 dark:text-slate-300">{client.activeMissions}</td>
-                  <td className="p-4">
+                  <td className="p-3 font-semibold text-[#01003b] dark:text-slate-100">{client.name}</td>
+                  <td className="p-3 text-slate-600 dark:text-slate-300">{client.contact}</td>
+                  <td className="p-3 text-slate-600 dark:text-slate-300">{client.city}</td>
+                  <td className="p-3 text-slate-600 dark:text-slate-300">{client.activeMissions}</td>
+                  <td className="p-3">
                     <span className={`inline-flex items-center gap-2 ${statusTone.text}`}>
                       <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
                       {client.status}
                     </span>
                   </td>
-                  <td className="p-4 text-right">
+                  <td className="p-3 text-right">
                     <div className="flex justify-end gap-2">
                       <AppButton
                         variant="ghost"
