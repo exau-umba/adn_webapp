@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppButton, ConfirmationModal } from "../../shared/ui";
-import { clientsData } from "../../modules/clients/data/clientsData.ts";
-import { getStatusTone } from "../../core/constants/statusStyles.ts";
+import { AppButton, ConfirmationModal } from "../../../shared/ui";
+import { clientsData } from "../data/clientsData.ts";
+import { ROUTES } from "../../../core/routes.ts";
+import { getStatusTone } from "../../../core/constants/statusStyles.ts";
 
 export function ClientDetailsScreen() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export function ClientDetailsScreen() {
     return (
       <section className="space-y-4">
         <h2 className="font-brand text-3xl text-[#01003b] dark:text-slate-100">Client introuvable</h2>
-        <AppButton variant="ghost" onClick={() => navigate("/client-management")}>
+        <AppButton variant="ghost" onClick={() => navigate(ROUTES.clientManagement)}>
           Retour a la liste
         </AppButton>
       </section>
@@ -32,7 +33,7 @@ export function ClientDetailsScreen() {
           <h2 className="mt-2 font-brand text-4xl text-[#01003b] dark:text-slate-100">{client.name}</h2>
           <p className="mt-1 font-myriad text-sm text-slate-500 dark:text-slate-400">{client.contact}</p>
         </div>
-        <AppButton variant="ghost" onClick={() => navigate("/client-management")}>
+        <AppButton variant="ghost" onClick={() => navigate(ROUTES.clientManagement)}>
           Retour
         </AppButton>
       </div>
@@ -76,7 +77,7 @@ export function ClientDetailsScreen() {
       </article>
 
       <div className="flex flex-wrap gap-3">
-        <AppButton variant="secondary" onClick={() => navigate(`/client-management/detail/${client.id}/edit`)}>
+        <AppButton variant="secondary" onClick={() => navigate(ROUTES.clientEdit(client.id))}>
           Modifier le dossier
         </AppButton>
         <AppButton
@@ -104,7 +105,7 @@ export function ClientDetailsScreen() {
         onCancel={() => setIsDeleteModalOpen(false)}
         onConfirm={() => {
           setIsDeleteModalOpen(false);
-          navigate("/client-management");
+          navigate(ROUTES.clientManagement);
         }}
       />
     </section>

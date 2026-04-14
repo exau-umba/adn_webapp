@@ -1,5 +1,6 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import { AdminLayout } from "../layout/AdminLayout";
+import { dashboardRoutes } from "../modules/dashboard/routes";
 import { agentsRoutes } from "../modules/agents/routes";
 import { clientsRoutes } from "../modules/clients/routes";
 import { notificationsRoutes } from "../modules/notifications/routes";
@@ -20,6 +21,7 @@ export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onTog
       ),
       children: [
         { index: true, element: <Navigate to={ROUTES.dashboard} replace /> },
+        ...dashboardRoutes,
         ...agentsRoutes,
         ...clientsRoutes,
         ...notificationsRoutes,

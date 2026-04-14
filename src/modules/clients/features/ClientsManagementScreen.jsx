@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppButton, AppInput, AppSelect, ConfirmationModal } from "../../shared/ui";
-import { clientsData as clients } from "../../modules/clients/data/clientsData.ts";
-import { ROUTES } from "../../core/routes.ts";
-import { getStatusTone } from "../../core/constants/statusStyles.ts";
+import { AppButton, AppInput, AppSelect, ConfirmationModal } from "../../../shared/ui";
+import { clientsData as clients } from "../data/clientsData.ts";
+import { ROUTES } from "../../../core/routes.ts";
+import { getStatusTone } from "../../../core/constants/statusStyles.ts";
 
 export function ClientsManagementScreen() {
   const navigate = useNavigate();
@@ -57,53 +57,53 @@ export function ClientsManagementScreen() {
             {clients.map((client) => {
               const statusTone = getStatusTone(client.status);
               return (
-              <tr key={client.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
-                <td className="p-4 font-semibold text-[#01003b] dark:text-slate-100">{client.name}</td>
-                <td className="p-4 text-slate-600 dark:text-slate-300">{client.contact}</td>
-                <td className="p-4 text-slate-600 dark:text-slate-300">{client.city}</td>
-                <td className="p-4 text-slate-600 dark:text-slate-300">{client.activeMissions}</td>
-                <td className="p-4">
-                  <span className={`inline-flex items-center gap-2 ${statusTone.text}`}>
-                    <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
-                    {client.status}
-                  </span>
-                </td>
-                <td className="p-4 text-right">
-                  <div className="flex justify-end gap-2">
-                    <AppButton
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-lg"
-                      onClick={() => navigate(ROUTES.clientDetail(client.id))}
-                    >
-                      Voir
-                    </AppButton>
-                    <AppButton
-                      variant="secondary"
-                      size="sm"
-                      className="rounded-lg"
-                      onClick={() => navigate(ROUTES.clientEdit(client.id))}
-                    >
-                      Modifier
-                    </AppButton>
-                    <AppButton
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-lg border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-700 dark:text-amber-300 dark:hover:bg-amber-950/30"
-                    >
-                      {client.status === "Suspendu" ? "Reactiver" : "Suspendre"}
-                    </AppButton>
-                    <AppButton
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-lg border-red-200 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-950/30"
-                      onClick={() => setDeleteTarget(client)}
-                    >
-                      Supprimer
-                    </AppButton>
-                  </div>
-                </td>
-              </tr>
+                <tr key={client.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
+                  <td className="p-4 font-semibold text-[#01003b] dark:text-slate-100">{client.name}</td>
+                  <td className="p-4 text-slate-600 dark:text-slate-300">{client.contact}</td>
+                  <td className="p-4 text-slate-600 dark:text-slate-300">{client.city}</td>
+                  <td className="p-4 text-slate-600 dark:text-slate-300">{client.activeMissions}</td>
+                  <td className="p-4">
+                    <span className={`inline-flex items-center gap-2 ${statusTone.text}`}>
+                      <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
+                      {client.status}
+                    </span>
+                  </td>
+                  <td className="p-4 text-right">
+                    <div className="flex justify-end gap-2">
+                      <AppButton
+                        variant="ghost"
+                        size="sm"
+                        className="rounded-lg"
+                        onClick={() => navigate(ROUTES.clientDetail(client.id))}
+                      >
+                        Voir
+                      </AppButton>
+                      <AppButton
+                        variant="secondary"
+                        size="sm"
+                        className="rounded-lg"
+                        onClick={() => navigate(ROUTES.clientEdit(client.id))}
+                      >
+                        Modifier
+                      </AppButton>
+                      <AppButton
+                        variant="ghost"
+                        size="sm"
+                        className="rounded-lg border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-700 dark:text-amber-300 dark:hover:bg-amber-950/30"
+                      >
+                        {client.status === "Suspendu" ? "Reactiver" : "Suspendre"}
+                      </AppButton>
+                      <AppButton
+                        variant="ghost"
+                        size="sm"
+                        className="rounded-lg border-red-200 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-950/30"
+                        onClick={() => setDeleteTarget(client)}
+                      >
+                        Supprimer
+                      </AppButton>
+                    </div>
+                  </td>
+                </tr>
               );
             })}
           </tbody>

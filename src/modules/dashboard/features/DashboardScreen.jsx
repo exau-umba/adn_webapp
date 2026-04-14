@@ -50,8 +50,8 @@ const stats = [
   },
 ];
 
-/** Tableau de bord principal du parcours agents (stats + activité). */
-export function AgentsDashboardScreen() {
+/** Vue principale du tableau de bord (stats globales et activité). */
+export function DashboardScreen() {
   const activityItems = [
     {
       title: "Mission terminee",

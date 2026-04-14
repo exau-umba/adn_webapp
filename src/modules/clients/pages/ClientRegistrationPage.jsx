@@ -1,4 +1,4 @@
-import { ClientRegistrationScreen } from "../../../components/screens/ClientRegistrationScreen";
+import { ClientRegistrationScreen } from "../features/ClientRegistrationScreen";
 
 export function ClientRegistrationPage() {
   return <ClientRegistrationScreen />;

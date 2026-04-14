@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { AppButton, AppInput, AppSelect } from "../../shared/ui";
+import { AppButton, AppInput, AppSelect } from "../../../shared/ui";
+import { ROUTES } from "../../../core/routes.ts";
 
 export function ClientRegistrationScreen() {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ export function ClientRegistrationScreen() {
           <p className="font-myriad text-xs font-bold uppercase tracking-[0.2em] text-[#7a7ee5]">Nouveau client</p>
           <h2 className="mt-2 font-brand text-4xl text-[#01003b] dark:text-slate-100">Ajout d'un client</h2>
         </div>
-        <AppButton variant="ghost" onClick={() => navigate("/client-management")}>
+        <AppButton variant="ghost" onClick={() => navigate(ROUTES.clientManagement)}>
           Retour
         </AppButton>
       </div>
@@ -60,7 +61,7 @@ export function ClientRegistrationScreen() {
         </section>
 
         <div className="flex justify-end gap-3">
-          <AppButton variant="ghost" onClick={() => navigate("/client-management")}>
+          <AppButton variant="ghost" onClick={() => navigate(ROUTES.clientManagement)}>
             Annuler
           </AppButton>
           <AppButton variant="primary">Enregistrer le client</AppButton>

@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppButton, AppInput } from "../../shared/ui";
-import { clientsData } from "../../modules/clients/data/clientsData.ts";
+import { AppButton, AppInput } from "../../../shared/ui";
+import { clientsData } from "../data/clientsData.ts";
+import { ROUTES } from "../../../core/routes.ts";
 
 export function ClientEditScreen() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export function ClientEditScreen() {
     return (
       <section className="space-y-4">
         <h2 className="font-brand text-3xl text-[#01003b] dark:text-slate-100">Client introuvable</h2>
-        <AppButton variant="ghost" onClick={() => navigate("/client-management")}>
+        <AppButton variant="ghost" onClick={() => navigate(ROUTES.clientManagement)}>
           Retour a la liste
         </AppButton>
       </section>
@@ -26,7 +27,7 @@ export function ClientEditScreen() {
           <p className="font-myriad text-xs font-bold uppercase tracking-[0.2em] text-[#7a7ee5]">Edition client</p>
           <h2 className="mt-2 font-brand text-4xl text-[#01003b] dark:text-slate-100">Modifier le client</h2>
         </div>
-        <AppButton variant="ghost" onClick={() => navigate(`/client-management/detail/${client.id}`)}>
+        <AppButton variant="ghost" onClick={() => navigate(ROUTES.clientDetail(client.id))}>
           Retour au detail
         </AppButton>
       </div>
@@ -55,7 +56,7 @@ export function ClientEditScreen() {
           </label>
         </div>
         <div className="flex justify-end gap-3">
-          <AppButton variant="ghost" onClick={() => navigate(`/client-management/detail/${client.id}`)}>
+          <AppButton variant="ghost" onClick={() => navigate(ROUTES.clientDetail(client.id))}>
             Annuler
           </AppButton>
           <AppButton variant="primary">Enregistrer</AppButton>

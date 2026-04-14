@@ -1,4 +1,4 @@
-import { ClientsManagementScreen } from "../../../components/screens/ClientsManagementScreen";
+import { ClientsManagementScreen } from "../features/ClientsManagementScreen";
 
 export function ClientsManagementPage() {
   return <ClientsManagementScreen />;

@@ -1,4 +1,4 @@
-import { ClientEditScreen } from "../../../components/screens/ClientEditScreen";
+import { ClientEditScreen } from "../features/ClientEditScreen";
 
 export function ClientEditPage() {
   return <ClientEditScreen />;
