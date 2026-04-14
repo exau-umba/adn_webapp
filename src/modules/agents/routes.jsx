@@ -3,6 +3,7 @@ import { AgentsDashboardPage } from "./pages/AgentsDashboardPage";
 import { AgentsRegistrationPage } from "./pages/AgentsRegistrationPage";
 import { AgentsManagementPage } from "./pages/AgentsManagementPage";
 import { AgentsEvaluationPage } from "./pages/AgentsEvaluationPage";
+import { AgentDetailsPage } from "./pages/AgentDetailsPage";
 
 export const agentsRoutes = [
   { path: "dashboard", element: <AgentsDashboardPage /> },
@@ -12,6 +13,7 @@ export const agentsRoutes = [
       { index: true, element: <AgentsManagementPage /> },
       { path: "registration", element: <AgentsRegistrationPage /> },
       { path: "evaluation", element: <AgentsEvaluationPage /> },
+      { path: "detail/:agentId", element: <AgentDetailsPage /> },
     ],
   },
   { path: "management", element: <Navigate to="/agent-management" replace /> },
