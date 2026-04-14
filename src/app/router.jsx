@@ -7,6 +7,8 @@ import { notificationsRoutes } from "../modules/notifications/routes";
 import { settingsRoutes } from "../modules/settings/routes";
 import { offresRoutes } from "../modules/offres/routes";
 import { missionsRoutes } from "../modules/missions/routes";
+import { contratsRoutes } from "../modules/contrats/routes";
+import { financeRoutes } from "../modules/finance/routes";
 import { ROUTES } from "../core/routes.ts";
 
 export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onToggleDarkMode }) {
@@ -28,6 +30,8 @@ export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onTog
         ...clientsRoutes,
         ...offresRoutes,
         ...missionsRoutes,
+        ...contratsRoutes,
+        ...financeRoutes,
         ...notificationsRoutes,
         ...settingsRoutes,
       ],

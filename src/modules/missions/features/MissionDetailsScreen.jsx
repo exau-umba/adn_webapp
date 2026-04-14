@@ -83,6 +83,27 @@ export function MissionDetailsScreen() {
         </div>
       </article>
 
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+          <h3 className="font-brand text-lg text-[#01003b] dark:text-slate-100">Contrats liés</h3>
+          <p className="mt-2 font-myriad text-sm text-slate-500 dark:text-slate-400">
+            Fiche engagement client, fiche engagement agent et cadre tripartite pour cette mission.
+          </p>
+          <AppButton variant="secondary" className="mt-4" onClick={() => navigate(ROUTES.contratBundleDetail(`ctr-${mission.id}`))}>
+            Ouvrir le dossier contractuel
+          </AppButton>
+        </article>
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+          <h3 className="font-brand text-lg text-[#01003b] dark:text-slate-100">Flux financiers</h3>
+          <p className="mt-2 font-myriad text-sm text-slate-500 dark:text-slate-400">
+            Encaissement client → ADN PRO SERVICE, puis versement à l&apos;agent pour cette mission.
+          </p>
+          <AppButton variant="secondary" className="mt-4" onClick={() => navigate(ROUTES.financeForMission(mission.id))}>
+            Voir la ligne en finance
+          </AppButton>
+        </article>
+      </div>
+
       <div className="flex flex-wrap gap-3">
         <AppButton variant="primary" onClick={() => navigate(ROUTES.missionEdit(mission.id))}>
           Modifier

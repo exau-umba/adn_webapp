@@ -19,4 +19,8 @@ export const ROUTES = {
   missionRegistration: "/mission-management/registration",
   missionDetail: (missionId: string) => `/mission-management/detail/${missionId}`,
   missionEdit: (missionId: string) => `/mission-management/detail/${missionId}/edit`,
+  contratManagement: "/contrat-management",
+  contratBundleDetail: (bundleId: string) => `/contrat-management/detail/${bundleId}`,
+  financeManagement: "/finance-management",
+  financeForMission: (missionId: string) => `/finance-management?mission=${missionId}`,
 } as const;

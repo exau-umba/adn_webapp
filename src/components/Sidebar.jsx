@@ -8,6 +8,7 @@ import {
   FaPeopleGroup,
   FaTriangleExclamation,
   FaUserGroup,
+  FaWallet,
 } from "react-icons/fa6";
 import { AppButton } from "../shared/ui";
 import { ROUTES } from "../core/routes.ts";
@@ -48,7 +49,20 @@ const sidebarItems = [
     route: true,
     matchPrefixes: [ROUTES.missionManagement],
   },
-  { label: "Contrat", icon: FaFileContract, route: false, matchPrefixes: ["/contracts"] },
+  {
+    label: "Contrat",
+    to: ROUTES.contratManagement,
+    icon: FaFileContract,
+    route: true,
+    matchPrefixes: [ROUTES.contratManagement],
+  },
+  {
+    label: "Finance",
+    to: ROUTES.financeManagement,
+    icon: FaWallet,
+    route: true,
+    matchPrefixes: [ROUTES.financeManagement],
+  },
   { label: "Incident", icon: FaTriangleExclamation, route: false, matchPrefixes: ["/incidents"] },
   { label: "Analytique", icon: FaChartSimple, route: false, matchPrefixes: ["/analytics"] },
 ];
