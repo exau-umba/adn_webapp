@@ -1,7 +1,25 @@
 import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppButton } from "../ui";
-import { agentsData } from "../../modules/agents/data/agentsData";
+import { agentsData } from "../../modules/agents/data/agentsData.ts";
+
+function renderStars(scoreLabel) {
+  const numericScore = Number.parseFloat(scoreLabel);
+  const stars = Math.max(0, Math.min(5, Math.round(numericScore / 2)));
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex items-center gap-0.5 text-[14px] leading-none">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <span key={index} className={index < stars ? "text-amber-400" : "text-slate-300"}>
+            ★
+          </span>
+        ))}
+      </div>
+      <span className="text-xs text-slate-500 dark:text-slate-400">{scoreLabel}</span>
+    </div>
+  );
+}
 
 export function AgentDetailsScreen() {
   const navigate = useNavigate();
@@ -46,7 +64,7 @@ export function AgentDetailsScreen() {
             </div>
             <div>
               <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Score</p>
-              <p className="font-myriad font-semibold text-[#01003b] dark:text-slate-100">{agent.score}</p>
+              <div className="font-myriad font-semibold text-[#01003b] dark:text-slate-100">{renderStars(agent.score)}</div>
             </div>
             <div>
               <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Service</p>
@@ -59,6 +77,10 @@ export function AgentDetailsScreen() {
             <div>
               <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Ville</p>
               <p className="font-myriad font-semibold text-[#01003b] dark:text-slate-100">{agent.city}</p>
+            </div>
+            <div>
+              <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Pays</p>
+              <p className="font-myriad font-semibold text-[#01003b] dark:text-slate-100">RDC (Congo-Kinshasa)</p>
             </div>
             <div>
               <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Experience</p>

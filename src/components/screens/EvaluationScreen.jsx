@@ -75,7 +75,7 @@ export function EvaluationScreen() {
             <p className="font-myriad text-xs font-bold uppercase tracking-[0.2em] text-[#f5bf0c]">
               Classification Automatique
             </p>
-            <p className="mt-4 font-brand text-6xl">VIP</p>
+            <p className="mt-4 font-brand text-5xl md:text-6xl">VIP</p>
             <p className="font-myriad text-lg text-white/80">Profil Elite</p>
             <div className="mt-6 space-y-2 border-t border-white/20 pt-4 font-myriad text-sm">
               <p className="flex justify-between"><span>Score Moyen</span><strong>24 / 30</strong></p>

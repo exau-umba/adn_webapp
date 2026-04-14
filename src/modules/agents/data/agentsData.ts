@@ -23,8 +23,8 @@ export const agentsData: Agent[] = [
     service: "Categorie A",
     status: "Actif",
     score: "9.4/10",
-    phone: "+33 6 12 34 56 78",
-    city: "Lyon",
+    phone: "+243 818 234 567",
+    city: "Kinshasa",
     experience: "6 ans",
   },
   {
@@ -36,8 +36,8 @@ export const agentsData: Agent[] = [
     service: "VIP Violet",
     status: "Actif",
     score: "10/10",
-    phone: "+33 6 98 76 54 32",
-    city: "Paris",
+    phone: "+243 824 765 432",
+    city: "Gombe, Kinshasa",
     experience: "9 ans",
   },
   {
@@ -49,8 +49,8 @@ export const agentsData: Agent[] = [
     service: "Categorie B",
     status: "Suspendu",
     score: "7.2/10",
-    phone: "+33 6 77 11 22 33",
-    city: "Marseille",
+    phone: "+243 899 112 233",
+    city: "Lubumbashi",
     experience: "4 ans",
   },
   {
@@ -62,8 +62,8 @@ export const agentsData: Agent[] = [
     service: "Categorie A",
     status: "Actif",
     score: "8.8/10",
-    phone: "+33 6 44 55 66 77",
-    city: "Bordeaux",
+    phone: "+243 974 556 677",
+    city: "Goma",
     experience: "5 ans",
   },
 ];

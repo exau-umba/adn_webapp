@@ -126,7 +126,7 @@ export function DashboardScreen() {
             })()}
             <p className="font-myriad text-[15px] text-slate-500 dark:text-slate-400">{stat.title}</p>
             <p
-              className={`mt-1 font-myriad text-[42px] leading-none font-bold ${
+              className={`mt-1 font-myriad text-[34px] leading-none font-bold md:text-[42px] ${
                 stat.title === "Alertes critiques"
                   ? "text-red-600 dark:text-red-400"
                   : "text-[#01003b] dark:text-slate-100"

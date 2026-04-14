@@ -33,7 +33,7 @@ export function Sidebar({ collapsed }) {
 
   return (
     <aside
-      className={`fixed top-0 left-0 z-30 hidden h-screen shrink-0 border-r border-slate-200/70 bg-[#f1f3f6] px-4 py-6 dark:border-slate-800 dark:bg-slate-900 lg:flex lg:flex-col ${
+      className={`fixed top-0 left-0 z-30 hidden h-screen shrink-0 border-r border-slate-200/70 bg-[#f1f3f6] px-4 py-6 dark:border-slate-800 dark:bg-slate-900 md:flex md:flex-col ${
         collapsed ? "w-24" : "w-[235px]"
       }`}
     >

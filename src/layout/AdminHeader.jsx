@@ -4,11 +4,11 @@ import { AppButton, AppInput, IconButton } from "../components/ui";
 export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onToggleDarkMode }) {
   return (
     <header
-      className={`fixed top-4 right-4 z-40 rounded-2xl border border-slate-200/80 bg-white/90 shadow-[0_4px_6px_-1px_rgba(8,4,122,0.04),0_20px_40px_-10px_rgba(8,4,122,0.08)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 ${
-        sidebarCollapsed ? "left-[7.25rem]" : "left-[15.75rem]"
+      className={`fixed top-4 right-4 left-4 z-40 rounded-2xl border border-slate-200/80 bg-white/90 shadow-[0_4px_6px_-1px_rgba(8,4,122,0.04),0_20px_40px_-10px_rgba(8,4,122,0.08)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 ${
+        sidebarCollapsed ? "md:left-[7.25rem]" : "md:left-[15.75rem]"
       }`}
     >
-      <div className="flex h-16 items-center gap-4 px-5">
+      <div className="flex h-16 items-center gap-2 px-3 sm:gap-4 sm:px-5">
         <IconButton
           onClick={onToggleSidebar}
           className="border border-slate-200 text-slate-600 dark:border-slate-700"
@@ -17,7 +17,7 @@ export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onT
           <FaBars />
         </IconButton>
 
-        <div className="relative w-full max-w-[460px]">
+        <div className="relative hidden w-full max-w-[460px] md:block">
           <FaMagnifyingGlass className="absolute top-1/2 left-3 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
           <AppInput className="border-none py-2 pr-3 pl-10" placeholder="Rechercher un agent, mission, contrat..." />
         </div>

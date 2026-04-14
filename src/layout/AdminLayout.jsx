@@ -16,7 +16,7 @@ export function AdminLayout({ sidebarCollapsed, onToggleSidebar, isDarkMode, onT
       <Sidebar collapsed={sidebarCollapsed} />
       <main
         className={`pt-24 pr-4 pb-28 transition-all md:pr-6 md:pb-32 ${
-          sidebarCollapsed ? "lg:pl-[7.25rem]" : "lg:pl-[15.75rem]"
+          sidebarCollapsed ? "md:pl-[7.25rem]" : "md:pl-[15.75rem]"
         }`}
       >
         <div className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { AppButton, AppSelect, IconButton } from "../ui";
-import { agentsData as agents } from "../../modules/agents/data/agentsData";
+import { agentsData as agents } from "../../modules/agents/data/agentsData.ts";
 
 function renderStars(scoreLabel) {
   const numericScore = Number.parseFloat(scoreLabel);
@@ -81,8 +81,8 @@ export function AgentsManagementScreen() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
-        <table className="w-full border-collapse font-myriad text-sm">
+      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+        <table className="min-w-[760px] w-full border-collapse font-myriad text-sm">
           <thead className="bg-slate-50 text-left dark:bg-slate-800/80">
             <tr>
               <th className="p-4 text-[11px] uppercase tracking-widest text-slate-500">Agent</th>
