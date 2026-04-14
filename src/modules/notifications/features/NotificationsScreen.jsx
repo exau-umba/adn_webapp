@@ -1,28 +1,5 @@
-import { AppButton } from "../../shared/ui";
-
-const notifications = [
-  {
-    id: 1,
-    title: "Nouvelle mission assignee",
-    message: "L'agent Marc-Antoine Dupont est affecte a une nouvelle mission.",
-    time: "Il y a 5 min",
-    unread: true,
-  },
-  {
-    id: 2,
-    title: "Dossier incomplet",
-    message: "Le dossier de Sophie Lavalliere attend un document de reference.",
-    time: "Il y a 1 h",
-    unread: true,
-  },
-  {
-    id: 3,
-    title: "Evaluation terminee",
-    message: "L'evaluation de Lucas Bernard est maintenant disponible.",
-    time: "Hier, 18:20",
-    unread: false,
-  },
-];
+import { AppButton } from "../../../shared/ui";
+import { notificationsData as notifications } from "../data/notificationsData.ts";
 
 export function NotificationsScreen() {
   return (

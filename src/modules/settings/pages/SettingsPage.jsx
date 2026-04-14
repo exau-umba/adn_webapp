@@ -1,4 +1,4 @@
-import { SettingsScreen } from "../../../components/screens/SettingsScreen";
+import { SettingsScreen } from "../features/SettingsScreen";
 
 export function SettingsPage() {
   return <SettingsScreen />;
