@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppButton, ConfirmationModal } from "../../shared/ui";
-import { agentsData } from "../../modules/agents/data/agentsData.ts";
-import { generateAgentQrDataUrl } from "../../core/utils/media.ts";
-import { getStatusTone } from "../../core/constants/statusStyles.ts";
-import { exportAgentProfilePdf } from "../../core/utils/pdf.ts";
+import { AppButton, ConfirmationModal } from "../../../shared/ui";
+import { agentsData } from "../data/agentsData.ts";
+import { generateAgentQrDataUrl } from "../../../core/utils/media.ts";
+import { getStatusTone } from "../../../core/constants/statusStyles.ts";
+import { exportAgentProfilePdf } from "../../../core/utils/pdf.ts";
 
 function renderStars(scoreLabel) {
   const numericScore = Number.parseFloat(scoreLabel);

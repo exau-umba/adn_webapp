@@ -1,4 +1,4 @@
-import { AgentsManagementScreen } from "../../../components/screens/AgentsManagementScreen";
+import { AgentsManagementScreen } from "../features/AgentsManagementScreen";
 
 export function AgentsManagementPage() {
   return <AgentsManagementScreen />;

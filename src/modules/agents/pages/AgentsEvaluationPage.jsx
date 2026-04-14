@@ -1,5 +1,5 @@
-import { EvaluationScreen } from "../../../components/screens/EvaluationScreen";
+import { AgentEvaluationScreen } from "../features/AgentEvaluationScreen";
 
 export function AgentsEvaluationPage() {
-  return <EvaluationScreen />;
+  return <AgentEvaluationScreen />;
 }

@@ -9,7 +9,7 @@ import {
   FaUserPlus,
   FaUsers,
 } from "react-icons/fa6";
-import { AppButton } from "../../shared/ui";
+import { AppButton } from "../../../shared/ui";
 
 const stats = [
   {
@@ -50,7 +50,8 @@ const stats = [
   },
 ];
 
-export function DashboardScreen() {
+/** Tableau de bord principal du parcours agents (stats + activité). */
+export function AgentsDashboardScreen() {
   const activityItems = [
     {
       title: "Mission terminee",
@@ -105,7 +106,6 @@ export function DashboardScreen() {
             key={stat.title}
             className={`rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 ${stat.accent} border-l-4`}
           >
-            {/** icone statistique */}
             {(() => {
               const Icon = stat.icon;
               return (
@@ -159,21 +159,21 @@ export function DashboardScreen() {
           </div>
           <div className="rounded-xl bg-slate-100/70 px-4 pt-10 pb-5 dark:bg-slate-900/60">
             <div className="flex h-56 items-end gap-3">
-            {[65, 80, 45, 90, 75, 85].map((h, i) => (
-              <div key={h} className="flex flex-1 flex-col items-center gap-2">
-                <div className="relative h-40 w-full rounded-t-lg bg-slate-100 dark:bg-slate-800">
-                  <div
-                    style={{ height: `${h}%` }}
-                    className={`absolute bottom-0 w-full rounded-t-lg ${
-                      i === 2 ? "bg-[#ffc81d]" : i === 5 ? "bg-[#0084df]" : "bg-[#08047a]"
-                    }`}
-                  />
+              {[65, 80, 45, 90, 75, 85].map((h, i) => (
+                <div key={h} className="flex flex-1 flex-col items-center gap-2">
+                  <div className="relative h-40 w-full rounded-t-lg bg-slate-100 dark:bg-slate-800">
+                    <div
+                      style={{ height: `${h}%` }}
+                      className={`absolute bottom-0 w-full rounded-t-lg ${
+                        i === 2 ? "bg-[#ffc81d]" : i === 5 ? "bg-[#0084df]" : "bg-[#08047a]"
+                      }`}
+                    />
+                  </div>
+                  <span className="font-myriad text-xs text-slate-500 dark:text-slate-400">
+                    {["Jan", "Fev", "Mar", "Avr", "Mai", "Juin"][i]}
+                  </span>
                 </div>
-                <span className="font-myriad text-xs text-slate-500 dark:text-slate-400">
-                  {["Jan", "Fev", "Mar", "Avr", "Mai", "Juin"][i]}
-                </span>
-              </div>
-            ))}
+              ))}
             </div>
           </div>
         </article>

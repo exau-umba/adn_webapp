@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppButton, AppSelect, ConfirmationModal } from "../../shared/ui";
-import { agentsData as agents } from "../../modules/agents/data/agentsData.ts";
-import { getStatusTone } from "../../core/constants/statusStyles.ts";
+import { AppButton, AppSelect, ConfirmationModal } from "../../../shared/ui";
+import { agentsData as agents } from "../data/agentsData.ts";
+import { getStatusTone } from "../../../core/constants/statusStyles.ts";
 
 function renderStars(scoreLabel) {
   const numericScore = Number.parseFloat(scoreLabel);
@@ -99,66 +99,66 @@ export function AgentsManagementScreen() {
             {agents.map((agent) => {
               const statusTone = getStatusTone(agent.status);
               return (
-              <tr key={agent.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
-                <td className="p-4">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={agent.photo}
-                      alt={`Photo de ${agent.name}`}
-                      className={`h-11 w-11 rounded-xl object-cover shadow-sm ${
-                        agent.status === "Suspendu" ? "grayscale" : ""
-                      }`}
-                    />
-                    <div>
-                      <p className="font-semibold text-[#01003b] dark:text-slate-100">{agent.name}</p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">{agent.role}</p>
+                <tr key={agent.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
+                  <td className="p-4">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={agent.photo}
+                        alt={`Photo de ${agent.name}`}
+                        className={`h-11 w-11 rounded-xl object-cover shadow-sm ${
+                          agent.status === "Suspendu" ? "grayscale" : ""
+                        }`}
+                      />
+                      <div>
+                        <p className="font-semibold text-[#01003b] dark:text-slate-100">{agent.name}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">{agent.role}</p>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="p-4 dark:text-slate-300">{agent.service}</td>
-                <td className="p-4 font-bold text-[#01003b] dark:text-slate-100">{renderStars(agent.score)}</td>
-                <td className="p-4">
-                  <span className={`inline-flex items-center gap-2 ${statusTone.text}`}>
-                    <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
-                    {agent.status}
-                  </span>
-                </td>
-                <td className="p-4 text-right">
-                  <div className="flex justify-end gap-2">
-                    <AppButton
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-lg"
-                      onClick={() => navigate(`/agent-management/detail/${agent.id}`)}
-                    >
-                      Voir
-                    </AppButton>
-                    <AppButton
-                      variant="secondary"
-                      size="sm"
-                      className="rounded-lg"
-                      onClick={() => navigate(`/agent-management/detail/${agent.id}/edit`)}
-                    >
-                      Modifier
-                    </AppButton>
-                    <AppButton
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-lg border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-700 dark:text-amber-300 dark:hover:bg-amber-950/30"
-                    >
-                      {agent.status === "Suspendu" ? "Reactiver" : "Suspendre"}
-                    </AppButton>
-                    <AppButton
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-lg border-red-200 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-950/30"
-                      onClick={() => setDeleteTarget(agent)}
-                    >
-                      Supprimer
-                    </AppButton>
-                  </div>
-                </td>
-              </tr>
+                  </td>
+                  <td className="p-4 dark:text-slate-300">{agent.service}</td>
+                  <td className="p-4 font-bold text-[#01003b] dark:text-slate-100">{renderStars(agent.score)}</td>
+                  <td className="p-4">
+                    <span className={`inline-flex items-center gap-2 ${statusTone.text}`}>
+                      <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
+                      {agent.status}
+                    </span>
+                  </td>
+                  <td className="p-4 text-right">
+                    <div className="flex justify-end gap-2">
+                      <AppButton
+                        variant="ghost"
+                        size="sm"
+                        className="rounded-lg"
+                        onClick={() => navigate(`/agent-management/detail/${agent.id}`)}
+                      >
+                        Voir
+                      </AppButton>
+                      <AppButton
+                        variant="secondary"
+                        size="sm"
+                        className="rounded-lg"
+                        onClick={() => navigate(`/agent-management/detail/${agent.id}/edit`)}
+                      >
+                        Modifier
+                      </AppButton>
+                      <AppButton
+                        variant="ghost"
+                        size="sm"
+                        className="rounded-lg border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-700 dark:text-amber-300 dark:hover:bg-amber-950/30"
+                      >
+                        {agent.status === "Suspendu" ? "Reactiver" : "Suspendre"}
+                      </AppButton>
+                      <AppButton
+                        variant="ghost"
+                        size="sm"
+                        className="rounded-lg border-red-200 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-950/30"
+                        onClick={() => setDeleteTarget(agent)}
+                      >
+                        Supprimer
+                      </AppButton>
+                    </div>
+                  </td>
+                </tr>
               );
             })}
           </tbody>

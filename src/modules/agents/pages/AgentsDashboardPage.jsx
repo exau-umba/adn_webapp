@@ -1,5 +1,5 @@
-import { DashboardScreen } from "../../../components/screens/DashboardScreen";
+import { AgentsDashboardScreen } from "../features/AgentsDashboardScreen";
 
 export function AgentsDashboardPage() {
-  return <DashboardScreen />;
+  return <AgentsDashboardScreen />;
 }

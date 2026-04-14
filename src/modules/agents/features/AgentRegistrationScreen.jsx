@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AppButton, AppInput } from "../../shared/ui";
+import { AppButton, AppInput } from "../../../shared/ui";
 
 export function AgentRegistrationScreen() {
   const [selectedSex, setSelectedSex] = useState("");
@@ -37,24 +37,24 @@ export function AgentRegistrationScreen() {
               Sexe
               <div className="mt-2 flex gap-4 rounded-xl bg-slate-100 px-3 py-2.5 text-[13px] font-semibold normal-case dark:bg-slate-800">
                 <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="sex"
-                      value="homme"
-                      checked={selectedSex === "homme"}
-                      onChange={(event) => setSelectedSex(event.target.value)}
-                    />
-                    Homme
+                  <input
+                    type="radio"
+                    name="sex"
+                    value="homme"
+                    checked={selectedSex === "homme"}
+                    onChange={(event) => setSelectedSex(event.target.value)}
+                  />
+                  Homme
                 </label>
                 <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="sex"
-                      value="femme"
-                      checked={selectedSex === "femme"}
-                      onChange={(event) => setSelectedSex(event.target.value)}
-                    />
-                    Femme
+                  <input
+                    type="radio"
+                    name="sex"
+                    value="femme"
+                    checked={selectedSex === "femme"}
+                    onChange={(event) => setSelectedSex(event.target.value)}
+                  />
+                  Femme
                 </label>
               </div>
             </div>

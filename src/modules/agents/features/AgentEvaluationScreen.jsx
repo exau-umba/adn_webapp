@@ -1,6 +1,6 @@
-import { AppButton, AppTextarea } from "../../shared/ui";
+import { AppButton, AppTextarea } from "../../../shared/ui";
 
-export function EvaluationScreen() {
+export function AgentEvaluationScreen() {
   return (
     <section className="space-y-8">
       <div className="flex flex-col items-start justify-between gap-5 border-b border-slate-200 pb-8 md:flex-row md:items-end dark:border-slate-700">

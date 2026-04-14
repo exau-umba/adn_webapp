@@ -1,4 +1,4 @@
-import { AgentDetailsScreen } from "../../../components/screens/AgentDetailsScreen";
+import { AgentDetailsScreen } from "../features/AgentDetailsScreen";
 
 export function AgentDetailsPage() {
   return <AgentDetailsScreen />;
