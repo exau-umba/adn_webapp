@@ -15,4 +15,8 @@ export const ROUTES = {
   offreEmploiRegistration: "/offres-emploi/registration",
   offreEmploiDetail: (offreId: string) => `/offres-emploi/detail/${offreId}`,
   offreEmploiEdit: (offreId: string) => `/offres-emploi/detail/${offreId}/edit`,
+  missionManagement: "/mission-management",
+  missionRegistration: "/mission-management/registration",
+  missionDetail: (missionId: string) => `/mission-management/detail/${missionId}`,
+  missionEdit: (missionId: string) => `/mission-management/detail/${missionId}/edit`,
 } as const;

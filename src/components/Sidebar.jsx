@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   FaBriefcase,
   FaChartSimple,
@@ -41,7 +41,13 @@ const sidebarItems = [
     route: true,
     matchPrefixes: [ROUTES.offresEmploi],
   },
-  { label: "Mission", icon: FaUserGroup, route: false, matchPrefixes: ["/missions"] },
+  {
+    label: "Mission",
+    to: ROUTES.missionManagement,
+    icon: FaUserGroup,
+    route: true,
+    matchPrefixes: [ROUTES.missionManagement],
+  },
   { label: "Contrat", icon: FaFileContract, route: false, matchPrefixes: ["/contracts"] },
   { label: "Incident", icon: FaTriangleExclamation, route: false, matchPrefixes: ["/incidents"] },
   { label: "Analytique", icon: FaChartSimple, route: false, matchPrefixes: ["/analytics"] },
@@ -49,6 +55,7 @@ const sidebarItems = [
 
 export function Sidebar({ collapsed }) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const getIsActive = (item) => item.matchPrefixes?.some((prefix) => pathname.startsWith(prefix)) ?? false;
 
@@ -115,6 +122,7 @@ export function Sidebar({ collapsed }) {
         <AppButton
           variant="secondary"
           className="flex w-full items-center justify-center gap-2 rounded-xl !py-3 text-[15px]"
+          onClick={() => navigate(ROUTES.missionRegistration)}
         >
           <FaUserGroup className="text-[14px]" />
           <span className={collapsed ? "hidden" : "block"}>Nouvelle Mission</span>

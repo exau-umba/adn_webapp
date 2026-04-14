@@ -6,6 +6,7 @@ import { clientsRoutes } from "../modules/clients/routes";
 import { notificationsRoutes } from "../modules/notifications/routes";
 import { settingsRoutes } from "../modules/settings/routes";
 import { offresRoutes } from "../modules/offres/routes";
+import { missionsRoutes } from "../modules/missions/routes";
 import { ROUTES } from "../core/routes.ts";
 
 export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onToggleDarkMode }) {
@@ -26,6 +27,7 @@ export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onTog
         ...agentsRoutes,
         ...clientsRoutes,
         ...offresRoutes,
+        ...missionsRoutes,
         ...notificationsRoutes,
         ...settingsRoutes,
       ],
