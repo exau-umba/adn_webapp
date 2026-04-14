@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { FaBars, FaBell, FaGear, FaMagnifyingGlass, FaMoon, FaSun } from "react-icons/fa6";
 import { AppButton, AppInput, IconButton } from "../components/ui";
 
 export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onToggleDarkMode }) {
+  const navigate = useNavigate();
+
   return (
     <header
       className={`fixed top-4 right-4 left-4 z-40 rounded-2xl border border-slate-200/80 bg-white/90 shadow-[0_4px_6px_-1px_rgba(8,4,122,0.04),0_20px_40px_-10px_rgba(8,4,122,0.08)] backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 ${
@@ -34,10 +37,10 @@ export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onT
             {isDarkMode ? <FaSun /> : <FaMoon />}
             <span>{isDarkMode ? "Mode clair" : "Mode sombre"}</span>
           </AppButton>
-          <IconButton>
+          <IconButton onClick={() => navigate("/notifications")}>
             <FaBell />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => navigate("/settings")}>
             <FaGear />
           </IconButton>
           <div className="mx-1 h-7 w-px bg-slate-200 dark:bg-slate-700" />

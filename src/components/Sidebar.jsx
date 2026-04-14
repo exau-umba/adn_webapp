@@ -19,7 +19,7 @@ const sidebarItems = [
     route: true,
     matchPrefixes: ["/agent-management"],
   },
-  { label: "Clients", icon: FaPeopleGroup, route: false, matchPrefixes: ["/clients"] },
+  { label: "Clients", to: "/client-management", icon: FaPeopleGroup, route: true, matchPrefixes: ["/client-management"] },
   { label: "Mission", icon: FaUserGroup, route: false, matchPrefixes: ["/missions"] },
   { label: "Contrat", icon: FaFileContract, route: false, matchPrefixes: ["/contracts"] },
   { label: "Incident", icon: FaTriangleExclamation, route: false, matchPrefixes: ["/incidents"] },

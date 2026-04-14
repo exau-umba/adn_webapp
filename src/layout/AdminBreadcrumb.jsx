@@ -3,8 +3,12 @@ import { FaChevronRight } from "react-icons/fa6";
 
 const segmentLabels = {
   "agent-management": "Gestion agents",
+  "client-management": "Gestion clients",
+  client: "Client",
   detail: "Detail agent",
   edit: "Modification",
+  notifications: "Notifications",
+  settings: "Parametres",
   dashboard: "Tableau de bord",
   management: "Gestion",
   registration: "Ajout agent",
