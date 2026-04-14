@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppButton, ConfirmationModal } from "../../../shared/ui";
+import { ROUTES } from "../../../core/routes.ts";
 import { agentsData } from "../data/agentsData.ts";
 import { generateAgentQrDataUrl } from "../../../core/utils/media.ts";
 import { getStatusTone } from "../../../core/constants/statusStyles.ts";
@@ -76,7 +77,7 @@ export function AgentDetailsScreen() {
         <p className="font-myriad text-sm text-slate-500 dark:text-slate-400">
           L'agent demande n'existe pas ou n'est plus disponible.
         </p>
-        <AppButton variant="ghost" onClick={() => navigate("/agent-management")}>
+        <AppButton variant="ghost" onClick={() => navigate(ROUTES.agentManagement)}>
           Retour a la liste
         </AppButton>
       </section>
@@ -91,7 +92,7 @@ export function AgentDetailsScreen() {
           <h2 className="mt-1 font-brand text-2xl text-[#01003b] dark:text-slate-100 md:text-3xl">{agent.name}</h2>
           <p className="mt-1 font-myriad text-sm text-slate-500 dark:text-slate-400">{agent.role}</p>
         </div>
-        <AppButton variant="ghost" onClick={() => navigate("/agent-management")}>
+        <AppButton variant="ghost" onClick={() => navigate(ROUTES.agentManagement)}>
           Retour
         </AppButton>
       </div>
@@ -143,14 +144,25 @@ export function AgentDetailsScreen() {
         </div>
       </article>
 
+      <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+        <h3 className="font-brand text-lg text-[#01003b] dark:text-slate-100">Contrat employeur (ADN)</h3>
+        <p className="mt-2 font-myriad text-sm text-slate-500 dark:text-slate-400">
+          Contrat bilatéral signé avec ADN PRO SERVICE dès le recrutement ou l&apos;ajout au dossier, avant toute
+          mission. Les missions ajoutent une annexe tripartite (client + société + vous) sans remplacer ce document.
+        </p>
+        <AppButton variant="secondary" className="mt-4" onClick={() => navigate(ROUTES.agentEmployeurContrat(agent.id))}>
+          Ouvrir le contrat employeur
+        </AppButton>
+      </article>
+
       <div className="flex flex-wrap gap-3">
         <AppButton variant="ghost" onClick={exportAgentPdf}>
           Exporter en PDF
         </AppButton>
-        <AppButton variant="primary" onClick={() => navigate("/agent-management/evaluation")}>
+        <AppButton variant="primary" onClick={() => navigate(ROUTES.agentEvaluation)}>
           Lancer l'evaluation
         </AppButton>
-        <AppButton variant="secondary" onClick={() => navigate(`/agent-management/detail/${agent.id}/edit`)}>
+        <AppButton variant="secondary" onClick={() => navigate(ROUTES.agentEdit(agent.id))}>
           Modifier le dossier
         </AppButton>
         <AppButton
@@ -177,7 +189,7 @@ export function AgentDetailsScreen() {
         onCancel={() => setIsDeleteModalOpen(false)}
         onConfirm={() => {
           setIsDeleteModalOpen(false);
-          navigate("/agent-management");
+          navigate(ROUTES.agentManagement);
         }}
       />
     </section>

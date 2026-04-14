@@ -10,6 +10,8 @@ export function buildContratBundlesFromMissions(): ContratBundleRecord[] {
     missionTitre: m.titre,
     referenceDossier: `CTR-${m.reference.replace("MIS-", "")}`,
     dateGeneration: m.dateDebut,
+    clientId: m.clientId,
+    agentId: m.agentId,
     client: clientSnapshot(m.clientId),
     agent: agentSnapshot(m.agentId),
   }));

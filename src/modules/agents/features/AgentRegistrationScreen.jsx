@@ -1,10 +1,44 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AppButton, AppInput } from "../../../shared/ui";
+import { ROUTES } from "../../../core/routes.ts";
+import { saveEmployeurContratToSession } from "../../contrats/lib/employeurContratStorage.ts";
 
 export function AgentRegistrationScreen() {
+  const navigate = useNavigate();
   const [selectedSex, setSelectedSex] = useState("");
   const [hasPhoto, setHasPhoto] = useState("non");
   const [hasExperience, setHasExperience] = useState("non");
+  const [nomComplet, setNomComplet] = useState("");
+  const [telephone, setTelephone] = useState("");
+  const [saveError, setSaveError] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!nomComplet.trim()) {
+      setSaveError("Indiquez au minimum le nom complet pour générer le contrat employeur (démo).");
+      return;
+    }
+    setSaveError("");
+    const agentId = `recrue-${Date.now()}`;
+    const suffix = String(Date.now()).slice(-6);
+    saveEmployeurContratToSession({
+      id: `cagr-${agentId}`,
+      agentId,
+      referenceDossier: `EMP-REC-${suffix}`,
+      dateGeneration: new Date().toISOString().slice(0, 10),
+      agent: {
+        nomComplet: nomComplet.trim(),
+        dateLieuNaissance: "À compléter",
+        adresseActuelle: "À compléter",
+        telephone: telephone.trim() || "À compléter",
+        numeroPieceIdentite: "À compléter",
+        personneReferenceFamille: "À compléter",
+        telephoneReference: "À compléter",
+      },
+    });
+    navigate(ROUTES.agentEmployeurContrat(agentId));
+  };
 
   return (
     <section className="space-y-3">
@@ -17,13 +51,23 @@ export function AgentRegistrationScreen() {
         </h2>
       </div>
 
-      <form className="space-y-5">
+      {saveError ? (
+        <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 font-myriad text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+          {saveError}
+        </p>
+      ) : null}
+
+      <form className="space-y-5" onSubmit={handleSubmit}>
         <section className="rounded-xl bg-white p-5 shadow-[0_4px_6px_-1px_rgba(8,4,122,0.04),0_20px_40px_-10px_rgba(8,4,122,0.08)] md:p-6 dark:bg-slate-900/80">
           <h3 className="mb-4 font-brand text-xl text-[#01003b] dark:text-slate-100">1. Informations Personnelles</h3>
+          <p className="mb-4 font-myriad text-xs text-slate-500 dark:text-slate-400">
+            À l&apos;enregistrement, un <strong>contrat employeur ADN</strong> est généré (démo) à partir du nom et du
+            téléphone ci-dessous ; complétez ensuite le dossier sur la fiche agent.
+          </p>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Nom complet
-              <AppInput className="mt-2" />
+              <AppInput className="mt-2" value={nomComplet} onChange={(e) => setNomComplet(e.target.value)} required />
             </label>
             <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Date de naissance
@@ -60,7 +104,7 @@ export function AgentRegistrationScreen() {
             </div>
             <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Numero de telephone
-              <AppInput className="mt-2" />
+              <AppInput className="mt-2" value={telephone} onChange={(e) => setTelephone(e.target.value)} />
             </label>
             <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Adresse complete
@@ -193,8 +237,8 @@ export function AgentRegistrationScreen() {
             <AppButton variant="ghost" size="md">
               Annuler
             </AppButton>
-            <AppButton variant="primary" size="md" className="!px-6">
-              Enregistrer l'Agent
+            <AppButton variant="primary" size="md" className="!px-6" type="submit">
+              Enregistrer l&apos;Agent et le contrat employeur
             </AppButton>
           </div>
         </div>

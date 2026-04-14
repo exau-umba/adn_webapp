@@ -14,4 +14,5 @@ export const BREADCRUMB_LABELS = {
   management: "Gestion",
   registration: "Ajout",
   evaluation: "Evaluation",
+  "contrat-employeur": "Contrat employeur",
 } as const;

@@ -24,6 +24,8 @@ export interface ContratBundleRecord {
   missionTitre: string;
   referenceDossier: string;
   dateGeneration: string;
+  clientId: string;
+  agentId: string;
   client: ContratClientSnapshot;
   agent: ContratAgentSnapshot;
 }

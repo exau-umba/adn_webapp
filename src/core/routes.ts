@@ -5,6 +5,7 @@ export const ROUTES = {
   agentEvaluation: "/agent-management/evaluation",
   agentDetail: (agentId: string) => `/agent-management/detail/${agentId}`,
   agentEdit: (agentId: string) => `/agent-management/detail/${agentId}/edit`,
+  agentEmployeurContrat: (agentId: string) => `/agent-management/detail/${agentId}/contrat-employeur`,
   clientManagement: "/client-management",
   clientRegistration: "/client-management/registration",
   clientDetail: (clientId: string) => `/client-management/detail/${clientId}`,

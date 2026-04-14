@@ -23,6 +23,8 @@ export function createSessionContratBundleAndSave(input: MissionFormContratInput
     missionTitre: input.titre.trim() || "Nouvelle mission",
     referenceDossier: `CTR-${suffix}`,
     dateGeneration: input.dateDebut || new Date().toISOString().slice(0, 10),
+    clientId: input.clientId,
+    agentId: input.agentId,
     client: clientSnapshot(input.clientId),
     agent: agentSnapshot(input.agentId),
   };

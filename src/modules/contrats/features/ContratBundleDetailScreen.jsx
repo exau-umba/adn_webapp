@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AppButton } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
 import { getContratBundleById } from "../data/contratBundleResolve.ts";
-import { EngagementAgentDocument } from "./EngagementAgentDocument";
 import { EngagementClientDocument } from "./EngagementClientDocument";
+import { TripartiteMissionAnnex } from "./TripartiteMissionAnnex";
 
 export function ContratBundleDetailScreen() {
   const navigate = useNavigate();
@@ -53,16 +53,21 @@ export function ContratBundleDetailScreen() {
           <AppButton variant="ghost" type="button" onClick={() => navigate(ROUTES.financeManagement)}>
             Finance
           </AppButton>
+          {bundle.agentId ? (
+            <AppButton variant="ghost" type="button" onClick={() => navigate(ROUTES.agentEmployeurContrat(bundle.agentId))}>
+              Contrat employeur agent
+            </AppButton>
+          ) : null}
         </div>
       </div>
 
       <div className="rounded-xl border border-[#08047a]/20 bg-[#f8f9ff] p-4 font-myriad text-sm text-[#01003b] dark:border-indigo-800 dark:bg-indigo-950/30 dark:text-slate-200 print:border print:bg-white">
-        <p className="font-semibold">Lien tripartite (rappel)</p>
+          <p className="font-semibold">Mission tripartite</p>
         <p className="mt-1 text-slate-600 dark:text-slate-400">
-          La mission <strong>{bundle.missionReference}</strong> lie le <strong>client</strong>, l&apos;
-          <strong>agent</strong> désigné et <strong>ADN PRO SERVICE SARL</strong> en qualité d&apos;employeur et
-          gestionnaire administratif. Les fiches ci-dessous complètent le cadre contractuel ; la facturation client et
-          les versements agent sont suivis dans le module Finance.
+          Le <strong>client</strong> est couvert par sa fiche d&apos;engagement avec ADN. L&apos;<strong>agent</strong>{" "}
+          est couvert par son <strong>contrat employeur</strong> (signé au recrutement, visible dans le module Agents).
+          La mission <strong>{bundle.missionReference}</strong> articule les trois parties pour cette prestation. La
+          facturation client et les versements agent sont suivis dans le module Finance.
         </p>
       </div>
 
@@ -75,10 +80,14 @@ export function ContratBundleDetailScreen() {
           />
         </div>
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900/80 print:shadow-none">
-          <EngagementAgentDocument
-            agent={bundle.agent}
+          <TripartiteMissionAnnex
+            missionReference={bundle.missionReference}
+            missionTitre={bundle.missionTitre}
             referenceDossier={bundle.referenceDossier}
             dateDocument={dateDoc}
+            clientName={bundle.client.nomComplet}
+            agentName={bundle.agent.nomComplet}
+            agentId={bundle.agentId}
           />
         </div>
       </div>

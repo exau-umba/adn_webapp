@@ -1,15 +1,26 @@
-/** Fiche / engagement agent — texte juridique fourni par l'entreprise (affichage administratif). */
-export function EngagementAgentDocument({ agent, referenceDossier, dateDocument }) {
+/**
+ * Texte juridique agent — affiché soit comme contrat employeur (recrutement, lien direct ADN),
+ * soit référencé depuis une mission (le dossier mission renvoie ici via le profil agent).
+ */
+export function EngagementAgentDocument({ agent, referenceDossier, dateDocument, variant = "employeur" }) {
+  const isEmployeur = variant === "employeur";
   return (
     <article className="space-y-6 font-myriad text-sm leading-relaxed text-slate-700 dark:text-slate-300">
       <header className="border-b border-slate-200 pb-4 dark:border-slate-600">
         <p className="text-xs font-bold uppercase tracking-widest text-[#08047a] dark:text-indigo-300">
-          Fiche d&apos;engagement agent
+          {isEmployeur ? "Contrat employeur — Agent / ADN PRO SERVICE" : "Fiche d&apos;engagement agent"}
         </p>
         <h3 className="mt-2 font-brand text-lg text-[#01003b] dark:text-slate-100">ADN PRO SERVICE SARL</h3>
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
           Référence dossier : <strong>{referenceDossier}</strong> — Date : <strong>{dateDocument}</strong>
         </p>
+        {isEmployeur ? (
+          <p className="mt-3 rounded-lg bg-slate-100 px-3 py-2 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+            Contrat bilatéral conclu à l&apos;embauche ou à l&apos;ajout au dossier : l&apos;agent est rattaché
+            administrativement à ADN PRO SERVICE, même sans mission. Les missions ouvrent une{" "}
+            <strong>annexe tripartite</strong> (client + société + agent) sans remplacer le présent contrat employeur.
+          </p>
+        ) : null}
       </header>
 
       <section>
