@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="bg-background text-on-background" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Newsreader:ital,wght@0,500;0,600;1,500;1,700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#edeeef",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-dim": "#d9dadb",
+                        "background": "#f8f9fa",
+                        "surface-container-highest": "#e1e3e4",
+                        "error": "#ba1a1a",
+                        "surface": "#f8f9fa",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#777684",
+                        "outline-variant": "#c7c5d4",
+                        "on-surface-variant": "#464652",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#41a2ff",
+                        "on-secondary-container": "#003761",
+                        "tertiary-container": "#2c2000",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-primary-container": "#7a7ee5",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-container": "#aa8400",
+                        "secondary-fixed-dim": "#a0caff",
+                        "on-primary-fixed": "#04006d",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-tint": "#4f53b7",
+                        "on-background": "#191c1d",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#00497e",
+                        "on-secondary-fixed": "#001c37",
+                        "tertiary-fixed-dim": "#f5bf0c",
+                        "tertiary": "#110a00",
+                        "primary": "#01003b",
+                        "secondary": "#0061a6",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#e1e0ff",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-primary-fixed-variant": "#363a9e",
+                        "secondary-fixed": "#d2e4ff",
+                        "on-tertiary-fixed": "#251a00",
+                        "inverse-surface": "#2e3132",
+                        "inverse-primary": "#c0c1ff",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "tertiary-fixed": "#ffdf95",
+                        "on-surface": "#191c1d",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#08047a",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Newsreader"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-shadow {
+            box-shadow: 0 4px 6px -1px rgba(8, 4, 122, 0.04), 0 20px 40px -10px rgba(8, 4, 122, 0.08);
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-tertiary-fixed selection:text-on-tertiary-fixed flex h-screen overflow-hidden">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-72 bg-slate-50 flex flex-col p-6 space-y-2 border-r border-slate-200/50 flex-shrink-0">
+<div class="mb-10 px-2">
+<h1 class="font-headline text-2xl font-semibold text-[#08047a]">ADN PRO SERVICE</h1>
+<p class="text-xs font-label uppercase tracking-widest text-outline mt-1">Gestion Domestique</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-xl transition-colors duration-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Tableau de bord</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#01003b] to-[#08047a] text-white rounded-xl shadow-lg translate-x-1" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="text-sm font-medium">Agents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-xl transition-colors duration-300" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Clients</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-xl transition-colors duration-300" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="text-sm font-medium">Missions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-xl transition-colors duration-300" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-sm font-medium">Contrats</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-xl transition-colors duration-300" href="#">
+<span class="material-symbols-outlined">report_problem</span>
+<span class="text-sm font-medium">Incidents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-xl transition-colors duration-300" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Analytiques</span>
+</a>
+</nav>
+<button class="mt-auto w-full py-4 px-6 rounded-xl bg-primary text-white font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+            Nouvelle Mission
+        </button>
+</aside>
+<main class="flex-1 overflow-y-auto relative bg-background">
+<!-- TopAppBar Shell -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-8 py-4 bg-white/80 backdrop-blur-md rounded-2xl mt-6 mx-6 editorial-shadow">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 rounded-full overflow-hidden">
+<img class="h-full w-full object-cover" data-alt="professional headshot of a recruitment officer in a bright modern office setting, friendly and authoritative look" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlP9qm76JDtvO0lcKPVPGGjgSaOM2TZ3rUGGcTPAecROuZ5J3J-UYu492b5hiwDnhiSut95yXtGZuwClZYG_N8J7xlZl86JBpX98SeYIoudKYPDwkC26MUU2VRarRsvzDZ_4jFhpEJmdgCIoqI5ft9BT8UlUAtOE-wm4KfUpRajj_8K_7YFQtuJT-3Fad9pGxfT0FXxQgPPjTzP1mXmmBFgIHIBztCVFzEKasIssBnKmw3Id2Bwq9hyjBBzB62uGYzlJHAz3I5Jok"/>
+</div>
+<div>
+<h2 class="text-sm font-bold text-[#08047a]">Évaluation Agent</h2>
+<p class="text-xs text-slate-500">Recrutement &amp; Classification</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<section class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Hero Title & Profile -->
+<div class="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-outline-variant/15 pb-8">
+<div>
+<span class="label-md text-on-primary-container tracking-widest font-bold mb-2 block uppercase">Processus de Qualification</span>
+<h1 class="font-headline text-5xl font-semibold text-primary">Évaluation de Profil</h1>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl editorial-shadow flex items-center gap-4 min-w-[320px]">
+<div class="h-16 w-16 rounded-lg overflow-hidden bg-slate-100">
+<img class="h-full w-full object-cover" data-alt="close-up portrait of a female candidate for a domestic service position, clean attire, professional and warm expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEpOGhC3TdR-tM-lJGwJRMXQlG-UWF6HOUPY5ETlcVXNZTXXc-AJo5442LgnHcujbRfWTocx6GxqNwk-8GZqgO3dtnsW1F0wfyE5Hk6Xg8P3kZqt65cRxoiTc6DVUDsdvXKafmR8clczFro35d6tb_E59-Zcutqa9GZK1egwJ5skddKgMeGVA2CuQPMtBN0ho_CP01kLFkmQtRf892JK7TOQW0M2Ukr2JWO5r_hh_Qg8PccdQGoMX3Sm7jm4sW_TXB0fe-GpR8NRk"/>
+</div>
+<div>
+<h3 class="font-bold text-on-background">Martine Dubois</h3>
+<p class="text-sm text-outline">Candidature #2024-8812</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-xs text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-on-surface-variant">NOUVEAU PROFIL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Bento Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left: Scoring Interface -->
+<div class="lg:col-span-8 space-y-8">
+<div class="bg-surface-container-lowest p-8 rounded-2xl editorial-shadow border border-outline-variant/10">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-primary-container">psychology</span>
+<h2 class="font-headline text-2xl text-primary">Soft Skills &amp; Savoir-être</h2>
+</div>
+<div class="space-y-10">
+<!-- Politesse -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-lg font-medium text-primary">Politesse et Courtoisie</label>
+<span class="text-primary font-bold px-3 py-1 bg-primary-fixed rounded-lg text-sm">8 / 10</span>
+</div>
+<input class="w-full h-2 bg-surface-container rounded-full appearance-none cursor-pointer accent-primary-container" max="10" min="0" type="range" value="8"/>
+<div class="flex justify-between text-xs text-outline font-medium px-1">
+<span>Insuffisant</span>
+<span>Acceptable</span>
+<span>Excellent</span>
+</div>
+</div>
+<!-- Respect -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-lg font-medium text-primary">Respect des Consignes</label>
+<span class="text-primary font-bold px-3 py-1 bg-primary-fixed rounded-lg text-sm">9 / 10</span>
+</div>
+<input class="w-full h-2 bg-surface-container rounded-full appearance-none cursor-pointer accent-primary-container" max="10" min="0" type="range" value="9"/>
+<div class="flex justify-between text-xs text-outline font-medium px-1">
+<span>Insuffisant</span>
+<span>Acceptable</span>
+<span>Irréprochable</span>
+</div>
+</div>
+<!-- Communication -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-lg font-medium text-primary">Communication Verbale</label>
+<span class="text-primary font-bold px-3 py-1 bg-primary-fixed rounded-lg text-sm">7 / 10</span>
+</div>
+<input class="w-full h-2 bg-surface-container rounded-full appearance-none cursor-pointer accent-primary-container" max="10" min="0" type="range" value="7"/>
+<div class="flex justify-between text-xs text-outline font-medium px-1">
+<span>Difficulté</span>
+<span>Clair</span>
+<span>Éloquent</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Practical Tests Section -->
+<div class="bg-surface-container-low p-8 rounded-2xl border border-outline-variant/10">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-primary-container">task_alt</span>
+<h2 class="font-headline text-2xl text-primary">Aptitudes &amp; Tests Pratiques</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Ménage -->
+<div class="bg-white p-6 rounded-xl border border-outline-variant/15 flex flex-col items-center text-center space-y-4 group">
+<div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">cleaning_services</span>
+</div>
+<span class="font-bold text-on-surface">Ménage</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+<span class="text-xs text-outline font-medium uppercase tracking-tight">Vérifié / Conforme</span>
+</div>
+<!-- Cuisine -->
+<div class="bg-white p-6 rounded-xl border border-outline-variant/15 flex flex-col items-center text-center space-y-4 group">
+<div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+<span class="font-bold text-on-surface">Cuisine</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+<span class="text-xs text-outline font-medium uppercase tracking-tight">Non Testé</span>
+</div>
+<!-- Enfants -->
+<div class="bg-white p-6 rounded-xl border border-outline-variant/15 flex flex-col items-center text-center space-y-4 group">
+<div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">child_care</span>
+</div>
+<span class="font-bold text-on-surface">Enfants</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+<span class="text-xs text-outline font-medium uppercase tracking-tight">Vérifié / Conforme</span>
+</div>
+</div>
+</div>
+<!-- Observations -->
+<div class="space-y-4">
+<label class="font-headline text-xl text-primary px-1">Observations Détaillées</label>
+<textarea class="w-full bg-white border border-outline-variant/30 rounded-xl p-4 focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all outline-none resize-none" placeholder="Saisir les points forts, points de vigilance et remarques particulières de l'entretien..." rows="4"></textarea>
+</div>
+</div>
+<!-- Right: Results & Classification -->
+<div class="lg:col-span-4 space-y-8">
+<!-- Final Score Badge -->
+<div class="bg-primary p-8 rounded-3xl text-white editorial-shadow relative overflow-hidden group">
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-primary-container rounded-full opacity-50 group-hover:scale-110 transition-transform"></div>
+<div class="relative z-10">
+<span class="text-xs font-bold uppercase tracking-widest text-primary-fixed-dim">Classification Automatique</span>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-6xl font-headline font-bold">VIP</span>
+<span class="text-lg opacity-80">Profil Elite</span>
+</div>
+<div class="mt-6 pt-6 border-t border-white/10 space-y-3">
+<div class="flex justify-between text-sm">
+<span class="opacity-70">Score Moyen</span>
+<span class="font-bold">24 / 30</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="opacity-70">Recommandation</span>
+<span class="font-bold text-tertiary-fixed">Haute Priorité</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Decision Buttons -->
+<div class="bg-surface-container p-6 rounded-2xl space-y-4">
+<h3 class="text-sm font-bold text-on-surface uppercase tracking-wider mb-2">Décision Finale</h3>
+<button class="w-full py-4 bg-primary-container text-white rounded-xl font-bold flex items-center justify-center gap-3 hover:scale-102 active:scale-98 transition-all">
+<span class="material-symbols-outlined">check_circle</span>
+                            Accepté
+                        </button>
+<button class="w-full py-4 bg-tertiary-fixed text-on-tertiary-fixed rounded-xl font-bold flex items-center justify-center gap-3 hover:scale-102 active:scale-98 transition-all">
+<span class="material-symbols-outlined">school</span>
+                            À former
+                        </button>
+<button class="w-full py-4 bg-white border border-error/20 text-error rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-error-container/50 hover:scale-102 active:scale-98 transition-all">
+<span class="material-symbols-outlined">cancel</span>
+                            Refusé
+                        </button>
+</div>
+<!-- Helper Cards -->
+<div class="bg-white p-6 rounded-2xl border border-outline-variant/20 space-y-4">
+<div class="flex gap-4">
+<div class="w-10 h-10 bg-secondary-fixed flex items-center justify-center rounded-lg text-on-secondary-fixed flex-shrink-0">
+<span class="material-symbols-outlined">info</span>
+</div>
+<div>
+<h4 class="font-bold text-sm text-on-surface">Guide de Classification</h4>
+<p class="text-xs text-outline mt-1">Le badge VIP est attribué automatiquement si le score cumulé dépasse 22/30.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center rounded-lg text-outline flex-shrink-0">
+<span class="material-symbols-outlined">history</span>
+</div>
+<div>
+<h4 class="font-bold text-sm text-on-surface">Historique</h4>
+<p class="text-xs text-outline mt-1">Dernière modification par Admin le 24 Octobre à 10:45.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

@@ -1,0 +1,38 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@font-face {
+  font-family: "MyriaPro";
+  src: url("/fonts/MyriadPro-Regular.otf") format("opentype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MyriaPro";
+  src: url("/fonts/MyriadPro-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Orenza";
+  src: url("/fonts/Orenza-Bold-Demo.otf") format("opentype");
+  font-display: swap;
+}
+
+@theme {
+  --font-myriad: "MyriaPro", sans-serif;
+  --font-brand: "Orenza", serif;
+  --color-brand-primary: #08047a;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-myriad);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
