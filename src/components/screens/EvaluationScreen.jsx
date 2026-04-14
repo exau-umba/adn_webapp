@@ -1,4 +1,4 @@
-import { AppButton, AppTextarea } from "../ui";
+import { AppButton, AppTextarea } from "../../shared/ui";
 
 export function EvaluationScreen() {
   return (

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { AppButton, AppInput, AppSelect } from "../ui";
+import { AppButton, AppInput, AppSelect } from "../../shared/ui";
 
 export function ClientRegistrationScreen() {
   const navigate = useNavigate();

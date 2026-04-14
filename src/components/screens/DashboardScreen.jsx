@@ -9,7 +9,7 @@ import {
   FaUserPlus,
   FaUsers,
 } from "react-icons/fa6";
-import { AppButton } from "../ui";
+import { AppButton } from "../../shared/ui";
 
 const stats = [
   {

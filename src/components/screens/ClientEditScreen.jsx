@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppButton, AppInput } from "../ui";
+import { AppButton, AppInput } from "../../shared/ui";
 import { clientsData } from "../../modules/clients/data/clientsData.ts";
 
 export function ClientEditScreen() {

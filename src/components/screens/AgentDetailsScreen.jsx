@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppButton, ConfirmationModal } from "../ui";
+import { AppButton, ConfirmationModal } from "../../shared/ui";
 import { agentsData } from "../../modules/agents/data/agentsData.ts";
 import { generateAgentQrDataUrl } from "../../core/utils/media.ts";
 import { getStatusTone } from "../../core/constants/statusStyles.ts";

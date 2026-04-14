@@ -1,4 +1,4 @@
-import { AppButton } from "./ui";
+import { AppButton } from "../shared/ui";
 
 export function Header() {
   return (

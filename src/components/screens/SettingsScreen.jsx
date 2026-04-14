@@ -1,4 +1,4 @@
-import { AppButton, AppInput, AppSelect } from "../ui";
+import { AppButton, AppInput, AppSelect } from "../../shared/ui";
 
 export function SettingsScreen() {
   return (

@@ -8,7 +8,7 @@ import {
   FaTriangleExclamation,
   FaUserGroup,
 } from "react-icons/fa6";
-import { AppButton } from "./ui";
+import { AppButton } from "../shared/ui";
 import { ROUTES } from "../core/routes.ts";
 
 const sidebarItems = [

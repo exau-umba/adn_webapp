@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppButton, AppSelect, ConfirmationModal } from "../ui";
+import { AppButton, AppSelect, ConfirmationModal } from "../../shared/ui";
 import { agentsData as agents } from "../../modules/agents/data/agentsData.ts";
 import { getStatusTone } from "../../core/constants/statusStyles.ts";
 

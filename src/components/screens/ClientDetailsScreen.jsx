@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppButton, ConfirmationModal } from "../ui";
+import { AppButton, ConfirmationModal } from "../../shared/ui";
 import { clientsData } from "../../modules/clients/data/clientsData.ts";
 import { getStatusTone } from "../../core/constants/statusStyles.ts";
 

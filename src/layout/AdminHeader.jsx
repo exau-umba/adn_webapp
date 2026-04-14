@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { FaBars, FaBell, FaGear, FaMagnifyingGlass, FaMoon, FaSun } from "react-icons/fa6";
-import { AppButton, AppInput, IconButton } from "../components/ui";
+import { AppButton, AppInput, IconButton } from "../shared/ui";
 import { ROUTES } from "../core/routes.ts";
 
 export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onToggleDarkMode }) {

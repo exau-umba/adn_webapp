@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppButton, AppInput } from "../ui";
+import { AppButton, AppInput } from "../../shared/ui";
 import { agentsData } from "../../modules/agents/data/agentsData.ts";
 
 export function AgentEditScreen() {

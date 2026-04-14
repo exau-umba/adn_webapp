@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AppButton, AppInput } from "../ui";
+import { AppButton, AppInput } from "../../shared/ui";
 
 export function AgentRegistrationScreen() {
   const [selectedSex, setSelectedSex] = useState("");
