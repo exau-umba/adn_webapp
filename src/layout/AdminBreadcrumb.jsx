@@ -11,7 +11,7 @@ const segmentLabels = {
   settings: "Parametres",
   dashboard: "Tableau de bord",
   management: "Gestion",
-  registration: "Ajout agent",
+  registration: "Ajout",
   evaluation: "Evaluation",
 };
 

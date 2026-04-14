@@ -17,7 +17,7 @@ export function ClientsManagementScreen() {
             Suivez les informations clients et les missions associees.
           </p>
         </div>
-        <AppButton variant="secondary" size="lg">
+        <AppButton variant="secondary" size="lg" onClick={() => navigate("/client-management/registration")}>
           Nouveau Client
         </AppButton>
       </div>
