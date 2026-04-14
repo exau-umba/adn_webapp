@@ -1,5 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
+  FaBriefcase,
   FaChartSimple,
   FaFileContract,
   FaHouse,
@@ -32,6 +33,13 @@ const sidebarItems = [
     icon: FaPeopleGroup,
     route: true,
     matchPrefixes: [ROUTES.clientManagement],
+  },
+  {
+    label: "Offres",
+    to: ROUTES.offresEmploi,
+    icon: FaBriefcase,
+    route: true,
+    matchPrefixes: [ROUTES.offresEmploi],
   },
   { label: "Mission", icon: FaUserGroup, route: false, matchPrefixes: ["/missions"] },
   { label: "Contrat", icon: FaFileContract, route: false, matchPrefixes: ["/contracts"] },

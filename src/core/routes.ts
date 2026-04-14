@@ -11,4 +11,8 @@ export const ROUTES = {
   clientEdit: (clientId: string) => `/client-management/detail/${clientId}/edit`,
   notifications: "/notifications",
   settings: "/settings",
+  offresEmploi: "/offres-emploi",
+  offreEmploiRegistration: "/offres-emploi/registration",
+  offreEmploiDetail: (offreId: string) => `/offres-emploi/detail/${offreId}`,
+  offreEmploiEdit: (offreId: string) => `/offres-emploi/detail/${offreId}/edit`,
 } as const;
