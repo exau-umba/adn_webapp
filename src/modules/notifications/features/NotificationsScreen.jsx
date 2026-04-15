@@ -1,7 +1,17 @@
-import { AppButton } from "../../../shared/ui";
+import { useMemo, useState } from "react";
+import { AppButton, PaginationControls } from "../../../shared/ui";
 import { notificationsData as notifications } from "../data/notificationsData.ts";
 
 export function NotificationsScreen() {
+  const [page, setPage] = useState(1);
+  const pageSize = 8;
+  const totalPages = Math.max(1, Math.ceil(notifications.length / pageSize));
+  const safePage = Math.min(page, totalPages);
+  const notificationsPage = useMemo(() => {
+    const start = (safePage - 1) * pageSize;
+    return notifications.slice(start, start + pageSize);
+  }, [safePage]);
+
   return (
     <section className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -13,7 +23,7 @@ export function NotificationsScreen() {
       </div>
 
       <div className="space-y-3">
-        {notifications.map((item) => (
+        {notificationsPage.map((item) => (
           <article
             key={item.id}
             className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm dark:border-slate-700 dark:bg-slate-900/80"
@@ -29,6 +39,14 @@ export function NotificationsScreen() {
           </article>
         ))}
       </div>
+      <PaginationControls
+        page={safePage}
+        totalPages={totalPages}
+        totalItems={notifications.length}
+        pageSize={pageSize}
+        onPageChange={setPage}
+        label="notifications"
+      />
     </section>
   );
 }

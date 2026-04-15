@@ -1,11 +1,9 @@
+import { useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FiAlertTriangle, FiEye, FiFilter, FiFlag } from "react-icons/fi";
-import { IconButton } from "../../../shared/ui";
-
-const incidents = [
-  { id: "INC-1042", mission: "MIS-24006", type: "Retard", niveau: "Moyen", statut: "Ouvert", date: "2026-04-15" },
-  { id: "INC-1041", mission: "MIS-24004", type: "Absence", niveau: "Critique", statut: "Escalade", date: "2026-04-14" },
-  { id: "INC-1039", mission: "MIS-23998", type: "Conflit", niveau: "Faible", statut: "Résolu", date: "2026-04-13" },
-];
+import { AppButton, IconButton, PaginationControls } from "../../../shared/ui";
+import { ROUTES } from "../../../core/routes.ts";
+import { loadIncidents } from "../lib/incidentsStorage.ts";
 
 function toneNiveau(niveau) {
   if (niveau === "Critique") return "text-red-600 dark:text-red-400";
@@ -20,6 +18,21 @@ function toneStatut(statut) {
 }
 
 export function IncidentsScreen() {
+  const navigate = useNavigate();
+  const { key } = useLocation();
+  const incidents = useMemo(() => loadIncidents(), [key]);
+  const [page, setPage] = useState(1);
+  const pageSize = 8;
+  const totalPages = Math.max(1, Math.ceil(incidents.length / pageSize));
+  const safePage = Math.min(page, totalPages);
+  const incidentsPage = useMemo(() => {
+    const start = (safePage - 1) * pageSize;
+    return incidents.slice(start, start + pageSize);
+  }, [incidents, safePage]);
+  const countCritiques = incidents.filter((it) => it.niveau === "Critique").length;
+  const countOuverts = incidents.filter((it) => it.statut !== "Résolu").length;
+  const countResolus = incidents.filter((it) => it.statut === "Résolu").length;
+
   return (
     <section className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -30,19 +43,24 @@ export function IncidentsScreen() {
             Suivi des alertes terrain avec une vue claire et actionnable.
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-2 rounded-xl border border-slate-200 bg-white p-2 dark:border-slate-700 dark:bg-slate-900/80">
+        <div className="flex items-center gap-2">
+          <AppButton variant="secondary" onClick={() => navigate(ROUTES.incidentOpen)}>
+            Ouvrir un incident
+          </AppButton>
+          <div className="grid grid-cols-3 gap-2 rounded-xl border border-slate-200 bg-white p-2 dark:border-slate-700 dark:bg-slate-900/80">
           <div className="rounded-lg bg-red-50 px-3 py-2 text-center dark:bg-red-950/40">
             <p className="font-myriad text-[10px] uppercase text-red-600 dark:text-red-400">Critiques</p>
-            <p className="font-brand text-lg text-red-700 dark:text-red-300">03</p>
+            <p className="font-brand text-lg text-red-700 dark:text-red-300">{String(countCritiques).padStart(2, "0")}</p>
           </div>
           <div className="rounded-lg bg-amber-50 px-3 py-2 text-center dark:bg-amber-950/40">
             <p className="font-myriad text-[10px] uppercase text-amber-700 dark:text-amber-300">Ouverts</p>
-            <p className="font-brand text-lg text-amber-700 dark:text-amber-300">09</p>
+            <p className="font-brand text-lg text-amber-700 dark:text-amber-300">{String(countOuverts).padStart(2, "0")}</p>
           </div>
           <div className="rounded-lg bg-emerald-50 px-3 py-2 text-center dark:bg-emerald-950/40">
             <p className="font-myriad text-[10px] uppercase text-emerald-700 dark:text-emerald-300">Résolus</p>
-            <p className="font-brand text-lg text-emerald-700 dark:text-emerald-300">27</p>
+            <p className="font-brand text-lg text-emerald-700 dark:text-emerald-300">{String(countResolus).padStart(2, "0")}</p>
           </div>
+        </div>
         </div>
       </div>
 
@@ -69,7 +87,7 @@ export function IncidentsScreen() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-              {incidents.map((it) => (
+              {incidentsPage.map((it) => (
                 <tr key={it.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
                   <td className="p-3 font-mono text-xs text-[#08047a] dark:text-indigo-300">{it.id}</td>
                   <td className="p-3 text-slate-600 dark:text-slate-300">{it.mission}</td>
@@ -78,7 +96,11 @@ export function IncidentsScreen() {
                   <td className={`p-3 font-semibold ${toneStatut(it.statut)}`}>{it.statut}</td>
                   <td className="p-3 text-slate-500 dark:text-slate-400">{it.date}</td>
                   <td className="p-3 text-right">
-                    <IconButton title="Voir l'incident" aria-label="Voir l'incident">
+                    <IconButton
+                      title="Voir l'incident"
+                      aria-label="Voir l'incident"
+                      onClick={() => navigate(ROUTES.incidentDetail(it.id))}
+                    >
                       <FiEye size={18} />
                     </IconButton>
                   </td>
@@ -87,6 +109,14 @@ export function IncidentsScreen() {
             </tbody>
           </table>
         </div>
+        <PaginationControls
+          page={safePage}
+          totalPages={totalPages}
+          totalItems={incidents.length}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          label="incidents"
+        />
       </article>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEdit2, FiEye, FiPause, FiPlay, FiTrash2 } from "react-icons/fi";
-import { AppButton, AppSelect, ConfirmationModal, IconButton } from "../../../shared/ui";
+import { AppButton, AppSelect, ConfirmationModal, IconButton, PaginationControls } from "../../../shared/ui";
 import { agentsData as agents } from "../data/agentsData.ts";
 import { getStatusTone } from "../../../core/constants/statusStyles.ts";
 
@@ -26,6 +26,14 @@ function renderStars(scoreLabel) {
 export function AgentsManagementScreen() {
   const navigate = useNavigate();
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [page, setPage] = useState(1);
+  const pageSize = 6;
+  const totalPages = Math.max(1, Math.ceil(agents.length / pageSize));
+  const safePage = Math.min(page, totalPages);
+  const agentsPage = useMemo(() => {
+    const start = (safePage - 1) * pageSize;
+    return agents.slice(start, start + pageSize);
+  }, [safePage]);
 
   return (
     <section className="space-y-6">
@@ -97,7 +105,7 @@ export function AgentsManagementScreen() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-            {agents.map((agent) => {
+            {agentsPage.map((agent) => {
               const statusTone = getStatusTone(agent.status);
               return (
                 <tr key={agent.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
@@ -165,20 +173,14 @@ export function AgentsManagementScreen() {
             })}
           </tbody>
         </table>
-        <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-4 py-2.5 dark:border-slate-700 dark:bg-slate-800/70">
-          <p className="font-myriad text-xs text-slate-500 dark:text-slate-400">Affichage de 4 sur 124 agents</p>
-          <div className="flex gap-2">
-            <AppButton variant="ghost" size="sm" className="rounded-lg">
-              Precedent
-            </AppButton>
-            <AppButton variant="primary" size="sm" className="rounded-lg">
-              1
-            </AppButton>
-            <AppButton variant="ghost" size="sm" className="rounded-lg">
-              2
-            </AppButton>
-          </div>
-        </div>
+        <PaginationControls
+          page={safePage}
+          totalPages={totalPages}
+          totalItems={agents.length}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          label="agents"
+        />
       </div>
       <ConfirmationModal
         isOpen={Boolean(deleteTarget)}

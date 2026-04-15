@@ -12,6 +12,7 @@ export const BREADCRUMB_LABELS = {
   notifications: "Notifications",
   settings: "Parametres",
   incidents: "Incidents",
+  ouvrir: "Ouvrir",
   analytics: "Analytique",
   dashboard: "Tableau de bord",
   management: "Gestion",

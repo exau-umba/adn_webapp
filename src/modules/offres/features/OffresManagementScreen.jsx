@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
-import { AppButton, AppInput, AppSelect, ConfirmationModal, IconButton } from "../../../shared/ui";
+import { AppButton, AppInput, AppSelect, ConfirmationModal, IconButton, PaginationControls } from "../../../shared/ui";
 import { offresData as offres } from "../data/offresData.ts";
 import { ROUTES } from "../../../core/routes.ts";
 
@@ -14,6 +14,14 @@ function getOffreStatutTone(statut) {
 export function OffresManagementScreen() {
   const navigate = useNavigate();
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [page, setPage] = useState(1);
+  const pageSize = 8;
+  const totalPages = Math.max(1, Math.ceil(offres.length / pageSize));
+  const safePage = Math.min(page, totalPages);
+  const offresPage = useMemo(() => {
+    const start = (safePage - 1) * pageSize;
+    return offres.slice(start, start + pageSize);
+  }, [safePage]);
 
   return (
     <section className="space-y-6">
@@ -61,7 +69,7 @@ export function OffresManagementScreen() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-            {offres.map((offre) => {
+            {offresPage.map((offre) => {
               const tone = getOffreStatutTone(offre.statut);
               return (
                 <tr key={offre.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
@@ -113,6 +121,14 @@ export function OffresManagementScreen() {
             })}
           </tbody>
         </table>
+        <PaginationControls
+          page={safePage}
+          totalPages={totalPages}
+          totalItems={offres.length}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          label="offres"
+        />
       </div>
 
       <ConfirmationModal

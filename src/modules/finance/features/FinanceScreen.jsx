@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { FiTrash2 } from "react-icons/fi";
-import { AppButton, IconButton } from "../../../shared/ui";
+import { AppButton, IconButton, PaginationControls } from "../../../shared/ui";
 import { financeLignes } from "../data/financeLignes.ts";
 import { missionsData } from "../../missions/data/missionsData.ts";
 import { ROUTES } from "../../../core/routes.ts";
@@ -31,6 +31,8 @@ export function FinanceScreen() {
   const missionFilter = searchParams.get("mission") ?? "";
 
   const [mouvements, setMouvements] = useState(() => loadMouvements());
+  const [pageJournal, setPageJournal] = useState(1);
+  const [pageSynthese, setPageSynthese] = useState(1);
 
   const persist = useCallback((nextOrFn) => {
     setMouvements((prev) => {
@@ -60,6 +62,20 @@ export function FinanceScreen() {
     () => [...mouvementsFiltres].sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id)),
     [mouvementsFiltres],
   );
+  const pageSizeJournal = 8;
+  const totalPagesJournal = Math.max(1, Math.ceil(journalTrie.length / pageSizeJournal));
+  const safePageJournal = Math.min(pageJournal, totalPagesJournal);
+  const journalPage = useMemo(() => {
+    const start = (safePageJournal - 1) * pageSizeJournal;
+    return journalTrie.slice(start, start + pageSizeJournal);
+  }, [journalTrie, safePageJournal]);
+  const pageSizeSynthese = 8;
+  const totalPagesSynthese = Math.max(1, Math.ceil(lignes.length / pageSizeSynthese));
+  const safePageSynthese = Math.min(pageSynthese, totalPagesSynthese);
+  const lignesPage = useMemo(() => {
+    const start = (safePageSynthese - 1) * pageSizeSynthese;
+    return lignes.slice(start, start + pageSizeSynthese);
+  }, [lignes, safePageSynthese]);
 
   const missionLabel = (id) => {
     if (!id) return "—";
@@ -167,7 +183,7 @@ export function FinanceScreen() {
                   </td>
                 </tr>
               ) : (
-                journalTrie.map((m) => (
+                journalPage.map((m) => (
                   <tr key={m.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
                     <td className="p-3 text-slate-600 dark:text-slate-300">{m.date}</td>
                     <td className="p-3">
@@ -204,6 +220,14 @@ export function FinanceScreen() {
             </tbody>
           </table>
         </div>
+        <PaginationControls
+          page={safePageJournal}
+          totalPages={totalPagesJournal}
+          totalItems={journalTrie.length}
+          pageSize={pageSizeJournal}
+          onPageChange={setPageJournal}
+          label="mouvements"
+        />
       </article>
 
       <div>
@@ -223,7 +247,7 @@ export function FinanceScreen() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-              {lignes.map((l) => (
+              {lignesPage.map((l) => (
                 <tr key={l.missionId} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
                   <td className="p-3">
                     <p className="font-semibold text-[#01003b] dark:text-slate-100">{l.missionRef}</p>
@@ -245,6 +269,14 @@ export function FinanceScreen() {
             </tbody>
           </table>
         </div>
+        <PaginationControls
+          page={safePageSynthese}
+          totalPages={totalPagesSynthese}
+          totalItems={lignes.length}
+          pageSize={pageSizeSynthese}
+          onPageChange={setPageSynthese}
+          label="lignes mission"
+        />
       </div>
 
       {lignes.length === 0 ? (

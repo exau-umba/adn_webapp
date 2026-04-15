@@ -25,6 +25,8 @@ export const ROUTES = {
   financeManagement: "/finance-management",
   financeMouvementNouveau: "/finance-management/nouveau-mouvement",
   incidents: "/incidents",
+  incidentOpen: "/incidents/ouvrir",
+  incidentDetail: (incidentId: string) => `/incidents/detail/${incidentId}`,
   analytics: "/analytics",
   financeForMission: (missionId: string) => `/finance-management?mission=${missionId}`,
   financeMouvementNouveauForMission: (missionId: string) =>

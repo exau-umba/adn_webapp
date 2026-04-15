@@ -1,7 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FiFolder } from "react-icons/fi";
-import { AppButton, AppInput, IconButton } from "../../../shared/ui";
+import { AppButton, AppInput, IconButton, PaginationControls } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
 import { getAllContratBundles } from "../data/contratBundleResolve.ts";
 import { getAllEmployeurContrats } from "../data/employeurContratResolve.ts";
@@ -11,6 +11,21 @@ export function ContratsManagementScreen() {
   const { key } = useLocation();
   const bundlesMission = useMemo(() => getAllContratBundles(), [key]);
   const contratsEmployeur = useMemo(() => getAllEmployeurContrats(), [key]);
+  const [pageEmployeur, setPageEmployeur] = useState(1);
+  const [pageMission, setPageMission] = useState(1);
+  const pageSize = 6;
+  const totalPagesEmployeur = Math.max(1, Math.ceil(contratsEmployeur.length / pageSize));
+  const totalPagesMission = Math.max(1, Math.ceil(bundlesMission.length / pageSize));
+  const safePageEmployeur = Math.min(pageEmployeur, totalPagesEmployeur);
+  const safePageMission = Math.min(pageMission, totalPagesMission);
+  const contratsEmployeurPage = useMemo(() => {
+    const start = (safePageEmployeur - 1) * pageSize;
+    return contratsEmployeur.slice(start, start + pageSize);
+  }, [contratsEmployeur, safePageEmployeur]);
+  const bundlesMissionPage = useMemo(() => {
+    const start = (safePageMission - 1) * pageSize;
+    return bundlesMission.slice(start, start + pageSize);
+  }, [bundlesMission, safePageMission]);
 
   return (
     <section className="space-y-8">
@@ -53,7 +68,7 @@ export function ContratsManagementScreen() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-              {contratsEmployeur.map((c) => (
+              {contratsEmployeurPage.map((c) => (
                 <tr key={c.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
                   <td className="p-3 font-mono text-xs text-[#08047a] dark:text-indigo-300">{c.referenceDossier}</td>
                   <td className="p-3 font-medium text-[#01003b] dark:text-slate-100">{c.agent.nomComplet}</td>
@@ -72,6 +87,14 @@ export function ContratsManagementScreen() {
               ))}
             </tbody>
           </table>
+          <PaginationControls
+            page={safePageEmployeur}
+            totalPages={totalPagesEmployeur}
+            totalItems={contratsEmployeur.length}
+            pageSize={pageSize}
+            onPageChange={setPageEmployeur}
+            label="contrats employeur"
+          />
         </div>
       </div>
 
@@ -90,7 +113,7 @@ export function ContratsManagementScreen() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-              {bundlesMission.map((b) => (
+              {bundlesMissionPage.map((b) => (
                 <tr key={b.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
                   <td className="p-3 font-mono text-xs text-[#08047a] dark:text-indigo-300">{b.referenceDossier}</td>
                   <td className="p-3">
@@ -114,6 +137,14 @@ export function ContratsManagementScreen() {
               ))}
             </tbody>
           </table>
+          <PaginationControls
+            page={safePageMission}
+            totalPages={totalPagesMission}
+            totalItems={bundlesMission.length}
+            pageSize={pageSize}
+            onPageChange={setPageMission}
+            label="dossiers mission"
+          />
         </div>
       </div>
     </section>

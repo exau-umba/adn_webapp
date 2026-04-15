@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEdit2, FiEye, FiPause, FiPlay, FiTrash2 } from "react-icons/fi";
-import { AppButton, AppInput, AppSelect, ConfirmationModal, IconButton } from "../../../shared/ui";
+import { AppButton, AppInput, AppSelect, ConfirmationModal, IconButton, PaginationControls } from "../../../shared/ui";
 import { clientsData as clients } from "../data/clientsData.ts";
 import { ROUTES } from "../../../core/routes.ts";
 import { getStatusTone } from "../../../core/constants/statusStyles.ts";
@@ -9,6 +9,14 @@ import { getStatusTone } from "../../../core/constants/statusStyles.ts";
 export function ClientsManagementScreen() {
   const navigate = useNavigate();
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [page, setPage] = useState(1);
+  const pageSize = 8;
+  const totalPages = Math.max(1, Math.ceil(clients.length / pageSize));
+  const safePage = Math.min(page, totalPages);
+  const clientsPage = useMemo(() => {
+    const start = (safePage - 1) * pageSize;
+    return clients.slice(start, start + pageSize);
+  }, [safePage]);
 
   return (
     <section className="space-y-6">
@@ -55,7 +63,7 @@ export function ClientsManagementScreen() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-            {clients.map((client) => {
+            {clientsPage.map((client) => {
               const statusTone = getStatusTone(client.status);
               return (
                 <tr key={client.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
@@ -110,6 +118,14 @@ export function ClientsManagementScreen() {
             })}
           </tbody>
         </table>
+        <PaginationControls
+          page={safePage}
+          totalPages={totalPages}
+          totalItems={clients.length}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          label="clients"
+        />
       </div>
       <ConfirmationModal
         isOpen={Boolean(deleteTarget)}
