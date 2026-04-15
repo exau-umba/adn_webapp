@@ -10,6 +10,7 @@ import {
   FaUsers,
 } from "react-icons/fa6";
 import { AppButton } from "../../../shared/ui";
+import { CompletionRateSparkline, DashboardMiniCharts } from "./DashboardMiniCharts";
 
 const stats = [
   {
@@ -96,7 +97,7 @@ export function DashboardScreen() {
       <div>
         <h2 className="font-brand text-2xl text-[#01003b] dark:text-slate-100 md:text-3xl">Tableau de bord</h2>
         <p className="mt-0.5 font-myriad text-sm text-slate-500 dark:text-slate-400">
-          Bienvenue, voici l'aperçu de vos services domestiques aujourd'hui.
+          Bienvenue, voici l&apos;aperçu de vos services domestiques aujourd&apos;hui.
         </p>
       </div>
 
@@ -140,7 +141,7 @@ export function DashboardScreen() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <article className="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-800/80 lg:col-span-2">
-          <div className="mb-5 flex items-center justify-between gap-3">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div>
               <h3 className="font-myriad text-lg font-bold leading-tight text-[#01003b] dark:text-slate-100 md:text-xl">
                 Performance des Agents
@@ -149,13 +150,16 @@ export function DashboardScreen() {
                 Analyse du taux de completion des missions par mois
               </p>
             </div>
-            <AppButton
-              variant="ghost"
-              size="sm"
-              className="rounded-lg border-none bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-200"
-            >
-              Derniers 6 mois
-            </AppButton>
+            <div className="flex items-center gap-2">
+              <CompletionRateSparkline />
+              <AppButton
+                variant="ghost"
+                size="sm"
+                className="rounded-lg border-none bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-200"
+              >
+                Derniers 6 mois
+              </AppButton>
+            </div>
           </div>
           <div className="rounded-lg bg-slate-100/70 px-3 pt-7 pb-4 dark:bg-slate-900/60">
             <div className="flex h-44 items-end gap-2 md:h-48 md:gap-3">
@@ -240,6 +244,8 @@ export function DashboardScreen() {
           </div>
         </article>
       </div>
+
+      <DashboardMiniCharts />
 
       {/* <div className="rounded-2xl bg-gradient-to-r from-[#01003b] to-[#08047a] p-6 text-white">
         <h3 className="font-brand text-3xl italic">Besoin d'optimiser vos ressources ?</h3>
