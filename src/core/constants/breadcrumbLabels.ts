@@ -3,6 +3,7 @@ export const BREADCRUMB_LABELS = {
   "mission-management": "Missions",
   "contrat-management": "Contrats",
   "finance-management": "Finance",
+  "nouveau-mouvement": "Nouveau mouvement",
   "agent-management": "Gestion agents",
   "client-management": "Gestion clients",
   client: "Client",

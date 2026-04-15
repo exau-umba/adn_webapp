@@ -23,5 +23,8 @@ export const ROUTES = {
   contratManagement: "/contrat-management",
   contratBundleDetail: (bundleId: string) => `/contrat-management/detail/${bundleId}`,
   financeManagement: "/finance-management",
+  financeMouvementNouveau: "/finance-management/nouveau-mouvement",
   financeForMission: (missionId: string) => `/finance-management?mission=${missionId}`,
+  financeMouvementNouveauForMission: (missionId: string) =>
+    `/finance-management/nouveau-mouvement?mission=${encodeURIComponent(missionId)}`,
 } as const;
