@@ -1,37 +1,61 @@
+import { missionsData } from "../../missions/data/missionsData.ts";
+
 const STORAGE_KEY = "adn_incidents_v1";
 
 const seedIncidents = [
   {
     id: "INC-1042",
-    mission: "MIS-24006",
+    mission: "MIS-2026-0142",
     type: "Retard",
     niveau: "Moyen",
     statut: "Ouvert",
     date: "2026-04-15",
     description: "Arrivée de l'agent avec 50 minutes de retard.",
     source: "Client",
+    clientSignaleur: "Residence Mbuyi",
+    agentConcerne: "Marc-Antoine Dupont",
   },
   {
     id: "INC-1041",
-    mission: "MIS-24004",
+    mission: "MIS-2026-0098",
     type: "Absence",
     niveau: "Critique",
     statut: "Escalade",
     date: "2026-04-14",
     description: "Aucune présence constatée sur la mission planifiée.",
     source: "Superviseur",
+    clientSignaleur: "Hotel Lumiere",
+    agentConcerne: "Sophie Lavalliere",
   },
   {
     id: "INC-1039",
-    mission: "MIS-23998",
+    mission: "MIS-2025-2210",
     type: "Conflit",
     niveau: "Faible",
     statut: "Résolu",
     date: "2026-04-13",
     description: "Différend mineur entre client et agent, traité sur place.",
     source: "Agent",
+    clientSignaleur: "Villa Kivu",
+    agentConcerne: "Marc-Antoine Dupont",
   },
 ];
+
+function resolveMissionParties(missionValue) {
+  const mission = missionsData.find((m) => m.reference === missionValue || m.id === missionValue);
+  if (!mission) return null;
+  return { clientName: mission.clientName, agentName: mission.agentName, missionRef: mission.reference };
+}
+
+function normalizeIncident(incident) {
+  const parties = resolveMissionParties(incident.mission);
+  return {
+    ...incident,
+    mission: parties?.missionRef ?? incident.mission,
+    clientSignaleur: incident.clientSignaleur ?? parties?.clientName ?? "Client non renseigné",
+    agentConcerne: incident.agentConcerne ?? parties?.agentName ?? "Agent non renseigné",
+  };
+}
 
 function hasWindow() {
   return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
@@ -43,9 +67,9 @@ export function loadIncidents() {
   if (!raw) return seedIncidents;
   try {
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : seedIncidents;
+    return Array.isArray(parsed) ? parsed.map(normalizeIncident) : seedIncidents.map(normalizeIncident);
   } catch {
-    return seedIncidents;
+    return seedIncidents.map(normalizeIncident);
   }
 }
 
@@ -64,11 +88,15 @@ function nextIncidentId(items) {
 
 export function createIncident(payload) {
   const items = loadIncidents();
+  const parties = resolveMissionParties(payload.mission);
   const incident = {
     id: nextIncidentId(items),
     date: new Date().toISOString().slice(0, 10),
     statut: "Ouvert",
     ...payload,
+    mission: parties?.missionRef ?? payload.mission,
+    clientSignaleur: payload.clientSignaleur ?? parties?.clientName ?? "Client non renseigné",
+    agentConcerne: payload.agentConcerne ?? parties?.agentName ?? "Agent non renseigné",
   };
   const next = [incident, ...items];
   saveIncidents(next);

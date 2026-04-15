@@ -46,6 +46,14 @@ export function IncidentDetailScreen() {
             <p className="mt-1 font-myriad font-semibold text-[#01003b] dark:text-slate-100">{incident.mission}</p>
           </div>
           <div>
+            <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Client signaleur</p>
+            <p className="mt-1 font-myriad font-semibold text-[#01003b] dark:text-slate-100">{incident.clientSignaleur}</p>
+          </div>
+          <div>
+            <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Agent concerné</p>
+            <p className="mt-1 font-myriad font-semibold text-[#01003b] dark:text-slate-100">{incident.agentConcerne}</p>
+          </div>
+          <div>
             <p className="font-myriad text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">Date</p>
             <p className="mt-1 font-myriad font-semibold text-[#01003b] dark:text-slate-100">{incident.date}</p>
           </div>

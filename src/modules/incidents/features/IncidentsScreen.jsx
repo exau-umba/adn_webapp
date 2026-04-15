@@ -74,11 +74,13 @@ export function IncidentsScreen() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-[740px] w-full border-collapse font-myriad text-sm">
+          <table className="min-w-[920px] w-full border-collapse font-myriad text-sm">
             <thead className="bg-slate-50 text-left dark:bg-slate-800/80">
               <tr>
                 <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Réf.</th>
                 <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Mission</th>
+                <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Client signaleur</th>
+                <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Agent concerné</th>
                 <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Type</th>
                 <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Niveau</th>
                 <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Statut</th>
@@ -91,6 +93,8 @@ export function IncidentsScreen() {
                 <tr key={it.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
                   <td className="p-3 font-mono text-xs text-[#08047a] dark:text-indigo-300">{it.id}</td>
                   <td className="p-3 text-slate-600 dark:text-slate-300">{it.mission}</td>
+                  <td className="p-3 text-slate-600 dark:text-slate-300">{it.clientSignaleur}</td>
+                  <td className="p-3 text-slate-600 dark:text-slate-300">{it.agentConcerne}</td>
                   <td className="p-3 text-slate-600 dark:text-slate-300">{it.type}</td>
                   <td className={`p-3 font-semibold ${toneNiveau(it.niveau)}`}>{it.niveau}</td>
                   <td className={`p-3 font-semibold ${toneStatut(it.statut)}`}>{it.statut}</td>

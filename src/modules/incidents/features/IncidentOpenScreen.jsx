@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { AppButton, AppInput, AppSelect, AppTextarea } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
 import { createIncident } from "../lib/incidentsStorage.ts";
+import { missionsData } from "../../missions/data/missionsData.ts";
 
 export function IncidentOpenScreen() {
   const navigate = useNavigate();
@@ -13,8 +14,21 @@ export function IncidentOpenScreen() {
     type: "Retard",
     niveau: "Moyen",
     source: "Client",
+    clientSignaleur: "",
+    agentConcerne: "",
     description: "",
   });
+
+  const syncPartiesFromMission = (missionValue) => {
+    const mission = missionsData.find((m) => m.reference === missionValue || m.id === missionValue);
+    if (!mission) return;
+    setForm((p) => ({
+      ...p,
+      mission: mission.reference,
+      clientSignaleur: p.clientSignaleur || mission.clientName,
+      agentConcerne: p.agentConcerne || mission.agentName,
+    }));
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +37,8 @@ export function IncidentOpenScreen() {
       type: form.type,
       niveau: form.niveau,
       source: form.source,
+      clientSignaleur: form.clientSignaleur,
+      agentConcerne: form.agentConcerne,
       description: form.description || "Aucune précision fournie.",
     });
     navigate(ROUTES.incidentDetail(created.id));
@@ -39,7 +55,16 @@ export function IncidentOpenScreen() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Mission
-            <AppInput className="mt-2" value={form.mission} onChange={(e) => setForm((p) => ({ ...p, mission: e.target.value }))} />
+            <AppInput
+              className="mt-2"
+              value={form.mission}
+              onChange={(e) => {
+                const next = e.target.value;
+                setForm((p) => ({ ...p, mission: next }));
+                syncPartiesFromMission(next);
+              }}
+              placeholder="MIS-2026-0142"
+            />
           </label>
           <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Type
@@ -66,6 +91,24 @@ export function IncidentOpenScreen() {
               <option>Agent</option>
               <option>Superviseur</option>
             </AppSelect>
+          </label>
+          <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            Client signaleur
+            <AppInput
+              className="mt-2"
+              value={form.clientSignaleur}
+              onChange={(e) => setForm((p) => ({ ...p, clientSignaleur: e.target.value }))}
+              placeholder="Nom du client"
+            />
+          </label>
+          <label className="font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            Agent concerné
+            <AppInput
+              className="mt-2"
+              value={form.agentConcerne}
+              onChange={(e) => setForm((p) => ({ ...p, agentConcerne: e.target.value }))}
+              placeholder="Nom de l'agent"
+            />
           </label>
           <label className="md:col-span-2 font-myriad text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Description
