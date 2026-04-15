@@ -63,8 +63,20 @@ const sidebarItems = [
     route: true,
     matchPrefixes: [ROUTES.financeManagement],
   },
-  { label: "Incident", icon: FaTriangleExclamation, route: false, matchPrefixes: ["/incidents"] },
-  { label: "Analytique", icon: FaChartSimple, route: false, matchPrefixes: ["/analytics"] },
+  {
+    label: "Incident",
+    to: ROUTES.incidents,
+    icon: FaTriangleExclamation,
+    route: true,
+    matchPrefixes: [ROUTES.incidents],
+  },
+  {
+    label: "Analytique",
+    to: ROUTES.analytics,
+    icon: FaChartSimple,
+    route: true,
+    matchPrefixes: [ROUTES.analytics],
+  },
 ];
 
 export function Sidebar({ collapsed }) {

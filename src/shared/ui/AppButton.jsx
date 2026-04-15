@@ -25,7 +25,7 @@ export function AppButton({
   return (
     <button
       type={type}
-      className={`rounded-full font-myriad font-semibold shadow-sm transition ${buttonVariants[variant]} ${buttonSizes[size]} ${className}`}
+      className={`cursor-pointer rounded-full font-myriad font-semibold shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${buttonVariants[variant]} ${buttonSizes[size]} ${className}`}
       {...props}
     >
       {children}
@@ -36,7 +36,7 @@ export function AppButton({
 export function IconButton({ children, className = "", ...props }) {
   return (
     <button
-      className={`inline-flex items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 ${buttonSizes.icon} ${className}`}
+      className={`inline-flex cursor-pointer items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60 dark:text-slate-300 dark:hover:bg-slate-800 ${buttonSizes.icon} ${className}`}
       type="button"
       {...props}
     >

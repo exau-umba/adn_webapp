@@ -11,6 +11,8 @@ export const BREADCRUMB_LABELS = {
   edit: "Modification",
   notifications: "Notifications",
   settings: "Parametres",
+  incidents: "Incidents",
+  analytics: "Analytique",
   dashboard: "Tableau de bord",
   management: "Gestion",
   registration: "Ajout",

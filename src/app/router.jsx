@@ -9,6 +9,8 @@ import { offresRoutes } from "../modules/offres/routes";
 import { missionsRoutes } from "../modules/missions/routes";
 import { contratsRoutes } from "../modules/contrats/routes";
 import { financeRoutes } from "../modules/finance/routes";
+import { incidentsRoutes } from "../modules/incidents/routes";
+import { analyticsRoutes } from "../modules/analytics/routes";
 import { ROUTES } from "../core/routes.ts";
 
 export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onToggleDarkMode }) {
@@ -32,6 +34,8 @@ export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onTog
         ...missionsRoutes,
         ...contratsRoutes,
         ...financeRoutes,
+        ...incidentsRoutes,
+        ...analyticsRoutes,
         ...notificationsRoutes,
         ...settingsRoutes,
       ],

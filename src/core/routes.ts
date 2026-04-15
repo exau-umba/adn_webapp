@@ -24,6 +24,8 @@ export const ROUTES = {
   contratBundleDetail: (bundleId: string) => `/contrat-management/detail/${bundleId}`,
   financeManagement: "/finance-management",
   financeMouvementNouveau: "/finance-management/nouveau-mouvement",
+  incidents: "/incidents",
+  analytics: "/analytics",
   financeForMission: (missionId: string) => `/finance-management?mission=${missionId}`,
   financeMouvementNouveauForMission: (missionId: string) =>
     `/finance-management/nouveau-mouvement?mission=${encodeURIComponent(missionId)}`,
