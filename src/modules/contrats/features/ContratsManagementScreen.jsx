@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AppButton, AppInput } from "../../../shared/ui";
+import { FiFolder } from "react-icons/fi";
+import { AppButton, AppInput, IconButton } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
 import { getAllContratBundles } from "../data/contratBundleResolve.ts";
 import { getAllEmployeurContrats } from "../data/employeurContratResolve.ts";
@@ -58,14 +59,14 @@ export function ContratsManagementScreen() {
                   <td className="p-3 font-medium text-[#01003b] dark:text-slate-100">{c.agent.nomComplet}</td>
                   <td className="p-3 text-slate-600 dark:text-slate-300">{c.dateGeneration}</td>
                   <td className="p-3 text-right">
-                    <AppButton
-                      variant="secondary"
-                      size="sm"
-                      className="rounded-lg"
+                    <IconButton
+                      className="text-amber-700 hover:bg-amber-50 dark:text-amber-400 dark:hover:bg-amber-950/30"
+                      title="Ouvrir le contrat"
+                      aria-label="Ouvrir le contrat employeur"
                       onClick={() => navigate(ROUTES.agentEmployeurContrat(c.agentId))}
                     >
-                      Ouvrir
-                    </AppButton>
+                      <FiFolder size={18} />
+                    </IconButton>
                   </td>
                 </tr>
               ))}
@@ -100,14 +101,14 @@ export function ContratsManagementScreen() {
                   <td className="p-3 text-slate-600 dark:text-slate-300">{b.agent.nomComplet}</td>
                   <td className="p-3 text-slate-600 dark:text-slate-300">{b.dateGeneration}</td>
                   <td className="p-3 text-right">
-                    <AppButton
-                      variant="secondary"
-                      size="sm"
-                      className="rounded-lg"
+                    <IconButton
+                      className="text-amber-700 hover:bg-amber-50 dark:text-amber-400 dark:hover:bg-amber-950/30"
+                      title="Ouvrir le dossier"
+                      aria-label="Ouvrir le dossier mission"
                       onClick={() => navigate(ROUTES.contratBundleDetail(b.id))}
                     >
-                      Ouvrir
-                    </AppButton>
+                      <FiFolder size={18} />
+                    </IconButton>
                   </td>
                 </tr>
               ))}

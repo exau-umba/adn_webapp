@@ -36,7 +36,7 @@ export function AppButton({
 export function IconButton({ children, className = "", ...props }) {
   return (
     <button
-      className={`rounded-lg text-slate-500 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 ${buttonSizes.icon} ${className}`}
+      className={`inline-flex items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 ${buttonSizes.icon} ${className}`}
       type="button"
       {...props}
     >

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppButton, AppInput, AppSelect, ConfirmationModal } from "../../../shared/ui";
+import { FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
+import { AppButton, AppInput, AppSelect, ConfirmationModal, IconButton } from "../../../shared/ui";
 import { offresData as offres } from "../data/offresData.ts";
 import { ROUTES } from "../../../core/routes.ts";
 
@@ -80,31 +81,31 @@ export function OffresManagementScreen() {
                     {offre.datePublication ?? "—"}
                   </td>
                   <td className="p-3 text-right">
-                    <div className="flex justify-end gap-2">
-                      <AppButton
-                        variant="ghost"
-                        size="sm"
-                        className="rounded-lg"
+                    <div className="flex justify-end gap-1">
+                      <IconButton
+                        className="text-slate-600 dark:text-slate-300"
+                        title="Voir le détail"
+                        aria-label="Voir le détail"
                         onClick={() => navigate(ROUTES.offreEmploiDetail(offre.id))}
                       >
-                        Voir
-                      </AppButton>
-                      <AppButton
-                        variant="secondary"
-                        size="sm"
-                        className="rounded-lg"
+                        <FiEye size={18} />
+                      </IconButton>
+                      <IconButton
+                        className="text-amber-700 hover:bg-amber-50 dark:text-amber-400 dark:hover:bg-amber-950/30"
+                        title="Modifier"
+                        aria-label="Modifier"
                         onClick={() => navigate(ROUTES.offreEmploiEdit(offre.id))}
                       >
-                        Modifier
-                      </AppButton>
-                      <AppButton
-                        variant="ghost"
-                        size="sm"
-                        className="rounded-lg border-red-200 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-950/30"
+                        <FiEdit2 size={18} />
+                      </IconButton>
+                      <IconButton
+                        className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+                        title="Supprimer"
+                        aria-label="Supprimer"
                         onClick={() => setDeleteTarget(offre)}
                       >
-                        Supprimer
-                      </AppButton>
+                        <FiTrash2 size={18} />
+                      </IconButton>
                     </div>
                   </td>
                 </tr>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppButton, AppSelect, ConfirmationModal } from "../../../shared/ui";
+import { FiEdit2, FiEye, FiPause, FiPlay, FiTrash2 } from "react-icons/fi";
+import { AppButton, AppSelect, ConfirmationModal, IconButton } from "../../../shared/ui";
 import { agentsData as agents } from "../data/agentsData.ts";
 import { getStatusTone } from "../../../core/constants/statusStyles.ts";
 
@@ -124,38 +125,39 @@ export function AgentsManagementScreen() {
                     </span>
                   </td>
                   <td className="p-3 text-right">
-                    <div className="flex justify-end gap-2">
-                      <AppButton
-                        variant="ghost"
-                        size="sm"
-                        className="rounded-lg"
+                    <div className="flex justify-end gap-1">
+                      <IconButton
+                        className="text-slate-600 dark:text-slate-300"
+                        title="Voir le détail"
+                        aria-label="Voir le détail"
                         onClick={() => navigate(`/agent-management/detail/${agent.id}`)}
                       >
-                        Voir
-                      </AppButton>
-                      <AppButton
-                        variant="secondary"
-                        size="sm"
-                        className="rounded-lg"
+                        <FiEye size={18} />
+                      </IconButton>
+                      <IconButton
+                        className="text-amber-700 hover:bg-amber-50 dark:text-amber-400 dark:hover:bg-amber-950/30"
+                        title="Modifier"
+                        aria-label="Modifier"
                         onClick={() => navigate(`/agent-management/detail/${agent.id}/edit`)}
                       >
-                        Modifier
-                      </AppButton>
-                      <AppButton
-                        variant="ghost"
-                        size="sm"
-                        className="rounded-lg border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-700 dark:text-amber-300 dark:hover:bg-amber-950/30"
+                        <FiEdit2 size={18} />
+                      </IconButton>
+                      <IconButton
+                        className="text-amber-700 hover:bg-amber-50 dark:text-amber-300 dark:hover:bg-amber-950/30"
+                        title={agent.status === "Suspendu" ? "Réactiver" : "Suspendre"}
+                        aria-label={agent.status === "Suspendu" ? "Réactiver" : "Suspendre"}
+                        type="button"
                       >
-                        {agent.status === "Suspendu" ? "Reactiver" : "Suspendre"}
-                      </AppButton>
-                      <AppButton
-                        variant="ghost"
-                        size="sm"
-                        className="rounded-lg border-red-200 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-950/30"
+                        {agent.status === "Suspendu" ? <FiPlay size={18} /> : <FiPause size={18} />}
+                      </IconButton>
+                      <IconButton
+                        className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+                        title="Supprimer"
+                        aria-label="Supprimer"
                         onClick={() => setDeleteTarget(agent)}
                       >
-                        Supprimer
-                      </AppButton>
+                        <FiTrash2 size={18} />
+                      </IconButton>
                     </div>
                   </td>
                 </tr>

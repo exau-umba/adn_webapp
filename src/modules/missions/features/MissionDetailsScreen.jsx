@@ -99,9 +99,18 @@ export function MissionDetailsScreen() {
           <p className="mt-2 font-myriad text-sm text-slate-500 dark:text-slate-400">
             Encaissement client → ADN PRO SERVICE, puis versement à l&apos;agent pour cette mission.
           </p>
-          <AppButton variant="secondary" className="mt-4" onClick={() => navigate(ROUTES.financeForMission(mission.id))}>
-            Voir la ligne en finance
-          </AppButton>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <AppButton variant="secondary" onClick={() => navigate(ROUTES.financeForMission(mission.id))}>
+              Voir la ligne en finance
+            </AppButton>
+            <AppButton
+              variant="ghost"
+              className="border border-slate-200 dark:border-slate-600"
+              onClick={() => navigate(ROUTES.financeMouvementNouveauForMission(mission.id))}
+            >
+              Enregistrer un mouvement
+            </AppButton>
+          </div>
         </article>
       </div>
 

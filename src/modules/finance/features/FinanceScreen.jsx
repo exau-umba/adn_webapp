@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { AppButton } from "../../../shared/ui";
+import { FiTrash2 } from "react-icons/fi";
+import { AppButton, IconButton } from "../../../shared/ui";
 import { financeLignes } from "../data/financeLignes.ts";
 import { missionsData } from "../../missions/data/missionsData.ts";
 import { ROUTES } from "../../../core/routes.ts";
@@ -188,9 +189,14 @@ export function FinanceScreen() {
                     <td className="p-3 text-slate-500 dark:text-slate-400">{missionLabel(m.missionId)}</td>
                     <td className="p-3 text-slate-500 dark:text-slate-400">{m.beneficiaire ?? "—"}</td>
                     <td className="p-3 text-right">
-                      <AppButton variant="ghost" size="sm" className="text-red-600 dark:text-red-400" type="button" onClick={() => supprimerMouvement(m.id)}>
-                        Supprimer
-                      </AppButton>
+                      <IconButton
+                        className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+                        title="Supprimer ce mouvement"
+                        aria-label="Supprimer ce mouvement"
+                        onClick={() => supprimerMouvement(m.id)}
+                      >
+                        <FiTrash2 size={18} />
+                      </IconButton>
                     </td>
                   </tr>
                 ))
