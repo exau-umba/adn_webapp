@@ -8,8 +8,10 @@ import { getStatusTone } from "../../../core/constants/statusStyles.ts";
 import { assignAccountRoles, deleteAccount, listAccounts, listRoles, patchAccount } from "../lib/userApi.ts";
 import { UserModuleNav } from "./UserModuleNav.jsx";
 import { UserAvatar } from "../components/UserAvatar.jsx";
+import { useAuth } from "../../../core/auth/AuthContext.jsx";
 
 export function UsersManagementScreen() {
+  const { user: currentUser } = useAuth();
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [usersCount, setUsersCount] = useState(0);
@@ -83,6 +85,10 @@ export function UsersManagementScreen() {
     setError("");
     const current = users.find((u) => u.id === userId);
     if (!current) return;
+    if (String(currentUser?.id) === String(userId)) {
+      toast.error("Vous ne pouvez pas modifier votre propre statut.");
+      return;
+    }
     try {
       const updated = await patchAccount(userId, { is_active: !current.is_active });
       setUsers((prev) => prev.map((u) => (u.id === userId ? updated : u)));
@@ -96,6 +102,11 @@ export function UsersManagementScreen() {
 
   async function confirmDelete() {
     if (!deleteTarget) return;
+    if (String(currentUser?.id) === String(deleteTarget.id)) {
+      toast.error("Vous ne pouvez pas supprimer votre propre compte.");
+      setDeleteTarget(null);
+      return;
+    }
     setError("");
     try {
       const message = await deleteAccount(deleteTarget.id);
@@ -184,6 +195,7 @@ export function UsersManagementScreen() {
               </tr>
             ) : (
               users.map((user) => {
+                const isSelf = String(currentUser?.id) === String(user.id);
                 const statusTone = getStatusTone(user.is_active ? "Actif" : "Suspendu");
                 const selectedRoleCode = user.roles?.[0]?.code ?? "";
                 return (
@@ -253,18 +265,20 @@ export function UsersManagementScreen() {
                       </IconButton>
                       <IconButton
                         className="text-amber-700 hover:bg-amber-50 dark:text-amber-400 dark:hover:bg-amber-950/30"
-                        title={user.is_active ? "Suspendre" : "Réactiver"}
+                        title={isSelf ? "Action indisponible sur votre compte" : user.is_active ? "Suspendre" : "Réactiver"}
                         aria-label={user.is_active ? "Suspendre" : "Réactiver"}
                         type="button"
+                        disabled={isSelf}
                         onClick={() => toggleStatus(user.id)}
                       >
                         {user.is_active ? <FiPause size={18} /> : <FiPlay size={18} />}
                       </IconButton>
                       <IconButton
                         className="text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
-                        title="Supprimer"
+                        title={isSelf ? "Vous ne pouvez pas supprimer votre propre compte" : "Supprimer"}
                         aria-label="Supprimer"
                         type="button"
+                        disabled={isSelf}
                         onClick={() => setDeleteTarget(user)}
                       >
                         <FiTrash2 size={18} />

@@ -7,6 +7,7 @@ import { ROUTES } from "../../../core/routes.ts";
 import { assignAccountRoles, deleteAccount, getAccount, listRoles, patchAccount, resendActivation, sendPasswordSetup } from "../lib/userApi.ts";
 import { UserModuleNav } from "./UserModuleNav.jsx";
 import { UserAvatar } from "../components/UserAvatar.jsx";
+import { useAuth } from "../../../core/auth/AuthContext.jsx";
 
 function formatDateTime(value) {
   if (!value) return "—";
@@ -18,6 +19,7 @@ function formatDateTime(value) {
 }
 
 export function UserDetailsScreen() {
+  const { user: currentUser } = useAuth();
   const { userId } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -46,9 +48,14 @@ export function UserDetailsScreen() {
 
   const selectedRoleCode = user?.roles?.[0]?.code ?? "";
   const roleLabelByCode = useMemo(() => Object.fromEntries(roles.map((r) => [r.code, r.label])), [roles]);
+  const isSelf = Boolean(currentUser?.id && user?.id && String(currentUser.id) === String(user.id));
 
   async function toggleActive() {
     if (!user) return;
+    if (isSelf) {
+      toast.error("Vous ne pouvez pas modifier votre propre statut.");
+      return;
+    }
     setError("");
     try {
       const updated = await patchAccount(user.id, { is_active: !user.is_active });
@@ -101,6 +108,11 @@ export function UserDetailsScreen() {
 
   async function handleDeleteUser() {
     if (!user) return;
+    if (isSelf) {
+      toast.error("Vous ne pouvez pas supprimer votre propre compte.");
+      setShowDeleteConfirm(false);
+      return;
+    }
     setError("");
     try {
       const message = await deleteAccount(user.id);
@@ -175,6 +187,8 @@ export function UserDetailsScreen() {
           <AppButton
             variant="secondary"
             onClick={toggleActive}
+            disabled={isSelf}
+            title={isSelf ? "Vous ne pouvez pas modifier votre propre statut ici." : undefined}
             className={user.is_active ? "" : "bg-[#ffdf95]"}
           >
             <span className="inline-flex items-center gap-2">
@@ -196,7 +210,12 @@ export function UserDetailsScreen() {
               Envoyer lien mot de passe
             </span>
           </AppButton>
-          <AppButton variant="ghost" onClick={() => setShowDeleteConfirm(true)}>
+          <AppButton
+            variant="ghost"
+            onClick={() => setShowDeleteConfirm(true)}
+            disabled={isSelf}
+            title={isSelf ? "Vous ne pouvez pas supprimer votre propre compte." : undefined}
+          >
             <span className="inline-flex items-center gap-2 text-red-700 dark:text-red-400">
               <FiTrash2 size={16} />
               Supprimer

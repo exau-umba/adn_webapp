@@ -4,8 +4,10 @@ import { AppButton, AppInput, AppSelect } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
 import { getAccount, listRoles, patchAccount, assignAccountRoles } from "../lib/userApi.ts";
 import { UserModuleNav } from "./UserModuleNav.jsx";
+import { useAuth } from "../../../core/auth/AuthContext.jsx";
 
 export function UserEditScreen() {
+  const { user: currentUser } = useAuth();
   const { userId } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -50,6 +52,8 @@ export function UserEditScreen() {
     );
   }
 
+  const isSelf = Boolean(currentUser?.id && user?.id && String(currentUser.id) === String(user.id));
+
   if (!user) {
     return (
       <section className="space-y-4">
@@ -76,13 +80,16 @@ export function UserEditScreen() {
         const parts = name.split(" ").filter(Boolean);
         const first_name = parts.slice(0, 1).join(" ");
         const last_name = parts.slice(1).join(" ");
-        const updated = await patchAccount(user.id, {
+        const patchPayload = {
           email: mail,
           first_name,
           last_name,
           profile_photo: profilePhotoFile,
-          is_active: isActive,
-        });
+        };
+        if (!isSelf) {
+          patchPayload.is_active = isActive;
+        }
+        const updated = await patchAccount(user.id, patchPayload);
         const updatedWithRoles = await assignAccountRoles(updated.id, roleCode ? [roleCode] : []);
         setUser(updatedWithRoles);
         navigate(ROUTES.userManagement);
@@ -142,10 +149,19 @@ export function UserEditScreen() {
         </div>
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Statut</label>
-          <AppSelect className="mt-2" value={isActive ? "Actif" : "Suspendu"} onChange={(e) => setIsActive(e.target.value === "Actif")}>
+          <AppSelect
+            className="mt-2"
+            value={isActive ? "Actif" : "Suspendu"}
+            onChange={(e) => setIsActive(e.target.value === "Actif")}
+            disabled={isSelf}
+            title={isSelf ? "Vous ne pouvez pas désactiver votre propre compte depuis ce formulaire." : undefined}
+          >
             <option value="Actif">Actif</option>
             <option value="Suspendu">Suspendu</option>
           </AppSelect>
+          {isSelf ? (
+            <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">Le statut de votre propre compte ne peut pas être modifié ici.</p>
+          ) : null}
         </div>
         <div className="flex flex-wrap justify-end gap-2 pt-2">
           <AppButton type="button" variant="ghost" onClick={() => navigate(ROUTES.userManagement)}>
