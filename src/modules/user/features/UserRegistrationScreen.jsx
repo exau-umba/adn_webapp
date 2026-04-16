@@ -1,45 +1,66 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppButton, AppInput, AppSelect } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
-import { createUserId, loadRoles, loadUsers, saveUsers } from "../lib/rbacStorage.ts";
+import { assignAccountRoles, adminRegisterUser, listRoles } from "../lib/userApi.ts";
 import { UserModuleNav } from "./UserModuleNav.jsx";
 
 export function UserRegistrationScreen() {
   const navigate = useNavigate();
-  const roles = loadRoles();
-  const defaultRoleId = roles[0]?.id ?? "";
+  const [roles, setRoles] = useState([]);
   const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [roleId, setRoleId] = useState(defaultRoleId);
+  const [password, setPassword] = useState("");
+  const [roleCode, setRoleCode] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  function submit(e) {
+  useEffect(() => {
+    (async () => {
+      try {
+        const r = await listRoles();
+        setRoles(r);
+        setRoleCode(r[0]?.code ?? "");
+      } catch {
+        // ignore, handled on submit
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  async function submit(e) {
     e.preventDefault();
     const name = fullName.trim();
     const mail = email.trim().toLowerCase();
-    if (!name || !mail) {
-      setError("Nom et e-mail sont obligatoires.");
+    const u = username.trim();
+    if (!name || !mail || !u || !password) {
+      setError("Nom, nom d'utilisateur, e-mail et mot de passe sont obligatoires.");
       return;
     }
-    const users = loadUsers();
-    if (users.some((u) => u.email.toLowerCase() === mail)) {
-      setError("Un utilisateur avec cet e-mail existe déjà.");
-      return;
-    }
-    const next = [
-      ...users,
-      {
-        id: createUserId(),
+    setError("");
+    setLoading(true);
+    try {
+      const parts = name.split(" ").filter(Boolean);
+      const first_name = parts.slice(0, 1).join(" ");
+      const last_name = parts.slice(1).join(" ");
+      const created = await adminRegisterUser({
+        username: u,
         email: mail,
-        fullName: name,
-        roleId: roleId || defaultRoleId,
-        status: "Actif",
-        lastLoginAt: new Date().toISOString(),
-      },
-    ];
-    saveUsers(next);
-    navigate(ROUTES.userManagement);
+        first_name,
+        last_name,
+        password,
+      });
+      if (roleCode) {
+        await assignAccountRoles(created.user.id, [roleCode]);
+      }
+      navigate(ROUTES.userManagement);
+    } catch (e2) {
+      setError(e2 instanceof Error ? e2.message : "Impossible de créer l'utilisateur.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -68,6 +89,10 @@ export function UserRegistrationScreen() {
           <AppInput className="mt-2" value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="name" />
         </div>
         <div>
+          <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Nom d&apos;utilisateur</label>
+          <AppInput className="mt-2" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" />
+        </div>
+        <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">E-mail</label>
           <AppInput
             className="mt-2"
@@ -78,11 +103,16 @@ export function UserRegistrationScreen() {
           />
         </div>
         <div>
+          <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Mot de passe</label>
+          <AppInput className="mt-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+        </div>
+        <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Rôle</label>
-          <AppSelect className="mt-2" value={roleId} onChange={(e) => setRoleId(e.target.value)}>
+          <AppSelect className="mt-2" value={roleCode} onChange={(e) => setRoleCode(e.target.value)} disabled={loading}>
+            <option value="">Aucun</option>
             {roles.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name}
+              <option key={r.id} value={r.code}>
+                {r.label} ({r.code})
               </option>
             ))}
           </AppSelect>
@@ -91,7 +121,7 @@ export function UserRegistrationScreen() {
           <AppButton type="button" variant="ghost" onClick={() => navigate(ROUTES.userManagement)}>
             Annuler
           </AppButton>
-          <AppButton type="submit" variant="primary">
+          <AppButton type="submit" variant="primary" disabled={loading}>
             Enregistrer
           </AppButton>
         </div>

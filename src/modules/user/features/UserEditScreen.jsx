@@ -2,30 +2,51 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppButton, AppInput, AppSelect } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
-import { loadRoles, loadUsers, saveUsers } from "../lib/rbacStorage.ts";
+import { getAccount, listRoles, patchAccount, assignAccountRoles } from "../lib/userApi.ts";
 import { UserModuleNav } from "./UserModuleNav.jsx";
 
 export function UserEditScreen() {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const user = loadUsers().find((u) => u.id === userId);
-  const roles = loadRoles();
+  const [user, setUser] = useState(null);
+  const [roles, setRoles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [roleId, setRoleId] = useState(roles[0]?.id ?? "");
-  const [status, setStatus] = useState("Actif");
+  const [roleCode, setRoleCode] = useState("");
+  const [isActive, setIsActive] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const u = loadUsers().find((x) => x.id === userId);
-    if (!u) return;
-    setFullName(u.fullName);
-    setEmail(u.email);
-    setRoleId(u.roleId);
-    setStatus(u.status);
-    setError("");
+    async function run() {
+      setError("");
+      setLoading(true);
+      try {
+        const [u, r] = await Promise.all([getAccount(userId), listRoles()]);
+        setUser(u);
+        setRoles(r);
+        setFullName(u.full_name ?? "");
+        setEmail(u.email ?? "");
+        setRoleCode(u.roles?.[0]?.code ?? "");
+        setIsActive(Boolean(u.is_active));
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Impossible de charger l'utilisateur.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (userId) void run();
   }, [userId]);
+
+  if (loading) {
+    return (
+      <section className="space-y-4">
+        <UserModuleNav />
+        <p className="font-myriad text-slate-600 dark:text-slate-300">Chargement…</p>
+      </section>
+    );
+  }
 
   if (!user) {
     return (
@@ -47,25 +68,25 @@ export function UserEditScreen() {
       setError("Nom et e-mail sont obligatoires.");
       return;
     }
-    const all = loadUsers();
-    if (all.some((u) => u.id !== user.id && u.email.toLowerCase() === mail)) {
-      setError("Un autre utilisateur utilise déjà cet e-mail.");
-      return;
-    }
-    saveUsers(
-      all.map((u) =>
-        u.id === user.id
-          ? {
-              ...u,
-              fullName: name,
-              email: mail,
-              roleId,
-              status,
-            }
-          : u,
-      ),
-    );
-    navigate(ROUTES.userManagement);
+    setError("");
+    (async () => {
+      try {
+        const parts = name.split(" ").filter(Boolean);
+        const first_name = parts.slice(0, 1).join(" ");
+        const last_name = parts.slice(1).join(" ");
+        const updated = await patchAccount(user.id, {
+          email: mail,
+          first_name,
+          last_name,
+          is_active: isActive,
+        });
+        const updatedWithRoles = await assignAccountRoles(updated.id, roleCode ? [roleCode] : []);
+        setUser(updatedWithRoles);
+        navigate(ROUTES.userManagement);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Impossible d'enregistrer.");
+      }
+    })();
   }
 
   return (
@@ -75,7 +96,7 @@ export function UserEditScreen() {
       <div>
         <p className="font-myriad text-xs font-bold uppercase tracking-[0.2em] text-[#7a7ee5]">Administration</p>
         <h2 className="mt-1 font-brand text-2xl text-[#01003b] dark:text-slate-100 md:text-3xl">Modifier l&apos;utilisateur</h2>
-        <p className="mt-1 font-myriad text-sm text-slate-500 dark:text-slate-400">{user.fullName}</p>
+        <p className="mt-1 font-myriad text-sm text-slate-500 dark:text-slate-400">{user.full_name}</p>
       </div>
 
       <form
@@ -97,17 +118,18 @@ export function UserEditScreen() {
         </div>
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Rôle</label>
-          <AppSelect className="mt-2" value={roleId} onChange={(e) => setRoleId(e.target.value)}>
+          <AppSelect className="mt-2" value={roleCode} onChange={(e) => setRoleCode(e.target.value)}>
+            <option value="">Aucun</option>
             {roles.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name}
+              <option key={r.id} value={r.code}>
+                {r.label} ({r.code})
               </option>
             ))}
           </AppSelect>
         </div>
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Statut</label>
-          <AppSelect className="mt-2" value={status} onChange={(e) => setStatus(e.target.value)}>
+          <AppSelect className="mt-2" value={isActive ? "Actif" : "Suspendu"} onChange={(e) => setIsActive(e.target.value === "Actif")}>
             <option value="Actif">Actif</option>
             <option value="Suspendu">Suspendu</option>
           </AppSelect>
