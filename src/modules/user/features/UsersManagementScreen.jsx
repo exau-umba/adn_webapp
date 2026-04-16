@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiEdit2, FiEye, FiPause, FiPlay } from "react-icons/fi";
+import { FiEdit2, FiEye, FiPause, FiPlay, FiTrash2 } from "react-icons/fi";
+import { toast } from "react-hot-toast";
 import { AppButton, AppInput, AppSelect, ConfirmationModal, IconButton, PaginationControls } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
 import { getStatusTone } from "../../../core/constants/statusStyles.ts";
-import { assignAccountRoles, listAccounts, listRoles, patchAccount } from "../lib/userApi.ts";
+import { assignAccountRoles, deleteAccount, listAccounts, listRoles, patchAccount } from "../lib/userApi.ts";
 import { UserModuleNav } from "./UserModuleNav.jsx";
 import { UserAvatar } from "../components/UserAvatar.jsx";
 
@@ -70,8 +71,11 @@ export function UsersManagementScreen() {
     try {
       const updated = await assignAccountRoles(userId, roleCode ? [roleCode] : []);
       setUsers((prev) => prev.map((u) => (u.id === userId ? updated : u)));
+      toast.success("Rôle mis à jour.");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Impossible d'assigner le rôle.");
+      const message = e instanceof Error ? e.message : "Impossible d'assigner le rôle.";
+      setError(message);
+      toast.error(message);
     }
   }
 
@@ -82,14 +86,29 @@ export function UsersManagementScreen() {
     try {
       const updated = await patchAccount(userId, { is_active: !current.is_active });
       setUsers((prev) => prev.map((u) => (u.id === userId ? updated : u)));
+      toast.success(updated.is_active ? "Utilisateur réactivé." : "Utilisateur suspendu.");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Impossible de modifier le statut.");
+      const message = e instanceof Error ? e.message : "Impossible de modifier le statut.";
+      setError(message);
+      toast.error(message);
     }
   }
 
-  function confirmDelete() {
-    // API delete non exposée : on garde une confirmation “inactive” pour l’instant.
-    setDeleteTarget(null);
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setError("");
+    try {
+      const message = await deleteAccount(deleteTarget.id);
+      toast.success(message);
+      setUsers((prev) => prev.filter((u) => u.id !== deleteTarget.id));
+      setUsersCount((prev) => Math.max(0, prev - 1));
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Impossible de supprimer l'utilisateur.";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setDeleteTarget(null);
+    }
   }
 
   function formatDateTime(value) {
@@ -241,6 +260,15 @@ export function UsersManagementScreen() {
                       >
                         {user.is_active ? <FiPause size={18} /> : <FiPlay size={18} />}
                       </IconButton>
+                      <IconButton
+                        className="text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+                        title="Supprimer"
+                        aria-label="Supprimer"
+                        type="button"
+                        onClick={() => setDeleteTarget(user)}
+                      >
+                        <FiTrash2 size={18} />
+                      </IconButton>
                     </div>
                   </td>
                   </tr>
@@ -262,7 +290,7 @@ export function UsersManagementScreen() {
       <ConfirmationModal
         isOpen={Boolean(deleteTarget)}
         title="Supprimer l'utilisateur ?"
-        message={"Suppression non disponible (API non exposée)."}
+        message={`Cette action est irreversible pour ${deleteTarget?.full_name ?? "cet utilisateur"}.`}
         confirmLabel="Supprimer"
         onConfirm={confirmDelete}
         onCancel={() => setDeleteTarget(null)}

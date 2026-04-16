@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import { AppButton, AppInput, AppSelect } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
-import { assignAccountRoles, adminRegisterUser, listRoles } from "../lib/userApi.ts";
+import { adminRegisterUser, listRoles } from "../lib/userApi.ts";
 import { UserModuleNav } from "./UserModuleNav.jsx";
 
 export function UserRegistrationScreen() {
@@ -11,10 +12,8 @@ export function UserRegistrationScreen() {
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [profilePhotoFile, setProfilePhotoFile] = useState(null);
   const [roleCode, setRoleCode] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,30 +35,31 @@ export function UserRegistrationScreen() {
     const name = fullName.trim();
     const mail = email.trim().toLowerCase();
     const u = username.trim();
-    if (!name || !mail || !u || !password) {
-      setError("Nom, nom d'utilisateur, e-mail et mot de passe sont obligatoires.");
+    if (!name || !mail || !u) {
+      toast.error("Nom, nom d'utilisateur et e-mail sont obligatoires.");
       return;
     }
-    setError("");
     setLoading(true);
     try {
       const parts = name.split(" ").filter(Boolean);
       const first_name = parts.slice(0, 1).join(" ");
       const last_name = parts.slice(1).join(" ");
-      const created = await adminRegisterUser({
+      await adminRegisterUser({
         username: u,
         email: mail,
         first_name,
         last_name,
         profile_photo: profilePhotoFile,
-        password,
+        role_codes: roleCode ? [roleCode] : ["CLIENT"],
       });
-      if (roleCode) {
-        await assignAccountRoles(created.user.id, [roleCode]);
-      }
-      navigate(ROUTES.userManagement);
+      toast.success("Utilisateur créé. Vérifiez l'état d'envoi du mail dans les notifications.");
+      setFullName("");
+      setUsername("");
+      setEmail("");
+      setProfilePhotoFile(null);
+      setRoleCode(roleCode || "CLIENT");
     } catch (e2) {
-      setError(e2 instanceof Error ? e2.message : "Impossible de créer l'utilisateur.");
+      toast.error(e2 instanceof Error ? e2.message : "Impossible de créer l'utilisateur.");
     } finally {
       setLoading(false);
     }
@@ -81,11 +81,6 @@ export function UserRegistrationScreen() {
         onSubmit={submit}
         className="mx-auto max-w-xl space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/80"
       >
-        {error ? (
-          <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 font-myriad text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200">
-            {error}
-          </p>
-        ) : null}
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Nom complet</label>
           <AppInput className="mt-2" value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="name" />
@@ -105,10 +100,6 @@ export function UserRegistrationScreen() {
           />
         </div>
         <div>
-          <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Mot de passe</label>
-          <AppInput className="mt-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
-        </div>
-        <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Photo de profil</label>
           <input
             className="mt-2 w-full rounded-xl bg-slate-100 px-3 py-2.5 font-myriad text-sm text-slate-700 outline-none ring-brand-primary transition focus:ring-2 dark:bg-slate-800 dark:text-slate-100"
@@ -122,7 +113,7 @@ export function UserRegistrationScreen() {
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Rôle</label>
           <AppSelect className="mt-2" value={roleCode} onChange={(e) => setRoleCode(e.target.value)} disabled={loading}>
-            <option value="">Aucun</option>
+            <option value="CLIENT">Client</option>
             {roles.map((r) => (
               <option key={r.id} value={r.code}>
                 {r.label} ({r.code})

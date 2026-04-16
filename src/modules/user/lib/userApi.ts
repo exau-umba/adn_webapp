@@ -166,30 +166,67 @@ export async function adminRegisterUser(payload: {
   last_name?: string;
   phone?: string;
   profile_photo?: File | null;
-  password: string;
-}): Promise<{ user: ApiAccount; access: string; refresh: string }> {
-  // Endpoint AllowAny côté backend, mais UI protégée admin.
+  role_codes?: string[];
+}): Promise<ApiAccount> {
   let body: BodyInit;
   let headers: Record<string, string> | undefined;
-  if (payload.profile_photo instanceof File) {
-    const form = new FormData();
-    for (const [k, v] of Object.entries(payload)) {
-      if (v === undefined || v === null) continue;
-      if (k === "profile_photo" && v instanceof File) form.append("profile_photo", v);
-      else form.append(k, String(v));
-    }
-    body = form;
-    headers = undefined;
-  } else {
-    body = JSON.stringify(payload);
-    headers = { "Content-Type": "application/json" };
+  const form = new FormData();
+  for (const [k, v] of Object.entries(payload)) {
+    if (v === undefined || v === null) continue;
+    if (k === "profile_photo" && v instanceof File) form.append("profile_photo", v);
+    else if (k === "role_codes" && Array.isArray(v)) v.forEach((code) => form.append("role_codes", String(code)));
+    else form.append(k, String(v));
   }
+  body = form;
+  headers = undefined;
 
-  const res = await authFetch(joinUrl("/api/users/auth/register/"), {
+  const res = await authFetch(joinUrl("/api/users/accounts/invite/"), {
     method: "POST",
-    skipAuth: true,
+    skipAuth: false,
     headers,
     body,
+  });
+  if (!res.ok) throw new Error(await parseJsonError(res));
+  return res.json() as Promise<ApiAccount>;
+}
+
+export async function resendActivation(accountId: string): Promise<string> {
+  const res = await authFetch(joinUrl(`/api/users/accounts/${accountId}/resend-activation/`), { method: "POST" });
+  if (!res.ok) throw new Error(await parseJsonError(res));
+  const body = (await res.json()) as Record<string, unknown>;
+  return String(body.detail ?? body.message ?? "E-mail d'activation renvoyé.");
+}
+
+export async function sendPasswordSetup(accountId: string): Promise<string> {
+  const res = await authFetch(joinUrl(`/api/users/accounts/${accountId}/send-password-setup/`), { method: "POST" });
+  if (!res.ok) throw new Error(await parseJsonError(res));
+  const body = (await res.json()) as Record<string, unknown>;
+  return String(body.detail ?? body.message ?? "E-mail de création de mot de passe envoyé.");
+}
+
+export async function deleteAccount(accountId: string): Promise<string> {
+  const res = await authFetch(joinUrl(`/api/users/accounts/${accountId}/`), { method: "DELETE" });
+  if (!res.ok) throw new Error(await parseJsonError(res));
+  return "Utilisateur supprimé.";
+}
+
+export async function activateAccount(token: string, password: string) {
+  const res = await authFetch(joinUrl("/api/users/auth/activate/"), {
+    method: "POST",
+    skipAuth: true,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token, password }),
+  });
+  if (!res.ok) throw new Error(await parseJsonError(res));
+  return res.json() as Promise<{ user: ApiAccount; access: string; refresh: string }>;
+}
+
+export async function setupPassword(token: string, password: string) {
+  const res = await authFetch(joinUrl("/api/users/auth/setup-password/"), {
+    method: "POST",
+    skipAuth: true,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token, password }),
   });
   if (!res.ok) throw new Error(await parseJsonError(res));
   return res.json() as Promise<{ user: ApiAccount; access: string; refresh: string }>;

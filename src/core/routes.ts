@@ -1,5 +1,7 @@
 export const ROUTES = {
   login: "/login",
+  activateAccount: "/activate-account",
+  setupPassword: "/setup-password",
   dashboard: "/dashboard",
   agentManagement: "/agent-management",
   agentRegistration: "/agent-management/registration",

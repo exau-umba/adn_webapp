@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { AppRouter } from "./app/router";
 
 function App() {
@@ -17,12 +18,15 @@ function App() {
   }, [isDarkMode]);
 
   return (
-    <AppRouter
-      sidebarCollapsed={sidebarCollapsed}
-      onToggleSidebar={() => setSidebarCollapsed((v) => !v)}
-      isDarkMode={isDarkMode}
-      onToggleDarkMode={() => setIsDarkMode((v) => !v)}
-    />
+    <>
+      <AppRouter
+        sidebarCollapsed={sidebarCollapsed}
+        onToggleSidebar={() => setSidebarCollapsed((v) => !v)}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={() => setIsDarkMode((v) => !v)}
+      />
+      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+    </>
   );
 }
 

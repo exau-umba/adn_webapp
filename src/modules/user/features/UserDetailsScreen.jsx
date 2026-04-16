@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FiArrowLeft, FiEdit2, FiPause, FiPlay } from "react-icons/fi";
-import { AppButton } from "../../../shared/ui";
+import { FiArrowLeft, FiEdit2, FiMail, FiPause, FiPlay, FiTrash2 } from "react-icons/fi";
+import { toast } from "react-hot-toast";
+import { AppButton, ConfirmationModal } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
-import { assignAccountRoles, getAccount, listRoles, patchAccount } from "../lib/userApi.ts";
+import { assignAccountRoles, deleteAccount, getAccount, listRoles, patchAccount, resendActivation, sendPasswordSetup } from "../lib/userApi.ts";
 import { UserModuleNav } from "./UserModuleNav.jsx";
 import { UserAvatar } from "../components/UserAvatar.jsx";
 
@@ -23,6 +24,7 @@ export function UserDetailsScreen() {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     async function run() {
@@ -51,8 +53,10 @@ export function UserDetailsScreen() {
     try {
       const updated = await patchAccount(user.id, { is_active: !user.is_active });
       setUser(updated);
+      toast.success(updated.is_active ? "Utilisateur réactivé." : "Utilisateur suspendu.");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Impossible de modifier le statut.");
+      toast.error("Impossible de modifier le statut.");
     }
   }
 
@@ -62,8 +66,52 @@ export function UserDetailsScreen() {
     try {
       const updated = await assignAccountRoles(user.id, code ? [code] : []);
       setUser(updated);
+      toast.success("Rôle mis à jour.");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Impossible d'assigner le rôle.");
+      toast.error("Impossible d'assigner le rôle.");
+    }
+  }
+
+  async function handleResendActivation() {
+    if (!user) return;
+    setError("");
+    try {
+      const message = await resendActivation(user.id);
+      toast.success(message);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Impossible de renvoyer l'e-mail d'activation.";
+      setError(message);
+      toast.error(message);
+    }
+  }
+
+  async function handleSendSetupPassword() {
+    if (!user) return;
+    setError("");
+    try {
+      const message = await sendPasswordSetup(user.id);
+      toast.success(message);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Impossible d'envoyer le lien de mot de passe.";
+      setError(message);
+      toast.error(message);
+    }
+  }
+
+  async function handleDeleteUser() {
+    if (!user) return;
+    setError("");
+    try {
+      const message = await deleteAccount(user.id);
+      toast.success(message);
+      navigate(ROUTES.userManagement);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Impossible de supprimer l'utilisateur.";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setShowDeleteConfirm(false);
     }
   }
 
@@ -134,6 +182,26 @@ export function UserDetailsScreen() {
               {user.is_active ? "Suspendre" : "Réactiver"}
             </span>
           </AppButton>
+          {!user.is_active ? (
+            <AppButton variant="ghost" onClick={handleResendActivation}>
+              <span className="inline-flex items-center gap-2">
+                <FiMail size={16} />
+                Renvoyer activation
+              </span>
+            </AppButton>
+          ) : null}
+          <AppButton variant="ghost" onClick={handleSendSetupPassword}>
+            <span className="inline-flex items-center gap-2">
+              <FiMail size={16} />
+              Envoyer lien mot de passe
+            </span>
+          </AppButton>
+          <AppButton variant="ghost" onClick={() => setShowDeleteConfirm(true)}>
+            <span className="inline-flex items-center gap-2 text-red-700 dark:text-red-400">
+              <FiTrash2 size={16} />
+              Supprimer
+            </span>
+          </AppButton>
         </div>
       </div>
 
@@ -146,10 +214,6 @@ export function UserDetailsScreen() {
             <div>
               <dt className="text-xs text-slate-400 dark:text-slate-500">Téléphone</dt>
               <dd className="font-myriad text-slate-700 dark:text-slate-200">{user.phone || "—"}</dd>
-            </div>
-            <div>
-              <dt className="text-xs text-slate-400 dark:text-slate-500">Photo</dt>
-              <dd className="font-myriad break-all text-slate-700 dark:text-slate-200">{user.profile_photo_url || "—"}</dd>
             </div>
             <div>
               <dt className="text-xs text-slate-400 dark:text-slate-500">Création</dt>
@@ -213,6 +277,15 @@ export function UserDetailsScreen() {
           </div>
         </div>
       </div>
+
+      <ConfirmationModal
+        isOpen={showDeleteConfirm}
+        title="Supprimer cet utilisateur ?"
+        message="Cette action est irreversible. Voulez-vous continuer ?"
+        confirmLabel="Supprimer"
+        onConfirm={handleDeleteUser}
+        onCancel={() => setShowDeleteConfirm(false)}
+      />
     </section>
   );
 }
