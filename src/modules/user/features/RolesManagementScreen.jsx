@@ -1,12 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
 import { FiEdit2, FiPlus, FiRefreshCcw, FiTrash2 } from "react-icons/fi";
-import { AppButton, AppInput, AppTextarea, ConfirmationModal, IconButton } from "../../../shared/ui";
+import { AppButton, AppInput, AppTextarea, ConfirmationModal, IconButton, PaginationControls } from "../../../shared/ui";
 import { createRole, deleteRole, listAccounts, listRoles, updateRole } from "../lib/userApi.ts";
+import { PERMISSION_CATALOG } from "../types/rbac.ts";
 import { UserModuleNav } from "./UserModuleNav.jsx";
+
+const groupedPermissions = PERMISSION_CATALOG.reduce(
+  (acc, p) => {
+    if (!acc[p.group]) acc[p.group] = [];
+    acc[p.group].push(p);
+    return acc;
+  },
+  /** @type {Record<string, typeof PERMISSION_CATALOG>} */ ({}),
+);
 
 export function RolesManagementScreen() {
   const [roles, setRoles] = useState([]);
   const [accounts, setAccounts] = useState([]);
+  const [rolesCount, setRolesCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [editorOpen, setEditorOpen] = useState(false);
@@ -14,15 +25,22 @@ export function RolesManagementScreen() {
   const [formCode, setFormCode] = useState("");
   const [formLabel, setFormLabel] = useState("");
   const [formDescription, setFormDescription] = useState("");
+  const [formPerms, setFormPerms] = useState(() => new Set());
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [page, setPage] = useState(1);
+  const pageSize = 20;
 
-  async function refreshAll() {
+  async function refreshAll(nextPage = page) {
     setError("");
     setLoading(true);
     try {
-      const [r, a] = await Promise.all([listRoles(), listAccounts()]);
-      setRoles(r);
-      setAccounts(a);
+      const [r, a] = await Promise.all([
+        listRoles({ page: nextPage, pageSize }),
+        listAccounts({ page: 1, pageSize: 200 }),
+      ]);
+      setRoles(r.results);
+      setRolesCount(r.count);
+      setAccounts(a.results);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Impossible de charger les rôles.");
     } finally {
@@ -34,6 +52,11 @@ export function RolesManagementScreen() {
     void refreshAll();
   }, []);
 
+  useEffect(() => {
+    void refreshAll(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
   const userCountByRoleCode = useMemo(() => {
     const map = Object.fromEntries(roles.map((r) => [r.code, 0]));
     for (const u of accounts) {
@@ -44,11 +67,15 @@ export function RolesManagementScreen() {
     return map;
   }, [roles, accounts]);
 
+  const totalPages = Math.max(1, Math.ceil(rolesCount / pageSize));
+  const safePage = Math.min(page, totalPages);
+
   function openCreate() {
     setEditingId(null);
     setFormCode("");
     setFormLabel("");
     setFormDescription("");
+    setFormPerms(new Set());
     setEditorOpen(true);
   }
 
@@ -57,7 +84,28 @@ export function RolesManagementScreen() {
     setFormCode(role.code ?? "");
     setFormLabel(role.label ?? "");
     setFormDescription(role.description ?? "");
+    setFormPerms(new Set(role.permissions ?? []));
     setEditorOpen(true);
+  }
+
+  function togglePerm(id) {
+    setFormPerms((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function selectAllInGroup(group) {
+    const ids = groupedPermissions[group].map((p) => p.id);
+    setFormPerms((prev) => {
+      const next = new Set(prev);
+      const allOn = ids.every((id) => next.has(id));
+      if (allOn) ids.forEach((id) => next.delete(id));
+      else ids.forEach((id) => next.add(id));
+      return next;
+    });
   }
 
   async function submitEditor() {
@@ -67,9 +115,9 @@ export function RolesManagementScreen() {
     setError("");
     try {
       if (editingId) {
-        await updateRole(editingId, { code, label, description: formDescription.trim() });
+        await updateRole(editingId, { code, label, description: formDescription.trim(), permissions: [...formPerms] });
       } else {
-        await createRole({ code, label, description: formDescription.trim() });
+        await createRole({ code, label, description: formDescription.trim(), permissions: [...formPerms] });
       }
       setEditorOpen(false);
       await refreshAll();
@@ -133,6 +181,7 @@ export function RolesManagementScreen() {
               <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Code</th>
               <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Libellé</th>
               <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Description</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Permissions</th>
               <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Utilisateurs</th>
               <th className="p-3 text-right text-[11px] uppercase tracking-widest text-slate-500">Actions</th>
             </tr>
@@ -156,6 +205,7 @@ export function RolesManagementScreen() {
                 <td className="p-3 font-semibold text-[#01003b] dark:text-slate-100">{role.code}</td>
                 <td className="p-3 text-slate-700 dark:text-slate-200">{role.label}</td>
                 <td className="max-w-[280px] p-3 text-slate-600 dark:text-slate-300">{role.description || "—"}</td>
+                <td className="p-3 text-slate-600 dark:text-slate-300">{(role.permissions ?? []).length}</td>
                 <td className="p-3 text-slate-600 dark:text-slate-300">{userCountByRoleCode[role.code] ?? 0}</td>
                 <td className="p-3 text-right">
                   <div className="flex justify-end gap-1">
@@ -186,6 +236,9 @@ export function RolesManagementScreen() {
             )}
           </tbody>
         </table>
+        <div className="border-t border-slate-200 p-3 dark:border-slate-700">
+          <PaginationControls page={safePage} totalPages={totalPages} onPageChange={setPage} />
+        </div>
       </div>
 
       {editorOpen ? (
@@ -221,6 +274,44 @@ export function RolesManagementScreen() {
                   onChange={(e) => setFormDescription(e.target.value)}
                   rows={3}
                 />
+              </div>
+              <div>
+                <p className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Permissions</p>
+                <div className="mt-3 space-y-4">
+                  {Object.keys(groupedPermissions).map((group) => (
+                    <div key={group} className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="font-myriad text-sm font-semibold text-[#01003b] dark:text-slate-100">{group}</p>
+                        <button
+                          type="button"
+                          className="font-myriad text-xs text-[#08047a] underline-offset-2 hover:underline dark:text-indigo-300"
+                          onClick={() => selectAllInGroup(group)}
+                        >
+                          Tout cocher / décocher
+                        </button>
+                      </div>
+                      <ul className="mt-2 space-y-2">
+                        {groupedPermissions[group].map((p) => (
+                          <li key={p.id} className="flex items-start gap-2">
+                            <input
+                              id={`perm-${p.id}`}
+                              type="checkbox"
+                              className="mt-1 h-4 w-4 rounded border-slate-300"
+                              checked={formPerms.has(p.id)}
+                              onChange={() => togglePerm(p.id)}
+                            />
+                            <label
+                              htmlFor={`perm-${p.id}`}
+                              className="font-myriad text-sm text-slate-700 dark:text-slate-300"
+                            >
+                              {p.label}
+                            </label>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="mt-6 flex justify-end gap-2">

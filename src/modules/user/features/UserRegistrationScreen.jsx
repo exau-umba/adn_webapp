@@ -19,9 +19,9 @@ export function UserRegistrationScreen() {
   useEffect(() => {
     (async () => {
       try {
-        const r = await listRoles();
-        setRoles(r);
-        setRoleCode(r[0]?.code ?? "");
+        const r = await listRoles({ page: 1, pageSize: 200 });
+        setRoles(r.results);
+        setRoleCode(r.results[0]?.code ?? "");
       } catch {
         // ignore, handled on submit
       } finally {

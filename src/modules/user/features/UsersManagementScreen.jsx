@@ -10,21 +10,26 @@ import { UserModuleNav } from "./UserModuleNav.jsx";
 export function UsersManagementScreen() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
+  const [usersCount, setUsersCount] = useState(0);
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [page, setPage] = useState(1);
-  const pageSize = 8;
+  const pageSize = 20;
 
-  async function refreshAll() {
+  async function refreshAll(nextPage = page, nextQuery = query) {
     setError("");
     setLoading(true);
     try {
-      const [u, r] = await Promise.all([listAccounts(), listRoles()]);
-      setUsers(u);
-      setRoles(r);
+      const [u, r] = await Promise.all([
+        listAccounts({ page: nextPage, pageSize, search: nextQuery.trim() }),
+        listRoles({ page: 1, pageSize: 200 }),
+      ]);
+      setUsers(u.results);
+      setUsersCount(u.count);
+      setRoles(r.results);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Impossible de charger les utilisateurs.");
     } finally {
@@ -34,31 +39,25 @@ export function UsersManagementScreen() {
 
   useEffect(() => {
     void refreshAll();
-  }, []);
+  }, []); // bootstrap
 
-  const roleLabelByCode = useMemo(() => Object.fromEntries(roles.map((r) => [r.code, r.label])), [roles]);
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return users;
-    return users.filter(
-      (u) =>
-        u.email.toLowerCase().includes(q) ||
-        u.full_name.toLowerCase().includes(q) ||
-        (u.roles?.map((rr) => roleLabelByCode[rr.code] ?? rr.label ?? rr.code).join(" ") ?? "").toLowerCase().includes(q),
-    );
-  }, [users, query, roleLabelByCode]);
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-  const safePage = Math.min(page, totalPages);
-  const usersPage = useMemo(() => {
-    const start = (safePage - 1) * pageSize;
-    return filtered.slice(start, start + pageSize);
-  }, [filtered, safePage]);
+  useEffect(() => {
+    void refreshAll(page, query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   useEffect(() => {
     setPage(1);
+    void refreshAll(1, query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
+
+  const totalPages = Math.max(1, Math.ceil(usersCount / pageSize));
+  const safePage = Math.min(page, totalPages);
+
+  const roleLabelByCode = useMemo(() => Object.fromEntries(roles.map((r) => [r.code, r.label])), [roles]);
+  const roleSummaryForUser = (user) =>
+    (user.roles ?? []).map((r) => roleLabelByCode[r.code] ?? r.label ?? r.code).join(", ") || "Aucun";
 
   async function handleRoleChange(userId, roleCode) {
     setError("");
@@ -87,7 +86,14 @@ export function UsersManagementScreen() {
     setDeleteTarget(null);
   }
 
-  const formatLastLogin = () => "—";
+  function formatDateTime(value) {
+    if (!value) return "—";
+    try {
+      return new Date(value).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
+    } catch {
+      return String(value);
+    }
+  }
 
   return (
     <section className="space-y-6">
@@ -141,7 +147,7 @@ export function UsersManagementScreen() {
               <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Utilisateur</th>
               <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">E-mail</th>
               <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Rôle</th>
-              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Dernière connexion</th>
+              <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Traces</th>
               <th className="p-3 text-[11px] uppercase tracking-widest text-slate-500">Statut</th>
               <th className="p-3 text-right text-[11px] uppercase tracking-widest text-slate-500">Actions</th>
             </tr>
@@ -153,18 +159,18 @@ export function UsersManagementScreen() {
                   Chargement…
                 </td>
               </tr>
-            ) : usersPage.length === 0 ? (
+            ) : users.length === 0 ? (
               <tr>
                 <td className="p-3 text-slate-600 dark:text-slate-300" colSpan={6}>
                   Aucun utilisateur.
                 </td>
               </tr>
             ) : (
-              usersPage.map((user) => {
-              const statusTone = getStatusTone(user.is_active ? "Actif" : "Suspendu");
-              const selectedRoleCode = user.roles?.[0]?.code ?? "";
-              return (
-                <tr key={user.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
+              users.map((user) => {
+                const statusTone = getStatusTone(user.is_active ? "Actif" : "Suspendu");
+                const selectedRoleCode = user.roles?.[0]?.code ?? "";
+                return (
+                  <tr key={user.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
                   <td className="p-3 font-semibold text-[#01003b] dark:text-slate-100">{user.full_name}</td>
                   <td className="p-3 text-slate-600 dark:text-slate-300">{user.email}</td>
                   <td className="p-3">
@@ -181,8 +187,21 @@ export function UsersManagementScreen() {
                         </option>
                       ))}
                     </AppSelect>
+                    <p className="mt-1 text-[11px] text-slate-400 dark:text-slate-500">{roleSummaryForUser(user)}</p>
                   </td>
-                  <td className="p-3 text-slate-600 dark:text-slate-300">{formatLastLogin()}</td>
+                  <td className="p-3 text-slate-600 dark:text-slate-300">
+                    <div className="space-y-0.5 text-[12px] leading-snug">
+                      <div>
+                        <span className="text-slate-400 dark:text-slate-500">Créé:</span> {formatDateTime(user.date_joined)}
+                      </div>
+                      <div>
+                        <span className="text-slate-400 dark:text-slate-500">Dernière:</span> {formatDateTime(user.last_login)}
+                      </div>
+                      <div>
+                        <span className="text-slate-400 dark:text-slate-500">MAJ:</span> {formatDateTime(user.updated_at)}
+                      </div>
+                    </div>
+                  </td>
                   <td className="p-3">
                     <span className={`inline-flex items-center gap-2 ${statusTone.text}`}>
                       <span className={`h-2 w-2 rounded-full ${statusTone.dot}`} />
@@ -210,9 +229,9 @@ export function UsersManagementScreen() {
                       </IconButton>
                     </div>
                   </td>
-                </tr>
-              );
-            })
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

@@ -23,9 +23,9 @@ export function UserEditScreen() {
       setError("");
       setLoading(true);
       try {
-        const [u, r] = await Promise.all([getAccount(userId), listRoles()]);
+        const [u, r] = await Promise.all([getAccount(userId), listRoles({ page: 1, pageSize: 200 })]);
         setUser(u);
-        setRoles(r);
+        setRoles(r.results);
         setFullName(u.full_name ?? "");
         setEmail(u.email ?? "");
         setRoleCode(u.roles?.[0]?.code ?? "");

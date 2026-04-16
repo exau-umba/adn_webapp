@@ -1,7 +1,15 @@
 import { authFetch } from "../../../core/auth/authFetch.ts";
 import { getApiBaseUrl } from "../../../core/auth/authStorage.ts";
 
-export type ApiRole = { id: string; code: string; label: string; description: string };
+export type ApiRole = {
+  id: string;
+  code: string;
+  label: string;
+  description: string;
+  permissions: string[];
+  created_at: string;
+  updated_at: string;
+};
 
 export type ApiAccount = {
   id: string;
@@ -14,13 +22,28 @@ export type ApiAccount = {
   is_active: boolean;
   is_staff: boolean;
   is_superuser: boolean;
+  date_joined: string;
+  last_login: string | null;
+  updated_at: string;
   roles: ApiRole[];
 };
+
+type Page<T> = { count: number; next: string | null; previous: string | null; results: T[] };
 
 function joinUrl(path: string) {
   const base = getApiBaseUrl().replace(/\/$/, "");
   const p = path.startsWith("/") ? path : `/${path}`;
   return `${base}${p}`;
+}
+
+function withParams(path: string, params: Record<string, string | number | undefined>) {
+  const url = new URL(joinUrl(path), "http://placeholder.local");
+  for (const [k, v] of Object.entries(params)) {
+    if (v === undefined || v === "") continue;
+    url.searchParams.set(k, String(v));
+  }
+  // remove placeholder origin
+  return `${url.pathname}${url.search}`.replace(/^\//, "/");
 }
 
 async function parseJsonError(res: Response): Promise<string> {
@@ -35,13 +58,13 @@ async function parseJsonError(res: Response): Promise<string> {
   }
 }
 
-export async function listRoles(): Promise<ApiRole[]> {
-  const res = await authFetch(joinUrl("/api/users/roles/"));
+export async function listRoles(opts: { page?: number; pageSize?: number; search?: string } = {}): Promise<Page<ApiRole>> {
+  const res = await authFetch(joinUrl(withParams("/api/users/roles/", { page: opts.page, page_size: opts.pageSize, search: opts.search })));
   if (!res.ok) throw new Error(await parseJsonError(res));
-  return res.json() as Promise<ApiRole[]>;
+  return res.json() as Promise<Page<ApiRole>>;
 }
 
-export async function createRole(payload: { code: string; label: string; description?: string }): Promise<ApiRole> {
+export async function createRole(payload: { code: string; label: string; description?: string; permissions?: string[] }): Promise<ApiRole> {
   const res = await authFetch(joinUrl("/api/users/roles/"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -53,7 +76,7 @@ export async function createRole(payload: { code: string; label: string; descrip
 
 export async function updateRole(
   roleId: string,
-  payload: { code: string; label: string; description?: string },
+  payload: { code: string; label: string; description?: string; permissions?: string[] },
 ): Promise<ApiRole> {
   const res = await authFetch(joinUrl(`/api/users/roles/${roleId}/`), {
     method: "PUT",
@@ -69,10 +92,14 @@ export async function deleteRole(roleId: string): Promise<void> {
   if (!res.ok) throw new Error(await parseJsonError(res));
 }
 
-export async function listAccounts(): Promise<ApiAccount[]> {
-  const res = await authFetch(joinUrl("/api/users/accounts/"));
+export async function listAccounts(
+  opts: { page?: number; pageSize?: number; search?: string } = {},
+): Promise<Page<ApiAccount>> {
+  const res = await authFetch(
+    joinUrl(withParams("/api/users/accounts/", { page: opts.page, page_size: opts.pageSize, search: opts.search })),
+  );
   if (!res.ok) throw new Error(await parseJsonError(res));
-  return res.json() as Promise<ApiAccount[]>;
+  return res.json() as Promise<Page<ApiAccount>>;
 }
 
 export async function getAccount(accountId: string): Promise<ApiAccount> {
