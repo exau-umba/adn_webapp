@@ -126,14 +126,34 @@ export async function patchAccount(
     first_name: string;
     last_name: string;
     phone: string;
-    profile_photo_url: string;
+    profile_photo: File | null;
     is_active: boolean;
   }>,
 ): Promise<ApiAccount> {
+  let body: BodyInit;
+  let headers: Record<string, string> | undefined;
+  if (payload.profile_photo instanceof File || payload.profile_photo === null) {
+    const form = new FormData();
+    for (const [k, v] of Object.entries(payload)) {
+      if (v === undefined) continue;
+      if (k === "profile_photo") {
+        if (v instanceof File) form.append("profile_photo", v);
+        // if null -> ignore (no delete for now)
+      } else {
+        form.append(k, String(v));
+      }
+    }
+    body = form;
+    headers = undefined; // browser sets multipart boundary
+  } else {
+    body = JSON.stringify(payload);
+    headers = { "Content-Type": "application/json" };
+  }
+
   const res = await authFetch(joinUrl(`/api/users/accounts/${accountId}/`), {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    headers,
+    body,
   });
   if (!res.ok) throw new Error(await parseJsonError(res));
   return res.json() as Promise<ApiAccount>;
@@ -145,15 +165,31 @@ export async function adminRegisterUser(payload: {
   first_name?: string;
   last_name?: string;
   phone?: string;
-  profile_photo_url?: string;
+  profile_photo?: File | null;
   password: string;
 }): Promise<{ user: ApiAccount; access: string; refresh: string }> {
   // Endpoint AllowAny côté backend, mais UI protégée admin.
+  let body: BodyInit;
+  let headers: Record<string, string> | undefined;
+  if (payload.profile_photo instanceof File) {
+    const form = new FormData();
+    for (const [k, v] of Object.entries(payload)) {
+      if (v === undefined || v === null) continue;
+      if (k === "profile_photo" && v instanceof File) form.append("profile_photo", v);
+      else form.append(k, String(v));
+    }
+    body = form;
+    headers = undefined;
+  } else {
+    body = JSON.stringify(payload);
+    headers = { "Content-Type": "application/json" };
+  }
+
   const res = await authFetch(joinUrl("/api/users/auth/register/"), {
     method: "POST",
     skipAuth: true,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    headers,
+    body,
   });
   if (!res.ok) throw new Error(await parseJsonError(res));
   return res.json() as Promise<{ user: ApiAccount; access: string; refresh: string }>;

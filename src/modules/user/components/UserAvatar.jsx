@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 function getInitials(fullName) {
   const parts = String(fullName || "")
     .trim()
@@ -12,18 +14,16 @@ function getInitials(fullName) {
 export function UserAvatar({ fullName, photoUrl, size = 40 }) {
   const initials = getInitials(fullName);
   const s = `${size}px`;
+  const [imgFailed, setImgFailed] = useState(false);
 
-  if (photoUrl) {
+  if (photoUrl && !imgFailed) {
     return (
       <img
         src={photoUrl}
         alt={fullName ? `Photo de ${fullName}` : "Photo de profil"}
         className="rounded-full object-cover"
         style={{ width: s, height: s }}
-        onError={(e) => {
-          // fallback: hide broken image
-          e.currentTarget.style.display = "none";
-        }}
+        onError={() => setImgFailed(true)}
       />
     );
   }

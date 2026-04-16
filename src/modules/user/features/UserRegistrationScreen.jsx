@@ -12,7 +12,7 @@ export function UserRegistrationScreen() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
+  const [profilePhotoFile, setProfilePhotoFile] = useState(null);
   const [roleCode, setRoleCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -51,7 +51,7 @@ export function UserRegistrationScreen() {
         email: mail,
         first_name,
         last_name,
-        profile_photo_url: profilePhotoUrl.trim(),
+        profile_photo: profilePhotoFile,
         password,
       });
       if (roleCode) {
@@ -109,8 +109,15 @@ export function UserRegistrationScreen() {
           <AppInput className="mt-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
         </div>
         <div>
-          <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Photo de profil (URL)</label>
-          <AppInput className="mt-2" type="url" value={profilePhotoUrl} onChange={(e) => setProfilePhotoUrl(e.target.value)} placeholder="https://..." />
+          <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Photo de profil</label>
+          <input
+            className="mt-2 w-full rounded-xl bg-slate-100 px-3 py-2.5 font-myriad text-sm text-slate-700 outline-none ring-brand-primary transition focus:ring-2 dark:bg-slate-800 dark:text-slate-100"
+            type="file"
+            accept="image/*"
+            onChange={(e) => setProfilePhotoFile(e.target.files?.[0] ?? null)}
+            disabled={loading}
+          />
+          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">Optionnel. JPG/PNG/WebP.</p>
         </div>
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Rôle</label>

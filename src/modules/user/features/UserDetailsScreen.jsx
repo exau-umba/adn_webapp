@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FiEdit2, FiPause, FiPlay } from "react-icons/fi";
+import { FiArrowLeft, FiEdit2, FiPause, FiPlay } from "react-icons/fi";
 import { AppButton } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
 import { assignAccountRoles, getAccount, listRoles, patchAccount } from "../lib/userApi.ts";
@@ -91,6 +91,15 @@ export function UserDetailsScreen() {
   return (
     <section className="space-y-6">
       <UserModuleNav />
+
+      <div className="flex items-center justify-between gap-3">
+        <AppButton variant="ghost" onClick={() => navigate(ROUTES.userManagement)}>
+          <span className="inline-flex items-center gap-2">
+            <FiArrowLeft size={18} />
+            Retour
+          </span>
+        </AppButton>
+      </div>
 
       {error ? (
         <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 font-myriad text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200">
