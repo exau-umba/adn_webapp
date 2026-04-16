@@ -12,86 +12,98 @@ import {
   FaWallet,
 } from "react-icons/fa6";
 import { AppButton } from "../shared/ui";
+import { useAuth } from "../core/auth/AuthContext.jsx";
 import { ROUTES } from "../core/routes.ts";
 
-const sidebarItems = [
-  {
-    label: "Tableau de bord",
-    to: ROUTES.dashboard,
-    icon: FaHouse,
-    route: true,
-    matchPrefixes: [ROUTES.dashboard],
-  },
-  {
-    label: "Agent",
-    to: ROUTES.agentManagement,
-    icon: FaIdBadge,
-    route: true,
-    matchPrefixes: [ROUTES.agentManagement],
-  },
-  {
-    label: "Clients",
-    to: ROUTES.clientManagement,
-    icon: FaPeopleGroup,
-    route: true,
-    matchPrefixes: [ROUTES.clientManagement],
-  },
-  {
-    label: "Offres",
-    to: ROUTES.offresEmploi,
-    icon: FaBriefcase,
-    route: true,
-    matchPrefixes: [ROUTES.offresEmploi],
-  },
-  {
-    label: "Mission",
-    to: ROUTES.missionManagement,
-    icon: FaUserGroup,
-    route: true,
-    matchPrefixes: [ROUTES.missionManagement],
-  },
-  {
-    label: "Contrat",
-    to: ROUTES.contratManagement,
-    icon: FaFileContract,
-    route: true,
-    matchPrefixes: [ROUTES.contratManagement],
-  },
-  {
-    label: "Finance",
-    to: ROUTES.financeManagement,
-    icon: FaWallet,
-    route: true,
-    matchPrefixes: [ROUTES.financeManagement],
-  },
-  {
-    label: "Incident",
-    to: ROUTES.incidents,
-    icon: FaTriangleExclamation,
-    route: true,
-    matchPrefixes: [ROUTES.incidents],
-  },
-  {
-    label: "Analytique",
-    to: ROUTES.analytics,
-    icon: FaChartSimple,
-    route: true,
-    matchPrefixes: [ROUTES.analytics],
-  },
-  {
-    label: "Utilisateurs",
-    to: ROUTES.userManagement,
-    icon: FaUsersGear,
-    route: true,
-    matchPrefixes: [ROUTES.userManagement],
-  },
-];
+function isUserAdmin(user) {
+  if (!user) return false;
+  if (user.is_superuser || user.is_staff) return true;
+  return Array.isArray(user.roles) && user.roles.some((r) => r.code === "ADMIN");
+}
 
 export function Sidebar({ collapsed }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const getIsActive = (item) => item.matchPrefixes?.some((prefix) => pathname.startsWith(prefix)) ?? false;
+
+  const sidebarItems = [
+    {
+      label: "Tableau de bord",
+      to: ROUTES.dashboard,
+      icon: FaHouse,
+      route: true,
+      matchPrefixes: [ROUTES.dashboard],
+    },
+    {
+      label: "Agent",
+      to: ROUTES.agentManagement,
+      icon: FaIdBadge,
+      route: true,
+      matchPrefixes: [ROUTES.agentManagement],
+    },
+    {
+      label: "Clients",
+      to: ROUTES.clientManagement,
+      icon: FaPeopleGroup,
+      route: true,
+      matchPrefixes: [ROUTES.clientManagement],
+    },
+    {
+      label: "Offres",
+      to: ROUTES.offresEmploi,
+      icon: FaBriefcase,
+      route: true,
+      matchPrefixes: [ROUTES.offresEmploi],
+    },
+    {
+      label: "Mission",
+      to: ROUTES.missionManagement,
+      icon: FaUserGroup,
+      route: true,
+      matchPrefixes: [ROUTES.missionManagement],
+    },
+    {
+      label: "Contrat",
+      to: ROUTES.contratManagement,
+      icon: FaFileContract,
+      route: true,
+      matchPrefixes: [ROUTES.contratManagement],
+    },
+    {
+      label: "Finance",
+      to: ROUTES.financeManagement,
+      icon: FaWallet,
+      route: true,
+      matchPrefixes: [ROUTES.financeManagement],
+    },
+    {
+      label: "Incident",
+      to: ROUTES.incidents,
+      icon: FaTriangleExclamation,
+      route: true,
+      matchPrefixes: [ROUTES.incidents],
+    },
+    {
+      label: "Analytique",
+      to: ROUTES.analytics,
+      icon: FaChartSimple,
+      route: true,
+      matchPrefixes: [ROUTES.analytics],
+    },
+    ...(isUserAdmin(user)
+      ? [
+          {
+            label: "Utilisateurs",
+            to: ROUTES.userManagement,
+            icon: FaUsersGear,
+            route: true,
+            matchPrefixes: [ROUTES.userManagement],
+          },
+        ]
+      : []),
+  ];
 
   return (
     <aside

@@ -9,6 +9,8 @@ export type ApiUser = {
   full_name: string;
   phone: string;
   is_active: boolean;
+  is_staff: boolean;
+  is_superuser: boolean;
   roles: { id: string; code: string; label: string; description: string }[];
 };
 
