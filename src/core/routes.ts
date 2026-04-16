@@ -1,4 +1,5 @@
 export const ROUTES = {
+  login: "/login",
   dashboard: "/dashboard",
   agentManagement: "/agent-management",
   agentRegistration: "/agent-management/registration",
@@ -28,6 +29,10 @@ export const ROUTES = {
   incidentOpen: "/incidents/ouvrir",
   incidentDetail: (incidentId: string) => `/incidents/detail/${incidentId}`,
   analytics: "/analytics",
+  userManagement: "/user-management",
+  userRoles: "/user-management/roles",
+  userRegistration: "/user-management/registration",
+  userEdit: (userId: string) => `/user-management/edit/${userId}`,
   financeForMission: (missionId: string) => `/finance-management?mission=${missionId}`,
   financeMouvementNouveauForMission: (missionId: string) =>
     `/finance-management/nouveau-mouvement?mission=${encodeURIComponent(missionId)}`,

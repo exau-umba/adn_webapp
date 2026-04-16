@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { FaBars, FaBell, FaGear, FaMagnifyingGlass, FaMoon, FaSun } from "react-icons/fa6";
+import { FaArrowRightFromBracket, FaBars, FaBell, FaGear, FaMagnifyingGlass, FaMoon, FaSun } from "react-icons/fa6";
 import { AppButton, AppInput, IconButton } from "../shared/ui";
+import { useAuth } from "../core/auth/AuthContext.jsx";
 import { ROUTES } from "../core/routes.ts";
 
 export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onToggleDarkMode }) {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   return (
     <header
@@ -45,9 +47,24 @@ export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onT
             <FaGear />
           </IconButton>
           <div className="mx-1 h-7 w-px bg-slate-200 dark:bg-slate-700" />
+          <IconButton
+            title="Se déconnecter"
+            aria-label="Se déconnecter"
+            className="text-slate-600 dark:text-slate-300"
+            onClick={() => {
+              logout();
+              navigate(ROUTES.login, { replace: true });
+            }}
+          >
+            <FaArrowRightFromBracket />
+          </IconButton>
           <div className="hidden text-right sm:block">
-            <p className="font-myriad text-xs font-bold text-[#08047a] dark:text-slate-100">Admin Principal</p>
-            <p className="font-myriad text-[10px] text-slate-500 dark:text-slate-400">ADN PRO SERVICE</p>
+            <p className="font-myriad text-xs font-bold text-[#08047a] dark:text-slate-100">
+              {user?.full_name || user?.username || "Utilisateur"}
+            </p>
+            <p className="font-myriad text-[10px] text-slate-500 dark:text-slate-400">
+              {user?.email || "ADN PRO SERVICE"}
+            </p>
           </div>
           <img
             src="/logos/and_pro_service_multiservice_cercle.png"

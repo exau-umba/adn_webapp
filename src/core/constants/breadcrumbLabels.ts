@@ -14,6 +14,8 @@ export const BREADCRUMB_LABELS = {
   incidents: "Incidents",
   ouvrir: "Ouvrir",
   analytics: "Analytique",
+  "user-management": "Utilisateurs",
+  roles: "Rôles et permissions",
   dashboard: "Tableau de bord",
   management: "Gestion",
   registration: "Ajout",

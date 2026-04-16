@@ -8,6 +8,7 @@ import {
   FaPeopleGroup,
   FaTriangleExclamation,
   FaUserGroup,
+  FaUsersGear,
   FaWallet,
 } from "react-icons/fa6";
 import { AppButton } from "../shared/ui";
@@ -76,6 +77,13 @@ const sidebarItems = [
     icon: FaChartSimple,
     route: true,
     matchPrefixes: [ROUTES.analytics],
+  },
+  {
+    label: "Utilisateurs",
+    to: ROUTES.userManagement,
+    icon: FaUsersGear,
+    route: true,
+    matchPrefixes: [ROUTES.userManagement],
   },
 ];
 

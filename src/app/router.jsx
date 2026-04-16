@@ -1,5 +1,7 @@
 import { Navigate, useRoutes } from "react-router-dom";
+import { ProtectedRoute } from "../components/ProtectedRoute.jsx";
 import { AdminLayout } from "../layout/AdminLayout";
+import { authRoutes } from "../modules/auth/routes.jsx";
 import { dashboardRoutes } from "../modules/dashboard/routes";
 import { agentsRoutes } from "../modules/agents/routes";
 import { clientsRoutes } from "../modules/clients/routes";
@@ -11,19 +13,23 @@ import { contratsRoutes } from "../modules/contrats/routes";
 import { financeRoutes } from "../modules/finance/routes";
 import { incidentsRoutes } from "../modules/incidents/routes";
 import { analyticsRoutes } from "../modules/analytics/routes";
+import { userRoutes } from "../modules/user/routes";
 import { ROUTES } from "../core/routes.ts";
 
 export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onToggleDarkMode }) {
   return useRoutes([
+    ...authRoutes,
     {
       path: "/",
       element: (
-        <AdminLayout
-          sidebarCollapsed={sidebarCollapsed}
-          onToggleSidebar={onToggleSidebar}
-          isDarkMode={isDarkMode}
-          onToggleDarkMode={onToggleDarkMode}
-        />
+        <ProtectedRoute>
+          <AdminLayout
+            sidebarCollapsed={sidebarCollapsed}
+            onToggleSidebar={onToggleSidebar}
+            isDarkMode={isDarkMode}
+            onToggleDarkMode={onToggleDarkMode}
+          />
+        </ProtectedRoute>
       ),
       children: [
         { index: true, element: <Navigate to={ROUTES.dashboard} replace /> },
@@ -36,6 +42,7 @@ export function AppRouter({ sidebarCollapsed, onToggleSidebar, isDarkMode, onTog
         ...financeRoutes,
         ...incidentsRoutes,
         ...analyticsRoutes,
+        ...userRoutes,
         ...notificationsRoutes,
         ...settingsRoutes,
       ],
