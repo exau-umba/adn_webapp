@@ -32,6 +32,7 @@ export const ROUTES = {
   userManagement: "/user-management",
   userRoles: "/user-management/roles",
   userRegistration: "/user-management/registration",
+  userDetail: (userId: string) => `/user-management/detail/${userId}`,
   userEdit: (userId: string) => `/user-management/edit/${userId}`,
   financeForMission: (missionId: string) => `/finance-management?mission=${missionId}`,
   financeMouvementNouveauForMission: (missionId: string) =>

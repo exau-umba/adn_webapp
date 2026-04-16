@@ -14,6 +14,7 @@ export function UserEditScreen() {
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
   const [roleCode, setRoleCode] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [error, setError] = useState("");
@@ -28,6 +29,7 @@ export function UserEditScreen() {
         setRoles(r.results);
         setFullName(u.full_name ?? "");
         setEmail(u.email ?? "");
+        setProfilePhotoUrl(u.profile_photo_url ?? "");
         setRoleCode(u.roles?.[0]?.code ?? "");
         setIsActive(Boolean(u.is_active));
       } catch (e) {
@@ -78,6 +80,7 @@ export function UserEditScreen() {
           email: mail,
           first_name,
           last_name,
+          profile_photo_url: profilePhotoUrl.trim(),
           is_active: isActive,
         });
         const updatedWithRoles = await assignAccountRoles(updated.id, roleCode ? [roleCode] : []);
@@ -115,6 +118,16 @@ export function UserEditScreen() {
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">E-mail</label>
           <AppInput className="mt-2" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </div>
+        <div>
+          <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Photo de profil (URL)</label>
+          <AppInput
+            className="mt-2"
+            type="url"
+            value={profilePhotoUrl}
+            onChange={(e) => setProfilePhotoUrl(e.target.value)}
+            placeholder="https://..."
+          />
         </div>
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Rôle</label>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FiEdit2, FiPlus, FiRefreshCcw, FiTrash2 } from "react-icons/fi";
+import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
 import { AppButton, AppInput, AppTextarea, ConfirmationModal, IconButton, PaginationControls } from "../../../shared/ui";
 import { createRole, deleteRole, listAccounts, listRoles, updateRole } from "../lib/userApi.ts";
 import { PERMISSION_CATALOG } from "../types/rbac.ts";
@@ -152,20 +152,12 @@ export function RolesManagementScreen() {
             Gérez les rôles (code, libellé) et rattachez-les aux utilisateurs.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <AppButton variant="ghost" size="lg" onClick={refreshAll} disabled={loading}>
-            <span className="inline-flex items-center gap-2">
-              <FiRefreshCcw size={18} />
-              Actualiser
-            </span>
-          </AppButton>
-          <AppButton variant="secondary" size="lg" onClick={openCreate}>
-            <span className="inline-flex items-center gap-2">
-              <FiPlus size={18} />
-              Nouveau rôle
-            </span>
-          </AppButton>
-        </div>
+        <AppButton variant="secondary" size="lg" onClick={openCreate}>
+          <span className="inline-flex items-center gap-2">
+            <FiPlus size={18} />
+            Nouveau rôle
+          </span>
+        </AppButton>
       </div>
 
       {error ? (
@@ -237,7 +229,14 @@ export function RolesManagementScreen() {
           </tbody>
         </table>
         <div className="border-t border-slate-200 p-3 dark:border-slate-700">
-          <PaginationControls page={safePage} totalPages={totalPages} onPageChange={setPage} />
+          <PaginationControls
+            page={safePage}
+            totalPages={totalPages}
+            totalItems={rolesCount}
+            pageSize={pageSize}
+            onPageChange={setPage}
+            label="rôles"
+          />
         </div>
       </div>
 

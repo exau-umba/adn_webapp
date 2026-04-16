@@ -19,6 +19,7 @@ export type ApiAccount = {
   last_name: string;
   full_name: string;
   phone: string;
+  profile_photo_url: string;
   is_active: boolean;
   is_staff: boolean;
   is_superuser: boolean;
@@ -125,6 +126,7 @@ export async function patchAccount(
     first_name: string;
     last_name: string;
     phone: string;
+    profile_photo_url: string;
     is_active: boolean;
   }>,
 ): Promise<ApiAccount> {
@@ -143,6 +145,7 @@ export async function adminRegisterUser(payload: {
   first_name?: string;
   last_name?: string;
   phone?: string;
+  profile_photo_url?: string;
   password: string;
 }): Promise<{ user: ApiAccount; access: string; refresh: string }> {
   // Endpoint AllowAny côté backend, mais UI protégée admin.

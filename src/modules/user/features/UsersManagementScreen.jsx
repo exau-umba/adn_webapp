@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiEdit2, FiPause, FiPlay, FiRefreshCcw } from "react-icons/fi";
+import { FiEdit2, FiEye, FiPause, FiPlay } from "react-icons/fi";
 import { AppButton, AppInput, AppSelect, ConfirmationModal, IconButton, PaginationControls } from "../../../shared/ui";
 import { ROUTES } from "../../../core/routes.ts";
 import { getStatusTone } from "../../../core/constants/statusStyles.ts";
 import { assignAccountRoles, listAccounts, listRoles, patchAccount } from "../lib/userApi.ts";
 import { UserModuleNav } from "./UserModuleNav.jsx";
+import { UserAvatar } from "../components/UserAvatar.jsx";
 
 export function UsersManagementScreen() {
   const navigate = useNavigate();
@@ -51,6 +52,11 @@ export function UsersManagementScreen() {
     void refreshAll(1, query);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
+
+  useEffect(() => {
+    const totalPages = Math.max(1, Math.ceil(usersCount / pageSize));
+    if (page > totalPages) setPage(totalPages);
+  }, [usersCount, page, pageSize]);
 
   const totalPages = Math.max(1, Math.ceil(usersCount / pageSize));
   const safePage = Math.min(page, totalPages);
@@ -109,17 +115,9 @@ export function UsersManagementScreen() {
             Attribuez des rôles RBAC, suspendez des comptes et gardez une vue claire sur les accès.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <AppButton variant="ghost" size="lg" onClick={refreshAll} disabled={loading}>
-            <span className="inline-flex items-center gap-2">
-              <FiRefreshCcw size={18} />
-              Actualiser
-            </span>
-          </AppButton>
-          <AppButton variant="secondary" size="lg" onClick={() => navigate(ROUTES.userRegistration)}>
-            Nouvel utilisateur
-          </AppButton>
-        </div>
+        <AppButton variant="secondary" size="lg" onClick={() => navigate(ROUTES.userRegistration)}>
+          Nouvel utilisateur
+        </AppButton>
       </div>
 
       {error ? (
@@ -171,7 +169,15 @@ export function UsersManagementScreen() {
                 const selectedRoleCode = user.roles?.[0]?.code ?? "";
                 return (
                   <tr key={user.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/60">
-                  <td className="p-3 font-semibold text-[#01003b] dark:text-slate-100">{user.full_name}</td>
+                  <td className="p-3">
+                    <div className="flex items-center gap-3">
+                      <UserAvatar fullName={user.full_name} photoUrl={user.profile_photo_url} size={36} />
+                      <div>
+                        <p className="font-semibold text-[#01003b] dark:text-slate-100">{user.full_name}</p>
+                        <p className="text-xs text-slate-400 dark:text-slate-500">@{user.username}</p>
+                      </div>
+                    </div>
+                  </td>
                   <td className="p-3 text-slate-600 dark:text-slate-300">{user.email}</td>
                   <td className="p-3">
                     <AppSelect
@@ -212,6 +218,14 @@ export function UsersManagementScreen() {
                     <div className="flex justify-end gap-1">
                       <IconButton
                         className="text-slate-600 dark:text-slate-300"
+                        title="Voir le détail"
+                        aria-label="Voir le détail"
+                        onClick={() => navigate(ROUTES.userDetail(user.id))}
+                      >
+                        <FiEye size={18} />
+                      </IconButton>
+                      <IconButton
+                        className="text-slate-600 dark:text-slate-300"
                         title="Modifier le profil"
                         aria-label="Modifier le profil"
                         onClick={() => navigate(ROUTES.userEdit(user.id))}
@@ -235,7 +249,14 @@ export function UsersManagementScreen() {
             )}
           </tbody>
         </table>
-        <PaginationControls page={safePage} totalPages={totalPages} onPageChange={setPage} className="border-t border-slate-200 p-3 dark:border-slate-700" />
+        <PaginationControls
+          page={safePage}
+          totalPages={totalPages}
+          totalItems={usersCount}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          label="utilisateurs"
+        />
       </div>
 
       <ConfirmationModal

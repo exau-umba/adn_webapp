@@ -12,6 +12,7 @@ export function UserRegistrationScreen() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
   const [roleCode, setRoleCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -50,6 +51,7 @@ export function UserRegistrationScreen() {
         email: mail,
         first_name,
         last_name,
+        profile_photo_url: profilePhotoUrl.trim(),
         password,
       });
       if (roleCode) {
@@ -105,6 +107,10 @@ export function UserRegistrationScreen() {
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Mot de passe</label>
           <AppInput className="mt-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+        </div>
+        <div>
+          <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Photo de profil (URL)</label>
+          <AppInput className="mt-2" type="url" value={profilePhotoUrl} onChange={(e) => setProfilePhotoUrl(e.target.value)} placeholder="https://..." />
         </div>
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Rôle</label>

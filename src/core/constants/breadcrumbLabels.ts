@@ -16,6 +16,7 @@ export const BREADCRUMB_LABELS = {
   analytics: "Analytique",
   "user-management": "Utilisateurs",
   roles: "Rôles et permissions",
+  detail: "Détail",
   dashboard: "Tableau de bord",
   management: "Gestion",
   registration: "Ajout",

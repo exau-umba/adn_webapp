@@ -1,6 +1,7 @@
 import { UsersManagementPage } from "./pages/UsersManagementPage";
 import { RolesManagementPage } from "./pages/RolesManagementPage";
 import { UserRegistrationPage } from "./pages/UserRegistrationPage";
+import { UserDetailsPage } from "./pages/UserDetailsPage";
 import { UserEditPage } from "./pages/UserEditPage";
 import { RequireUserAdmin } from "./components/RequireUserAdmin.jsx";
 
@@ -26,6 +27,14 @@ export const userRoutes = [
     element: (
       <RequireUserAdmin>
         <UserRegistrationPage />
+      </RequireUserAdmin>
+    ),
+  },
+  {
+    path: "user-management/detail/:userId",
+    element: (
+      <RequireUserAdmin>
+        <UserDetailsPage />
       </RequireUserAdmin>
     ),
   },
