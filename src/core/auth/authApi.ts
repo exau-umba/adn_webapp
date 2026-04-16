@@ -8,6 +8,7 @@ export type ApiUser = {
   last_name: string;
   full_name: string;
   phone: string;
+  profile_photo_url: string;
   is_active: boolean;
   is_staff: boolean;
   is_superuser: boolean;

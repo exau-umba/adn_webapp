@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa6";
 import { AppButton, AppInput, ConfirmationModal, IconButton } from "../shared/ui";
 import { useAuth } from "../core/auth/AuthContext.jsx";
+import { AccountAvatar } from "../components/AccountAvatar.jsx";
 import { ROUTES } from "../core/routes.ts";
 
 export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onToggleDarkMode }) {
@@ -83,7 +84,7 @@ export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onT
             <div className="relative" ref={profileMenuRef}>
               <button
                 type="button"
-                className="flex items-center gap-2 rounded-xl px-2 py-1.5 text-left transition hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="flex cursor-pointer items-center gap-2 rounded-xl px-2 py-1.5 text-left transition hover:bg-slate-100 dark:hover:bg-slate-800"
                 onClick={() => setProfileMenuOpen((v) => !v)}
                 aria-haspopup="menu"
                 aria-expanded={profileMenuOpen}
@@ -95,11 +96,9 @@ export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onT
                     {user?.email || "ADN PRO SERVICE"}
                   </p>
                 </div>
-                <img
-                  src="/logos/and_pro_service_multiservice_cercle.png"
-                  alt="Profil"
-                  className="h-10 w-10 rounded-full border-2 border-white shadow-sm"
-                />
+                <div className="rounded-full border-2 border-white shadow-sm">
+                  <AccountAvatar fullName={displayName} photoUrl={user?.profile_photo_url} size={40} />
+                </div>
               </button>
 
               {profileMenuOpen ? (
