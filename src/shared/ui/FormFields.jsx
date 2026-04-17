@@ -1,4 +1,4 @@
-const fieldBaseClass =
+export const fieldBaseClass =
   "w-full rounded-xl border border-transparent bg-slate-100 px-3 py-2.5 text-sm font-myriad text-slate-700 outline-none ring-brand-primary transition focus:ring-2 dark:bg-slate-800 dark:text-slate-100";
 
 export function AppInput({ className = "", type = "text", ...props }) {

@@ -14,6 +14,7 @@ export const ROUTES = {
   clientDetail: (clientId: string) => `/client-management/detail/${clientId}`,
   clientEdit: (clientId: string) => `/client-management/detail/${clientId}/edit`,
   notifications: "/notifications",
+  notificationDetail: (notificationId: string) => `/notifications/detail/${notificationId}`,
   settings: "/settings",
   offresEmploi: "/offres-emploi",
   offreEmploiRegistration: "/offres-emploi/registration",

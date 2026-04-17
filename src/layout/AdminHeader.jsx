@@ -14,12 +14,14 @@ import { AppButton, AppInput, ConfirmationModal, IconButton } from "../shared/ui
 import { useAuth } from "../core/auth/AuthContext.jsx";
 import { AccountAvatar } from "../components/AccountAvatar.jsx";
 import { ROUTES } from "../core/routes.ts";
+import { fetchUnreadNotificationsCount } from "../modules/notifications/lib/notificationsApi.ts";
 
 export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onToggleDarkMode }) {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const profileMenuRef = useRef(null);
 
   const displayName = useMemo(
@@ -39,6 +41,27 @@ export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onT
       return () => document.removeEventListener("pointerdown", onPointerDown);
     }
   }, [profileMenuOpen]);
+
+  useEffect(() => {
+    let mounted = true;
+    const loadUnread = async () => {
+      try {
+        const count = await fetchUnreadNotificationsCount();
+        if (mounted) setUnreadCount(count);
+      } catch {
+        if (mounted) setUnreadCount(0);
+      }
+    };
+    const onUpdated = () => {
+      void loadUnread();
+    };
+    void loadUnread();
+    window.addEventListener("adn-notifications-updated", onUpdated);
+    return () => {
+      mounted = false;
+      window.removeEventListener("adn-notifications-updated", onUpdated);
+    };
+  }, []);
 
   return (
     <>
@@ -73,9 +96,16 @@ export function AdminHeader({ onToggleSidebar, sidebarCollapsed, isDarkMode, onT
               {isDarkMode ? <FaSun /> : <FaMoon />}
               <span>{isDarkMode ? "Mode clair" : "Mode sombre"}</span>
             </AppButton>
-            <IconButton onClick={() => navigate(ROUTES.notifications)}>
-              <FaBell />
-            </IconButton>
+            <div className="relative">
+              <IconButton onClick={() => navigate(ROUTES.notifications)} aria-label="Notifications">
+                <FaBell />
+              </IconButton>
+              {unreadCount > 0 ? (
+                <span className="absolute -top-1 -right-1 flex min-h-4 min-w-4 items-center justify-center rounded-full bg-[#08047a] px-1 text-[10px] font-bold text-white">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              ) : null}
+            </div>
             <IconButton onClick={() => navigate(ROUTES.settings)}>
               <FaGear />
             </IconButton>

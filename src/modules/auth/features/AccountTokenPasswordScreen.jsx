@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AppButton, AppInput } from "../../../shared/ui";
+import { AppButton, PasswordField } from "../../../shared/ui";
 import { activateAccount, setupPassword } from "../../user/lib/userApi.ts";
 import { persistTokens } from "../../../core/auth/authStorage.ts";
 import { ROUTES } from "../../../core/routes.ts";
+import { getPasswordStrength } from "../../../core/utils/passwordStrength.ts";
 
 function useTokenFromQuery() {
   const { search } = useLocation();
@@ -17,6 +18,7 @@ export function AccountTokenPasswordScreen({ mode }) {
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const strength = useMemo(() => getPasswordStrength(password), [password]);
 
   const title = mode === "activate" ? "Activation du compte" : "Créer votre mot de passe";
   const successButton = mode === "activate" ? "Activer le compte" : "Créer le mot de passe";
@@ -27,8 +29,8 @@ export function AccountTokenPasswordScreen({ mode }) {
       setError("Token manquant.");
       return;
     }
-    if (!password || password.length < 8) {
-      setError("Le mot de passe doit contenir au moins 8 caractères.");
+    if (!strength.isStrong) {
+      setError("Mot de passe trop faible. Vérifiez les critères affichés.");
       return;
     }
     if (password !== confirm) {
@@ -65,11 +67,28 @@ export function AccountTokenPasswordScreen({ mode }) {
         ) : null}
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Mot de passe</label>
-          <AppInput className="mt-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <PasswordField
+            className="mt-2"
+            placeholder="Au moins 8 caractères, avec majuscule, minuscule, chiffre et spécial"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
+        <ul className="space-y-1 text-xs font-myriad">
+          {strength.rules.map((rule) => (
+            <li key={rule.id} className={rule.ok ? "text-emerald-600 dark:text-emerald-400" : "text-slate-500 dark:text-slate-400"}>
+              {rule.ok ? "✓" : "•"} {rule.label}
+            </li>
+          ))}
+        </ul>
         <div>
           <label className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">Confirmer</label>
-          <AppInput className="mt-2" type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+          <PasswordField
+            className="mt-2"
+            placeholder="Retapez le mot de passe"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+          />
         </div>
         <div className="flex justify-end">
           <AppButton type="submit" variant="primary" disabled={loading}>

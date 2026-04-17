@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaArrowRightToBracket } from "react-icons/fa6";
-import { AppButton, AppInput } from "../../../shared/ui";
+import { AppButton, AppInput, PasswordField } from "../../../shared/ui";
 import { useAuth } from "../../../core/auth/AuthContext.jsx";
 import { ROUTES } from "../../../core/routes.ts";
 
@@ -86,6 +86,7 @@ export function LoginScreen() {
               className="mt-2"
               name="username"
               autoComplete="username"
+              placeholder="Entrez votre nom d'utilisateur"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               disabled={submitting}
@@ -96,11 +97,11 @@ export function LoginScreen() {
             <label htmlFor="login-password" className="font-myriad text-xs font-bold uppercase tracking-widest text-slate-500">
               Mot de passe
             </label>
-            <AppInput
+            <PasswordField
               id="login-password"
               className="mt-2"
-              type="password"
               name="password"
+              placeholder="Entrez votre mot de passe"
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
